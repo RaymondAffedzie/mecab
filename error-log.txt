@@ -1,0 +1,5 @@
+Error: [2] Undefined array key "isVerified" - /var/www/mecab/Spare-parts/spare-part-details.php:16 - [Date/time] - 2023-Aug-02 13:08:12
+Error: [2] Undefined variable $a - /var/www/mecab/Spare-parts/spare-part-details.php:34 - [Date/time] - 2023-Aug-02 13:08:44
+Error: [2] Undefined variable $a - /var/www/mecab/Spare-parts/spare-part-details.php:34 - [Date/time] - 2023-Aug-02 13:08:34
+Error: [2] Undefined array key "isVerified" - /var/www/mecab/Spare-parts/spare-part-details.php:16 - [Date/time] - 2023-Aug-02 13:08:42
+Error: [2] Undefined variable $sparepart_id - C:\Apache24\htdocs\mecab\Spare-parts\spare-part-details.php:554 - [Date/time] - 2023-Aug-06 15:08:10
