@@ -99,7 +99,7 @@ class storeController
      */
 
     // Add new store
-    public function addStore($storeName, $storeType, $storeEmail, $storeContact, $gpsAddress, $streetName, $storeTown, $storeLocation)
+    public function addStore($store_id, $storeName, $storeType, $storeEmail, $storeContact, $gpsAddress, $streetName, $storeTown, $storeLocation)
     {
         // Check if store with the same name or email or contact already exists
         if ($this->isStoreExists($storeName, $storeEmail, $storeContact)) {
@@ -108,9 +108,9 @@ class storeController
 
         // Add store if store does not exist
         try {
-            $query = "INSERT INTO stores (store_name, store_type, store_email, store_contact, gps_address, street_name, store_town, store_location) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            $query = "INSERT INTO stores (store_id, store_name, store_type, store_email, store_contact, gps_address, street_name, store_town, store_location) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->pdo->prepare($query);
-            $stmt->execute([$storeName, $storeType, $storeEmail, $storeContact, $gpsAddress, $streetName, $storeTown, $storeLocation]);
+            $stmt->execute([$store_id, $storeName, $storeType, $storeEmail, $storeContact, $gpsAddress, $streetName, $storeTown, $storeLocation]);
             return 'success';
         } catch (PDOException $e) {
             echo "Store registration failed: " . $e->getMessage();
@@ -119,7 +119,7 @@ class storeController
     }
 
     // Add new user
-    public function addUser($firstName, $lastName, $otherNames, $userEmail, $specialisation, $password)
+    public function addUser($user_id, $firstName, $lastName, $otherNames, $userEmail, $specialisation, $password)
     {
         // Check if a user with the email already exists
         if ($this->isUserExists($userEmail)) {
@@ -128,9 +128,9 @@ class storeController
 
         // Add user if a user does not exist
         try {
-            $query = "INSERT INTO users (first_name, last_name, other_names, users_email, users_role, `users_password`) VALUES (?, ?, ?, ?, ?, ?)";
+            $query = "INSERT INTO users (user_id, first_name, last_name, other_names, users_email, users_role, `users_password`) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->pdo->prepare($query);
-            $stmt->execute([$firstName, $lastName, $otherNames, $userEmail, $specialisation, $password]);
+            $stmt->execute([$user_id, $firstName, $lastName, $otherNames, $userEmail, $specialisation, $password]);
 
             return 'success';
         } catch (PDOException $e) {
@@ -171,11 +171,12 @@ class storeController
                     // Get store details (contact)
                     $storeContact = $this->getStoreById($storeId);
 
+                    $storeContact = $storeContact['store_contact'];
+
+                    $msg = 'Use this code to verify your store. Your verification code is: ';
+
                     // Send otp
-                    $msg = 'Do not share your code with anyone. 
-                            Ignore this message if you did not request for this code. 
-                            Your verification code is: ';
-                    $otpGenerator->sendOTP($storeContact['store_contact'], $otp, $msg);
+                    $otpGenerator->sendOTP($storeContact, $otp, $msg);
                 }
 
                 // Save user's store record

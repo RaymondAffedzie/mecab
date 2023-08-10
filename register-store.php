@@ -292,6 +292,7 @@ include_once('includes/navbar.php');
                     success: function(response) {
                         if (response.status === "success") {
                             $("#CustomerLoginForm")[0].reset();
+                            swal("Success", response.message, "success");
                             if (response.redirect) {
                                 window.location.href = response.redirect;
                             }

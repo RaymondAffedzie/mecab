@@ -9,7 +9,7 @@ if (isset($_POST['action']) && $_POST['action'] == "add_details") {
 
     $contact = filter_input(INPUT_POST, 'contact', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $specialisation = filter_input(INPUT_POST, 'specialisation', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $storeId = filter_input(INPUT_POST, 'store', FILTER_SANITIZE_NUMBER_INT);
+    $storeId = filter_input(INPUT_POST, 'store', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $role = filter_input(INPUT_POST, 'role', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $userId = $_SESSION['userId'];
 

@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 
 require_once '../controllers/storeController.php';
 
-if (isset($_POST['action']) && $_POST['action'] == "register") {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $firstName  = filter_input(INPUT_POST, 'first_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $lastName   = filter_input(INPUT_POST, 'last_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $otherNames = filter_input(INPUT_POST, 'other_names', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -13,11 +13,19 @@ if (isset($_POST['action']) && $_POST['action'] == "register") {
     $password   = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $con_password = filter_input(INPUT_POST, 'con_password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-    $firstName = ucwords($firstName);
-    $lastName = ucwords($lastName);
-    $otherNames = ucwords($otherNames);
-    $userEmail = strtolower($userEmail);
-
+    if ($otherNames !== null) {
+        $otherNames = ucwords($otherNames);
+    }
+    if ($firstName !== null) {
+        $firstName = ucwords($firstName);
+    }
+    if ($lastName !== null) {
+        $lastName = ucwords($lastName);
+    }
+    if ($userEmail !== null) {
+        $userEmail = strtolower($userEmail);
+    }
+    
     $errors = array();
     if (empty($firstName)) {
         $errors[] = "First name is required.";
@@ -26,9 +34,9 @@ if (isset($_POST['action']) && $_POST['action'] == "register") {
         $errors[] = "Last name is required.";
     }
     if (empty($userEmail)) {
-        $errors[] = "Mechanic email is required.";
+        $errors[] = "Email is required.";
     } elseif (!filter_var($userEmail, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = "Invalid mechanic email format.";
+        $errors[] = "Invalid Email format.";
     }
     if (empty($role)) {
         $errors[] = "role is required.";
@@ -59,9 +67,13 @@ if (isset($_POST['action']) && $_POST['action'] == "register") {
             'errors' => $errors
         );
     } else {
-        $password = password_hash($password, PASSWORD_BCRYPT);
+        include_once "../controllers/uniqueCode.php";
+
+        $user_id = $v4uuid;
+
         $controller = new storeController();
-        $result = $controller->addUser($firstName, $lastName, $otherNames, $userEmail, $role, $password);
+        $password = password_hash($password, PASSWORD_BCRYPT);
+        $result = $controller->addUser($user_id, $firstName, $lastName, $otherNames, $userEmail, $role, $password);
 
         if ($result === 'exists') {
             $response = array(

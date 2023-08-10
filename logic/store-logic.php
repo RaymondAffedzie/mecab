@@ -88,8 +88,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'errors' => $errors
         );
     } else {
+        include_once "../controllers/uniqueCode.php";
+
+        $store_id = $v4uuid;
+
         $controller = new storeController();
-        $result = $controller->addStore($storeName, $storeType, $storeEmail, $storeContact, $gpsAddress, $streetName, $storeTown, $storeLocation);
+        $result = $controller->addStore($store_id, $storeName, $storeType, $storeEmail, $storeContact, $gpsAddress, $streetName, $storeTown, $storeLocation);
 
         switch ($result) {
             case 'exists':
