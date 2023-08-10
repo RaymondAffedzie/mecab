@@ -1,179 +1,249 @@
-<body>
-	<div class="container-scroller">
-		<!-- partial:partials/_navbar.html -->
-		<nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-			<div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-				<a class="navbar-brand brand-logo mr-5" href="./index.php">
-					MeCAB
-					<i class="mdi mdi-car text-primary" style="font-size: 30px"></i>
-				</a>
-				<a class="navbar-brand brand-logo-mini" href="./index.php">
-					<i class="mdi mdi-car text-primary" style="font-size: 36px"></i>
-				</a>
-			</div>
-			<div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-				<ul class="navbar-nav navbar-nav-right">
-					<li class="nav-item nav-profile dropdown">
-						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-							<i class="ti-user mx-0 text-primary" style="font-size: 24px; "></i>
-						</a>
-						<div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-							<?php
+<body class="template-index home13-auto-parts">
+    <div class="pageWrapper">
+        <!--Search Form Drawer-->
+        <div class="search">
+            <div class="search__form">
+                <form class="search-bar__form" action="#">
+                    <button class="go-btn search__button" type="submit"><i class="icon anm anm-search-l"></i></button>
+                    <input class="search__input" type="search" name="q" value="" placeholder="Search entire store..." aria-label="Search" autocomplete="off">
+                </form>
+                <button type="button" class="search-trigger close-btn"><i class="anm anm-times-l"></i></button>
+            </div>
+        </div>
+        <!--End Search Form Drawer-->
+
+        <!--Top Header-->
+        <div class="top-header">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-10 col-sm-8 col-md-5 col-lg-4">
+                        <p class="phone-no"><i class="anm anm-phone-s"></i> +233 (0)24 769 2388 / +233 (0)24 816 5601</p>
+                    </div>
+                    <div class="col-sm-4 col-md-4 col-lg-4 d-none d-lg-none d-md-block d-lg-block">
+                        <div class="text-center"><p class="top-header_middle-text">iRBbA Devs & iQuco Tech</p></div>
+                    </div>
+                    <div class="col-2 col-sm-4 col-md-3 col-lg-4 text-right">
+                        <span class="user-menu d-block d-lg-none"><i class="anm anm-user-al" aria-hidden="true"></i></span>
+						<?php
 							if (isset($_SESSION['loggedIn'])) {
 							?>
-								<form id="logoutForm" action="./logic/logout.php" method="post">
-									<button type="submit" name="logout" class="btn btn-danger dropdown-item">
-										<i class="ti-power-off text-primary"></i> Logout
-									</button>
-								</form>
+							<ul class="customer-links list-inline">
+								<li>
+									<form id="logoutForm" action="./logic/logout.php" method="post">
+										<button type="submit" name="logout" class="border-0 text-light" style="cursor: pointer;">
+											<i class="ti-power-off text-primary"></i> Logout
+										</button>
+									</form>
+								</li>
+							</ul>
 							<?php
 							} else {
 							?>
-								<a class="dropdown-item" href="./login.php">
-									<i class="mdi mdi-login text-primary"></i> Login
-								</a>
-								<a class="dropdown-item" href="./register-store.php">
-									<i class="mdi mdi-store text-primary"></i> Purchase Store
-								</a>
-								<a class="dropdown-item" href="./register-user.php">
-									<i class="mdi mdi-account text-primary"></i> Create Account
-								</a>
+								<ul class="customer-links list-inline">
+									<li><a href="./login.php">Login</a></li>
+									<li><a href="./register-user.php">Create Account</a></li>
+									<li><a href="./register-store.php">Purchase Store</a></li>
+								</ul>
 							<?php
 							}
 							?>
-						</div>
-					</li>
-					<li class="nav-item nav-settings d-none d-lg-flex">
-						<a class="nav-link" href="#">
-							<i class="icon-ellipsis"></i>
-						</a>
-					</li>
-				</ul>
-				<button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-					<span class="icon-menu"></span>
-				</button>
-			</div>
-		</nav>
-		<!-- partial -->
-		<div class="container-fluid page-body-wrapper">
-			<!-- partial:partials/_settings-panel.html -->
-			<div class="theme-setting-wrapper">
-				<div id="settings-trigger"><i class="ti-settings"></i></div>
-				<div id="theme-settings" class="settings-panel">
-					<i class="settings-close ti-close"></i>
-					<p class="settings-heading">SIDEBAR SKINS</p>
-					<div class="sidebar-bg-options selected" id="sidebar-light-theme">
-						<div class="img-ss rounded-circle bg-light border mr-3"></div>
-						Light
-					</div>
-					<div class="sidebar-bg-options" id="sidebar-dark-theme">
-						<div class="img-ss rounded-circle bg-dark border mr-3"></div>
-						Dark
-					</div>
-					<p class="settings-heading mt-2">HEADER SKINS</p>
-					<div class="color-tiles mx-0 px-4">
-						<div class="tiles success"></div>
-						<div class="tiles warning"></div>
-						<div class="tiles danger"></div>
-						<div class="tiles info"></div>
-						<div class="tiles dark"></div>
-						<div class="tiles default"></div>
-					</div>
-				</div>
-			</div>
-			<div id="right-sidebar" class="settings-panel">
-				<i class="settings-close ti-close"></i>
-				<ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
-					<li class="nav-item">
-						<a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab" aria-controls="todo-section" aria-expanded="true">
-							TO DO LIST
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" id="chats-tab" data-toggle="tab" href="#chats-section" role="tab" aria-controls="chats-section">
-							CHATS
-						</a>
-					</li>
-				</ul>
-				<div class="tab-content" id="setting-content">
-					<div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
-						<div class="add-items d-flex px-3 mb-0">
-							<form class="form w-100">
-								<div class="form-group d-flex">
-									<input type="text" class="form-control todo-list-input" placeholder="Add To-do" />
-									<button type="submit" class="add btn btn-primary todo-list-add-btn" id="add-task">
-										Add
-									</button>
-								</div>
-							</form>
-						</div>
-						<div class="list-wrapper px-3">
-							<ul class="d-flex flex-column-reverse todo-list">
-								<li>
-									<div class="form-check">
-										<label class="form-check-label">
-											<input class="checkbox" type="checkbox" />
-											Team review meeting at 3.00 PM
-										</label>
-									</div>
-									<i class="remove ti-close"></i>
-								</li>
-							</ul>
-						</div>
-						<h4 class="px-3 text-muted mt-5 font-weight-light mb-0">
-							Events
-						</h4>
-						<div class="events pt-4 px-3">
-							<div class="wrapper d-flex mb-2">
-								<i class="ti-control-record text-primary mr-2"></i>
-								<span>Feb 11 2018</span>
-							</div>
-							<p class="mb-0 font-weight-thin text-gray">
-								Creating component page build a js
-							</p>
-							<p class="text-gray mb-0">
-								The total number of sessions
-							</p>
-						</div>
-					</div>
-					<!-- To do section tab ends -->
-					<div class="tab-pane fade" id="chats-section" role="tabpanel" aria-labelledby="chats-section">
-						<div class="d-flex align-items-center justify-content-between border-bottom">
-							<p class="settings-heading border-top-0 mb-3 pl-3 pt-0 border-bottom-0 pb-0">
-								Friends
-							</p>
-							<small class="settings-heading border-top-0 mb-3 pt-0 border-bottom-0 pb-0 pr-3 font-weight-normal">
-								See All
-							</small>
-						</div>
-						<ul class="chat-list">
-							<li class="list active">
-								<div class="profile">
-									<img src="images/faces/face1.jpg" alt="image" />
-									<span class="online"></span>
-								</div>
-								<div class="info">
-									<p>Thomas Douglas</p>
-									<p>Available</p>
-								</div>
-								<small class="text-muted my-auto">
-									19 min
-								</small>
-							</li>
-						</ul>
-					</div>
-					<!-- chat tab ends -->
-				</div>
-			</div>
-			<!-- partial -->
-			<!-- partial:partials/_sidebar.html -->
-			<nav class="sidebar sidebar-offcanvas" id="sidebar">
-				<ul class="nav">
-					<li class="nav-item">
-						<a class="nav-link" href="./index.php">
-							<i class="icon-grid menu-icon"></i>
-							<span class="menu-title">Home</span>
-						</a>
-					</li>
-				</ul>
-			</nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End Top Header-->
+		
+        <!--Header-->
+        <div class="header-wrap animated d-flex">
+            <div class="container-fluid">        
+                <div class="row align-items-center">
+                    <!--Desktop Logo-->
+                    <div class="logo col-md-2 col-lg-2 d-none d-lg-block">
+                        <a href="index.php" class="h1">
+                            MeCAB
+                        </a>
+                    </div>
+                    <!--End Desktop Logo-->
+                    <div class="col-2 col-sm-3 col-md-3 col-lg-8">
+                        <div class="d-block d-lg-none">
+                            <button type="button" class="btn--link site-header__menu js-mobile-nav-toggle mobile-nav--open">
+                                <i class="icon anm anm-times-l"></i>
+                                <i class="anm anm-bars-r"></i>
+                            </button>
+                        </div>
+                        <!--Desktop Menu-->
+                        <nav class="grid__item" id="AccessibleNav" role="navigation">
+                        <ul id="siteNav" class="site-nav medium center hidearrow">
+                                    <li class="lvl1"><a href="index.php">Home<i class="anm anm-angle-down-l"></i></a></li>
+                                    <li class="lvl1 parent dropdown"><a href="#">Shops <i class="anm anm-angle-down-l"></i></a>
+                                        <ul class="dropdown">
+                                            <li><a href="#" class="site-nav">Mechanic</a></li>
+                                            <li><a href="spare-parts.html" class="site-nav">Spare Parts</a></li>
+                                            <li><a href="#" class="site-nav">Car Rentals</a></li>
+                                            <li><a href="#" class="site-nav">Transport Service</a></li>
+                                            <li><a href="#" class="site-nav">FAQs</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="lvl1 parent megamenu"><a href="#">Products <i class="anm anm-angle-down-l"></i></a>
+                                        <div class="megamenu style2">
+                                            <ul class="grid mmWrapper">
+                                                <li class="grid__item one-whole">
+                                                    <ul class="grid">
+                                                        <li class="grid__item lvl-1 col-md-3 col-lg-3"><a href="#" class="site-nav lvl-1">Spare Parts Products</a>
+                                                            <ul class="subLinks">
+                                                                <li class="lvl-2"><a href="#" class="site-nav lvl-2">Product 1</a></li>
+                                                                <li class="lvl-2"><a href="#" class="site-nav lvl-2">Product 2</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="grid__item lvl-1 col-md-3 col-lg-3"><a href="#" class="site-nav lvl-1">Auto Mecahnic Services</a>
+                                                            <ul class="subLinks">
+                                                                <li class="lvl-2"><a href="#" class="site-nav lvl-2">Service 1</a></li>
+                                                                <li class="lvl-2"><a href="#" class="site-nav lvl-2">Service 2</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="grid__item lvl-1 col-md-3 col-lg-3"><a href="#" class="site-nav lvl-1">Transport Servies</a>
+                                                            <ul class="subLinks">
+                                                                <li class="lvl-2"><a href="#" class="site-nav lvl-2">Service 1</a></li>
+                                                                <li class="lvl-2"><a href="#" class="site-nav lvl-2">Service 2</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="grid__item lvl-1 col-md-3 col-lg-3"><a href="#" class="site-nav lvl-1">Car Rental Services</a>
+                                                            <ul class="subLinks">
+                                                                <li class="lvl-2"><a href="#" class="site-nav lvl-2">Service 1</a></li>
+                                                                <li class="lvl-2"><a href="#" class="site-nav lvl-2">Service 2</a></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li class="lvl1 parent dropdown"><a href="#">Blog <i class="anm anm-angle-down-l"></i></a>
+                                        <ul class="dropdown">
+                                            <li><a href="blog-grid-view.html" class="site-nav">All blogs</a></li>
+                                            <li><a href="blog-article.html" class="site-nav">Read Article</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="lvl1"><a href="about-us.html">About Us<i class="anm anm-angle-down-l"></i></a></li>
+                                    <li class="lvl1"><a href="contact-us.html">Contact Us<i class="anm anm-angle-down-l"></i></a></li>
+                                </ul>
+                        </nav>
+                        <!--End Desktop Menu-->
+                    </div>
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-2 d-block d-lg-none mobile-logo">
+                        <div class="logo">
+                            <a href="index.php">
+                                MeCAB
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-4 col-sm-3 col-md-3 col-lg-2">
+                        <div class="site-cart">
+                            <a href="#" class="site-header__cart" title="Cart">
+                                <i class="icon anm anm-bag-l"></i>
+                                <span id="CartCount" class="site-header__cart-count" data-cart-render="item_count">2</span>
+                            </a>
+                            <!--Minicart Popup-->
+                            <div id="header-cart" class="block block-cart">
+                                <ul class="mini-products-list">
+                                    <li class="item">
+                                        <a class="product-image" href="#">
+                                            <img src="assets/images/product-images/cape-dress-1.jpg" alt="3/4 Sleeve Kimono Dress" title="" />
+                                        </a>
+                                        <div class="product-details">
+                                            <a href="#" class="remove"><i class="anm anm-times-l" aria-hidden="true"></i></a>
+                                            <a href="#" class="edit-i remove"><i class="anm anm-edit" aria-hidden="true"></i></a>
+                                            <a class="pName" href="cart.html">Sleeve Kimono Dress</a>
+                                            <div class="variant-cart">Black / XL</div>
+                                            <div class="wrapQtyBtn">
+                                                <div class="qtyField">
+                                                    <span class="label">Qty:</span>
+                                                    <a class="qtyBtn minus" href="javascript:void(0);"><i class="fa anm anm-minus-r" aria-hidden="true"></i></a>
+                                                    <input type="text" id="Quantity" name="quantity" value="1" class="product-form__input qty">
+                                                    <a class="qtyBtn plus" href="javascript:void(0);"><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="priceRow">
+                                                <div class="product-price">
+                                                    <span class="money">$59.00</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="total">
+                                    <div class="total-in">
+                                        <span class="label">Cart Subtotal:</span><span class="product-price"><span class="money">$748.00</span></span>
+                                    </div>
+                                    <div class="buttonSet text-center">
+                                        <a href="cart.php" class="btn btn-secondary btn--small">View Cart</a>
+                                        <a href="checkout.html" class="btn btn-secondary btn--small">Checkout</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--End Minicart Popup-->
+                        </div>
+                        <div class="site-header__search">
+                            <button type="button" class="search-trigger"><i class="icon anm anm-search-l"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End Header-->
+        <!--Mobile Menu-->
+        <div class="mobile-nav-wrapper" role="navigation">
+            <div class="closemobileMenu"><i class="icon anm anm-times-l pull-right"></i> Close Menu</div>
+            <ul id="MobileNav" class="mobile-nav">
+                <li class="lvl1"><a href="index.php">Home</a></li>
+                <li class="lvl1 parent megamenu"><a href="#">Shops <i class="anm anm-plus-l"></i></a>
+                    <ul>
+                        <li><a href="#" class="site-nav">Mecahnic</a></li>
+                        <li><a href="spare-parts.html" class="site-nav">Spare Parts</a></li>
+                        <li><a href="#" class="site-nav">Car Rentals</a></li>
+                        <li><a href="#" class="site-nav">Transport Services</a></li>
+                        <li><a href="#" class="site-nav">FAQs</a></li>
+                    </ul>
+                </li>
+                <li class="lvl1 parent megamenu"><a href="#">Products <i class="anm anm-plus-l"></i></a>
+                    <ul>
+                        <li><a href="#" class="site-nav">Spare Part Products<i class="anm anm-plus-l"></i></a>
+                            <ul>
+                                <li><a href="product-layout-1.html" class="site-nav">Product Layout 1</a></li>
+                                <li><a href="product-layout-2.html" class="site-nav">Product Layout 2</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" class="site-nav">Auto Mechanic Servies<i class="anm anm-plus-l"></i></a>
+                            <ul>
+                                <li><a href="short-description.html" class="site-nav">Short Description</a></li>
+                                <li><a href="product-countdown.html" class="site-nav">Product Countdown</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" class="site-nav">Transport Services<i class="anm anm-plus-l"></i></a>
+                            <ul>
+                                <li><a href="product-accordion.html" class="site-nav">Product Accordion</a></li>
+                                <li><a href="product-pre-orders.html" class="site-nav">Product Pre-orders </a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" class="site-nav">Car Rentals Services<i class="anm anm-plus-l"></i></a>
+                            <ul>
+                                <li><a href="product-with-variant-image.html" class="site-nav">Product with Variant Image</a></li>
+                                <li><a href="product-with-color-swatch.html" class="site-nav">Product with Color Swatch</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="lvl1 parent megamenu"><a href="blog-left-sidebar.html">Blog <i class="anm anm-plus-l"></i></a>
+                    <ul>
+                        <li><a href="blog-grid-view.html" class="site-nav">Gridview</a></li>
+                        <li><a href="blog-article.html" class="site-nav">Article</a></li>
+                    </ul>
+                </li>
+                <li class="lvl1"><a href="about-us.html"> <b>About Us</b></a></li>
+                <li class="lvl1"><a href="contact-us.html"><b>Contact Us</b></a></li>
+            </ul>
+        </div>
+        <!--End Mobile Menu-->
+    
+    <!--Body Content-->
+    <div id="page-content">
