@@ -172,8 +172,10 @@ class storeController
                     $storeContact = $this->getStoreById($storeId);
 
                     // Send otp
-                    $msg = 'Do not share your code with anyone. Ignore this message if you did not request for this code. Your verification code is: ';
-                    $sendOTP = $otpGenerator->sendOTP($storeContact['store_contact'], $otp, $msg);
+                    $msg = 'Do not share your code with anyone. 
+                            Ignore this message if you did not request for this code. 
+                            Your verification code is: ';
+                    $otpGenerator->sendOTP($storeContact['store_contact'], $otp, $msg);
                 }
 
                 // Save user's store record
@@ -424,9 +426,12 @@ class storeController
             $stmt->execute([$userId, $storeId]);
 
             // Check if the user is verified
-            $verificationStatus = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            return $verificationStatus; // Return true if user is verified, false otherwise
+            $status = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($status['verification_status'] == 1) {
+                return true;
+            } else {
+                return false;
+            }
         } catch (PDOException $e) {
             echo "Failed to check user verification status: " . $e->getMessage();
             return false;
@@ -792,6 +797,46 @@ class storeController
         } catch (PDOException $e) {
             echo "Failed to fetch image filename: " . $e->getMessage();
             return false;
+        }
+    }
+
+    // Get multiple records
+    public function getRecords($query)
+    {
+        try {
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute();
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $records;
+        } catch (PDOException $e) {
+            echo "Error fetching data: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    // Get a single record by value
+    public function getSingleRecordsByValue($query, $params)
+    {
+        try {
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute($params);
+            $record = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $record;
+        } catch (PDOException $e) {
+            throw new Exception("Error Fetching Record: " . $e->getMessage());
+        }
+    }
+
+    // Get multiple records by value
+    public function getRecordsByValue($query, $params)
+    {
+        try {
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute($params);
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $records;
+        } catch (PDOException $e) {
+            throw new Exception("Error Fetching Records". $e->getMessage());
         }
     }
 
