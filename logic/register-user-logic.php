@@ -72,7 +72,7 @@ if (isset($_POST['action']) && $_POST['action'] == "register") {
             $response = array(
                 'status' => 'success',
                 'message' => 'User registered successfully!',
-                'redirect' => './index.php'
+                'redirect' => './login.php'
             );
         } else {
             $response = array(

@@ -1,20 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html class="no-js" lang="en">
 <head>
-	<!-- Required meta tags -->
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-	<title>MeCAB Admin</title>
-	<!-- plugins:css -->
-	<link rel="stylesheet" href="vendors/feather/feather.css" />
-	<link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css" />
-	<link rel="stylesheet" href="vendors/css/vendor.bundle.base.css" />
-	<!-- endinject -->
-	<!-- inject:css -->
-	<link rel="stylesheet" href="css/vertical-layout-light/style.css" />
-	<!-- customs style -->
-	<link rel="stylesheet" href="vendors/css/custom.css" />
-	<!-- endinject -->
-	<link rel="shortcut icon" href="images/favicon.png" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>MeCAB</title>
+    <meta name="author" content="irbba dev">
+    <meta name="author" content="iquo tech">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.png" />
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="assets/css/plugins.css">
+    <!-- Bootstap CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!-- Main Style CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
 </head>

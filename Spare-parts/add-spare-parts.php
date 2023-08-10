@@ -3,7 +3,6 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 session_start();
 
-
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
@@ -12,7 +11,6 @@ function errorHandler($errno, $errstr, $errfile, $errline)
     error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
 set_error_handler("errorHandler");
-
 
 // Prevent user from accessing this page when not verified
 if (!$_SESSION['isVerified']) {

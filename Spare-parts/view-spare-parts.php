@@ -29,7 +29,10 @@ $controller = new storeController();
             <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">View spare parts</h4>
+                        <div class="col-md-12 mb-5">
+                            <h4 class="card-title float-left">View spare parts</h4>
+                            <h4 class="float-right"><a href="add-spare-parts.php" class="text-decoration-none">Add Spare Part</a></h4>
+                        </div>
                         <div class="table-responsive">
                             <table id="spare-parts-table" class="table table-hover">
                                 <thead>
