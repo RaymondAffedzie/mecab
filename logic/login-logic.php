@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 
 require_once '../controllers/storeController.php';
 
-if (isset($_POST['action']) && $_POST['action'] == "login") {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Sanitize form inputs
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
     $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
