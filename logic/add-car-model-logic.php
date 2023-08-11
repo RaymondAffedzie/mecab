@@ -1,11 +1,26 @@
 <?php
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
+
+// Error handler 
+function errorHandler($errno, $errstr, $errfile, $errline)
+{
+    $eventDate = date("Y-M-d H:m:s");
+    $message = "Error: [$errno] $errstr - $errfile:$errline - [Date/time] - $eventDate";
+    error_log($message . PHP_EOL, 3, "../error-log.txt");
+}
+set_error_handler("errorHandler");
+
+// Prevent user from accessing this page when not logged in
+if (!isset($_SESSION['loggedIn']) && !$_SESSION['loggedIn']) {
+    header("Location: login.php");
+    exit;
+}
 
 require_once '../controllers/storeController.php';
 
 // Check if the form was submitted
-if (isset($_POST['action']) && $_POST['action'] == "add_car_model") {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $modelName = ucwords(filter_input(INPUT_POST, 'modelName', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $car_brand_id = filter_input(INPUT_POST, 'car_brand_id', FILTER_SANITIZE_NUMBER_INT);
 
@@ -18,23 +33,25 @@ if (isset($_POST['action']) && $_POST['action'] == "add_car_model") {
         // Add more column-value pairs as needed
     );
 
-    $result = $controller->insertWithCheckMultipleCheck($data, $tableName);
+    $result = $controller->addRecordByMultipleVerification($data, $tableName);
     if ($result == 'success') {
         $response = array(
             'status' => 'success',
             'message' => 'Car model saved successfully.',
-            'redirect' => './index.php'
+            'redirect' => '../Admin/add-car-model.php'
         );
     } else if ($result == 'exists') {
         $response = array(
             'status' => 'error',
-            'message' => 'Car model already exists.'
+            'message' => 'Car model already exists.',
+            'redirect' => '../Admin/add-car-model.php'
         );
     }
 } else {
     $response = array(
         'status' => 'error',
-        'message' => 'Invalid action.'
+        'message' => 'Invalid action.',
+        'redirect' => '../Admin/add-car-model.php'
     );
 }
 

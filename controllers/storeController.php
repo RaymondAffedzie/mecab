@@ -1,9 +1,6 @@
 <?php
 
-use JetBrains\PhpStorm\ExpectedValues;
-
 include_once dirname(__FILE__) . '/../model/DatabaseConnection.php';
-
 class storeController
 {
     private $pdo;
@@ -40,6 +37,7 @@ class storeController
 
                 // Start the session
                 session_start();
+                
                 if ($hasDetails) {
                     if (($userRole != 'Customer') && ($userRole != 'Admin')) {
                         // Get user's store details
@@ -169,7 +167,11 @@ class storeController
                 // Send otp to user's store to verify if the user works in the store
                 if ($saveOTP == 'success') {
                     // Get store details (contact)
-                    $storeContact = $this->getStoreById($storeId);
+                    // $storeContact = $this->getStoreById($storeId);
+
+                    $query = "SELECT * FROM stores WHERE store_id = :store_id";
+                    $params = array(":store_id" => $storeId);
+                    $storeContact = $this->getSingleRecordsByValue($query, $params);
 
                     $storeContact = $storeContact['store_contact'];
 
@@ -253,7 +255,6 @@ class storeController
         }
     }
 
-
     // Add record
     public function addRecord($data, $tableName)
     {
@@ -330,6 +331,55 @@ class storeController
         }
     }
 
+    //  Add record by checking it existance by a single field
+    public function addRecordBySingleVerification($data, $tableName, $columnName, $value)
+    {
+        // Verify record existance
+        if ($this->recordExistBySingleField($tableName, $columnName, $value)) {
+            return 'exists';
+        } else {
+            // Data does not exist, add record
+            try {
+                $columns = implode(", ", array_keys($data));
+                $values = ":" . implode(", :", array_keys($data));
+
+                $query = "INSERT INTO $tableName ($columns) VALUES ($values)";
+
+                $stmt = $this->pdo->prepare($query);
+                $stmt->execute($data);
+
+                return true;
+            } catch (PDOException $e) {
+                echo "Failed to insert data: " . $e->getMessage();
+                return false;
+            }
+        }
+    }
+
+    // Add record by checking it existence by multiple fields
+    public function addRecordByMultipleVerification($data, $tableName)
+    {
+        // call the checkMultipleFields function
+        if ($this->recordExistByMultipleFieldsStrict($tableName, $data)) {
+            return 'exists';
+        } else {
+            // Data does not exist, proceed with insertion
+            try {
+                $columns = implode(", ", array_keys($data));
+                $values = ":" . implode(", :", array_keys($data));
+
+                $query = "INSERT INTO $tableName ($columns) VALUES ($values)";
+
+                $stmt = $this->pdo->prepare($query);
+                $stmt->execute($data);
+
+                return true;
+            } catch (PDOException $e) {
+                echo "Failed to insert data: " . $e->getMessage();
+                return false;
+            }
+        }
+    }
 
     /**
      * --------------------------------------------------------------------------------------------------
@@ -378,6 +428,71 @@ class storeController
      * --------------------------------- CHECK ----------------RECORDS------------------------------------
      * --------------------------------------------------------------------------------------------------
      */
+
+    //  Verify the value of record by a single field
+    private function recordExistBySingleField($tableName, $columnName, $value)
+    {
+        try {
+            $query = "SELECT COUNT(*) FROM $tableName WHERE $columnName = :value";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute(['value' => $value]);
+
+            $rowCount = $stmt->fetchColumn();
+
+            return $rowCount > 0; // Returns true if the data exists, false otherwise
+        } catch (PDOException $e) {
+            error_log("Error verifying data existence: " . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    // Verify the value of a record by multiple feilds strict
+    private function recordExistByMultipleFieldsStrict($tableName, $data)
+    {
+        try {
+            // Generate the WHERE clause based on the keys in $data
+            $conditions = [];
+            foreach (array_keys($data) as $column) {
+                $conditions[] = "$column = :$column";
+            }
+            $whereClause = implode(' AND ', $conditions);
+
+            $query = "SELECT COUNT(*) FROM $tableName WHERE $whereClause";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute($data);
+
+            $rowCount = $stmt->fetchColumn();
+
+            return $rowCount > 0; // Returns true if the data exists, false otherwise
+        } catch (PDOException $e) {
+            error_log("Error verifying data existence: " . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    // Verify the value of a record by multiple feilds loose 
+    private function recordExistByMultipleFieldsloose($tableName, $data)
+    {
+        try {
+            // Generate the WHERE clause based on the keys in $data
+            $conditions = [];
+            foreach (array_keys($data) as $column) {
+                $conditions[] = "$column = :$column";
+            }
+            $whereClause = implode(' OR ', $conditions);
+
+            $query = "SELECT COUNT(*) FROM $tableName WHERE $whereClause";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute($data);
+
+            $rowCount = $stmt->fetchColumn();
+
+            return $rowCount > 0; // Returns true if the data exists, false otherwise
+        } catch (PDOException $e) {
+            error_log("Error verifying data existence: " . $e->getMessage());
+            throw $e;
+        }
+    }
 
     // Check if store exists
     private function isStoreExists($storeName, $storeEmail, $storeContact)
@@ -822,9 +937,14 @@ class storeController
             $stmt = $this->pdo->prepare($query);
             $stmt->execute($params);
             $record = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $record;
+            if($record){
+                return $record;
+            } else{
+                return null;
+            }
         } catch (PDOException $e) {
-            throw new Exception("Error Fetching Record: " . $e->getMessage());
+            echo "Error fetching data: " . $e->getMessage();
+            return false;
         }
     }
 
@@ -1007,7 +1127,7 @@ class storeController
     }
 
     // Update a record
-    private function updateRecord($tableName, $updateData, $primaryKeyColumn, $primaryKeyValue)
+    public function updateRecord($tableName, $updateData, $primaryKeyColumn, $primaryKeyValue)
     {
         try {
             $table = $tableName;
@@ -1038,7 +1158,7 @@ class storeController
             }
         } catch (PDOException $e) {
             echo "Error updating record: " . $e->getMessage();
-            return false; // Error occurred during the update process
+            return 'error'; // Error occurred during the update process
         }
     }
 
@@ -1350,3 +1470,4 @@ class storeController
         }
     }
 }
+

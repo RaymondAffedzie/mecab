@@ -1,12 +1,6 @@
 <?php
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-require_once 'controllers/storeController.php';
-include_once('includes/head.php');
-include_once('includes/navbar.php');
-
-$controller = new storeController();
+ini_set('display_errors', 0);
 
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
@@ -17,6 +11,12 @@ function errorHandler($errno, $errstr, $errfile, $errline)
 }
 
 set_error_handler("errorHandler");
+
+require_once 'controllers/storeController.php';
+include_once('includes/head.php');
+include_once('includes/navbar.php');
+
+$controller = new storeController();
 ?>		           
             <!--Popular Categories-->
             <div class="section">

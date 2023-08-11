@@ -18,16 +18,20 @@ if (!isset($_SESSION['loggedIn']) && !$_SESSION['loggedIn']) {
 }
 
 require_once '../controllers/storeController.php';
-$storeController = new storeController();
+// Create an instance of the StoreController class
+$controller = new StoreController();
 
-// Fetch the car brands from the database
-$carBrands = $storeController->getCarBrands();
+// Fetch car brands from the database
+$query = "SELECT m.car_model_id, m.model_name, b.brand_name 
+            FROM car_model m 
+            JOIN car_brand b ON m.car_brand_id = b.car_brand_id";
+$models = $controller->getRecords($query);
 
 // Prepare the response
 $response = array(
     'status' => 'success',
-    'message' => 'Car brands fetched successfully.',
-    'car_brands' => $carBrands
+    'message' => 'Car Models fetched successfully.',
+    'parts' => $models
 );
 
 if (!headers_sent()) {

@@ -1,7 +1,6 @@
 <?php
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
-session_start();
+ini_set('display_errors', 0);
 
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)

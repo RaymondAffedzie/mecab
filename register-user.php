@@ -1,5 +1,15 @@
 <?php
-session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+
+// Error handler 
+function errorHandler($errno, $errstr, $errfile, $errline)
+{
+    $eventDate = date("Y-M-d H:m:s");
+    $message = "Error: [$errno] $errstr - $errfile:$errline - [Date/time] - $eventDate";
+    error_log($message . PHP_EOL, 3, "../error-log.txt");
+}
+set_error_handler("errorHandler");
 
 // Prevent user from accessing this page after loggin in
 if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']) {
@@ -26,7 +36,7 @@ include_once('includes/navbar.php');
         	<div class="row">
                 <div class="col-12 col-sm-12 col-md-6 col-lg-6 main-col offset-md-3">
                 	<div class="mb-4">
-                            <form class="pt-3" id="register-form" action="logic/register-user-logic.php" method="post">
+                            <form class="pt-3" id="CustomerLoginForm" action="logic/register-user-logic.php" method="post">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                                         <div class="form-group">
@@ -276,11 +286,10 @@ include_once('includes/navbar.php');
                     success: function(response) {
                         // Handle the response and redirect
                         if (response.status === "success") {
-                            swal("Success", response.message, "success");
                             $("#CustomerLoginForm")[0].reset();
-                            if (response.redirect) {
+                            swal("Success", response.message, "success").then(function() {
                                 window.location.href = response.redirect;
-                            }
+                            });
                         } else {
                             swal("Error", response.message, "error");
                         }

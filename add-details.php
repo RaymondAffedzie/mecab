@@ -1,37 +1,40 @@
-	<?php
-	error_reporting(E_ALL);
-	ini_set('display_errors', 1);
-	session_start();
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
 
-	// Prevent user from accessing this page when not logged in
-	if (!isset($_SESSION['loggedIn']) && !$_SESSION['loggedIn']) {
-		header("Location: login.php");
-		exit;
-	}
+// Error handler 
+function errorHandler($errno, $errstr, $errfile, $errline)
+{
+    $eventDate = date("Y-M-d H:m:s");
+    $message = "Error: [$errno] $errstr - $errfile:$errline - [Date/time] - $eventDate";
+    error_log($message . PHP_EOL, 3, "../error-log.txt");
+}
+set_error_handler("errorHandler");
 
-	// Prevent user from accessing this page when user's store is verified
-	if (isset($_SESSION['isVerified'])) {
-		header("Location: index.php");
-	}
 
-	require_once 'controllers/storeController.php';
-	include_once('includes/head.php');
-	// include_once('includes/navbar.php');
+// Prevent user from accessing this page when not logged in
+if (!isset($_SESSION['loggedIn']) && !$_SESSION['loggedIn']) {
+	header("Location: login.php");
+	exit;
+}
 
-	$controller = new storeController();
-	// $record = $controller->getUserDetails();
-	$stores = $controller->getStores();
+// Prevent user from accessing this page when user's store is verified
+if (isset($_SESSION['isVerified'])) {
+	header("Location: index.php");
+}
 
-	$userId = $_SESSION['userId'];
-	$isRole = $_SESSION['role'];
+require_once 'controllers/storeController.php';
+include_once('includes/head.php');
+// include_once('includes/navbar.php');
 
-	// $contact = $controller->getUserContact($userId, '');
-	// if ($contact) {
-	// 	header("Location: already_added_details.php");
-	// 	exit;
-	// }
+$controller = new storeController();
+// $record = $controller->getUserDetails();
+$stores = $controller->getStores();
 
-	?>
+$userId = $_SESSION['userId'];
+$isRole = $_SESSION['role'];
+
+?>
 	    <!--Top Header-->
 		<div class="top-header">
         <div class="container-fluid">

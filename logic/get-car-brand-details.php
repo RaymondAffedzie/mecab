@@ -20,45 +20,40 @@ if (!isset($_SESSION['loggedIn']) && !$_SESSION['loggedIn']) {
 require_once '../controllers/storeController.php';
 $controller = new storeController();
 
-if (isset($_GET['sparepart_id'])) {
-    $sparepart_id = $_GET['sparepart_id'];
+if (isset($_GET['car_brand_id'])) {
+    $car_brand_id = $_GET['car_brand_id'];
 
     // Fetch spare part details from the controller
-    $query = "SELECT sp.*, ct.*, cb.*, cm.* 
-                FROM spare_parts sp
-                LEFT JOIN car_brand cb ON sp.car_brand_id = cb.car_brand_id
-                LEFT JOIN car_model cm ON sp.car_model_id = cm.car_model_id
-                INNER JOIN categories ct ON sp.category_id = ct.category_id
-                WHERE sp.sparepart_id = :sparepart_id LIMIT 1";
-    $params = array(":sparepart_id" => $sparepart_id);
-    $sparePartDetails = $controller->getSingleRecordsByValue($query, $params);
+    $query = "SELECT * FROM car_brand WHERE car_brand_id = :brand_id";
+    $params = array(":brand_id" => $car_brand_id);
+    $carBrandDetails = $controller->getSingleRecordsByValue($query, $params);
 
-    switch ($sparePartDetails) {
+    switch ($carBrandDetails) {
         case false:
             $response = array(
                 'status' => 'error',
-                'message' => 'An error occured while fetching spare parts.',
-                'redirect' => '../Spare-parts/view-spare-parts.php'
+                'message' => 'An error occured while fetching car brands.',
+                'redirect' => '../Admin/add-car-brand.php'
             );
             break;
         case null:
             $response = array(
                 'status' => 'error',
-                'message' => 'Spare part not found.',
-                'redirect' => '../Spare-parts/view-spare-parts.php'
+                'message' => 'Car brand not found.',
+                'redirect' => '../Admin/add-car-brand.php'
             );
             break;
         default:
             $response = array(
                 'status' => 'success',
-                'data' => $sparePartDetails
+                'data' => $carBrandDetails
             );
             break;
     }
 } else {
     $response = array(
         'status' => 'error',
-        'message' => 'Invalid request. Missing sparepart_id parameter.'
+        'message' => 'Invalid request. Missing car_brand_id parameter.'
     );
 }
 

@@ -1,7 +1,15 @@
 <?php
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
-session_start();
+ini_set('display_errors', 0);
+
+// Error handler 
+function errorHandler($errno, $errstr, $errfile, $errline)
+{
+    $eventDate = date("Y-M-d H:m:s");
+    $message = "Error: [$errno] $errstr - $errfile:$errline - [Date/time] - $eventDate";
+    error_log($message . PHP_EOL, 3, "../error-log.txt");
+}
+set_error_handler("errorHandler");
 
 // Prevent user from accessing this page when not verified
 if (!$_SESSION['isVerified']) {
@@ -30,11 +38,11 @@ $controller = new storeController();
                 <div class="card">
                     <div class="card-body">
                         <div class="col-md-12 mb-5">
-                            <h4 class="card-title float-left">View spare parts</h4>
+                            <h4 class="card-title float-left">Spare Parts</h4>
                             <h4 class="float-right"><a href="add-spare-parts.php" class="text-decoration-none">Add Spare Part</a></h4>
                         </div>
                         <div class="table-responsive">
-                            <table id="spare-parts-table" class="table table-hover">
+                            <table id="spare-parts-table" class="table order-column table-hover">
                                 <thead>
                                     <tr>
                                         <th>Item Name</th>
@@ -71,7 +79,7 @@ $controller = new storeController();
 
     <script src="../vendors/js/vendor.bundle.base.js"></script>
     <script src="../js/jquery.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="../vendors/sweetalert/sweetalert.min.js"></script>
     <script src="../js/off-canvas.js"></script>
     <script src="../js/hoverable-collapse.js"></script>

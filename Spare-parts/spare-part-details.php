@@ -1,7 +1,6 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
-session_start();
 
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
@@ -48,10 +47,6 @@ $controller = new storeController()
                                 <div class="mt-3">
                                     <p class="text-muted">Spare part name</p>
                                     <h5 class="text-primary" id="name"></h5>
-                                </div>
-                                <div class="mt-3">
-                                    <p class="text-muted">Spare part ID</p>
-                                    <h5 class="text-primary" id="id"></h5>
                                 </div>
                             </div>
                             <div class="col-md-6 text-left">
@@ -285,13 +280,13 @@ $controller = new storeController()
         // Fetch spare part details
         <?php
         if (isset($_GET['sparepart_id'])) {
-            $sparepart_id = $_GET['sparepart_id'];
+            $sparepart_id = filter_input(INPUT_GET, 'spare_part_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         ?>
             $.ajax({
                 url: "../logic/get-spare-part-details.php",
                 type: "GET",
                 data: {
-                    sparepart_id: "<?php echo $sparepart_id; ?>"
+                    sparepart_id: "<?= $sparepart_id; ?>"
                 },
                 dataType: "json",
                 success: function(response) {
