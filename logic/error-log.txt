@@ -1,0 +1,15 @@
+[2023-Aug-11 08:08:01] - Error: [2] Undefined global variable $_SESSION - C:\Apache24\htdocs\mecab\logic\get-car-models.php:16
+[2023-Aug-11 08:08:02] - Error: [2] Trying to access array offset on value of type null - C:\Apache24\htdocs\mecab\logic\get-car-models.php:16
+[2023-Aug-11 09:08:43] - Error: [2] Undefined global variable $_SESSION - C:\Apache24\htdocs\mecab\logic\get-car-brands.php:15
+[2023-Aug-11 09:08:43] - Error: [2] Trying to access array offset on value of type null - C:\Apache24\htdocs\mecab\logic\get-car-brands.php:15
+[2023-Aug-11 09:08:34] - Error: [2] Undefined global variable $_SESSION - C:\Apache24\htdocs\mecab\logic\get-car-brands.php:15
+[2023-Aug-11 09:08:34] - Error: [2] Trying to access array offset on value of type null - C:\Apache24\htdocs\mecab\logic\get-car-brands.php:15
+[2023-Aug-11 09:08:04] - Error: [2] Undefined global variable $_SESSION - C:\Apache24\htdocs\mecab\logic\get-car-brands.php:15
+[2023-Aug-11 09:08:04] - Error: [2] Trying to access array offset on value of type null - C:\Apache24\htdocs\mecab\logic\get-car-brands.php:15
+[2023-Aug-11 09:08:07] - Error: [2] Undefined global variable $_SESSION - C:\Apache24\htdocs\mecab\logic\get-car-brands.php:15
+[2023-Aug-11 09:08:07] - Error: [2] Trying to access array offset on value of type null - C:\Apache24\htdocs\mecab\logic\get-car-brands.php:15
+[2023-Aug-11 09:08:58] - Error: [2] Undefined global variable $_SESSION - C:\Apache24\htdocs\mecab\logic\get-car-brands.php:15
+[2023-Aug-11 09:08:58] - Error: [2] Trying to access array offset on value of type null - C:\Apache24\htdocs\mecab\logic\get-car-brands.php:15
+[2023-Aug-11 09:08:10] - Error: [8] session_start(): Ignoring session_start() because a session is already active - C:\Apache24\htdocs\mecab\logic\get-car-brands.php:20
+[2023-Aug-11 09:08:17] - Error: [8] session_start(): Ignoring session_start() because a session is already active - C:\Apache24\htdocs\mecab\logic\get-car-brands.php:20
+[2023-Aug-11 09:08:51] - Error: [8] session_start(): Ignoring session_start() because a session is already active - C:\Apache24\htdocs\mecab\logic\get-car-brands.php:20

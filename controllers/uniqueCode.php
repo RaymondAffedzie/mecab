@@ -1,15 +1,4 @@
 <?php
-
-// Error handler 
-function errorHandler($errno, $errstr, $errfile, $errline)
-{
-    $eventDate = date("Y-M-d H:m:s");
-    $message =  "[$eventDate] - Error [$errno] $errstr - $errfile$errline";
-    error_log($message . PHP_EOL, 3, "../error-log.txt");
-}
-set_error_handler("errorHandler");
-
-
 function generate_unique_id($length = 15)
 {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

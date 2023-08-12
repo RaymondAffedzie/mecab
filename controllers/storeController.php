@@ -1,5 +1,4 @@
 <?php
-
 include_once dirname(__FILE__) . '/../model/DatabaseConnection.php';
 class storeController
 {
@@ -37,7 +36,7 @@ class storeController
 
                 // Start the session
                 session_start();
-                
+
                 if ($hasDetails) {
                     if (($userRole != 'Customer') && ($userRole != 'Admin')) {
                         // Get user's store details
@@ -622,7 +621,7 @@ class storeController
     public function getUserStore($userId)
     {
         try {
-            $query = "SELECT stores.*, users_store.* FROM users_store 
+            $query = "SELECT stores.store_id, stores.store_name FROM users_store 
                       INNER JOIN stores ON stores.store_id = users_store.store_id 
                       WHERE users_store.users_id = ?";
             $stmt = $this->pdo->prepare($query);
@@ -937,11 +936,7 @@ class storeController
             $stmt = $this->pdo->prepare($query);
             $stmt->execute($params);
             $record = $stmt->fetch(PDO::FETCH_ASSOC);
-            if($record){
-                return $record;
-            } else{
-                return null;
-            }
+            return $record ? $record : null;
         } catch (PDOException $e) {
             echo "Error fetching data: " . $e->getMessage();
             return false;

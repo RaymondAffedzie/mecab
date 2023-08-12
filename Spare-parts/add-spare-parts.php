@@ -1,12 +1,12 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
-
+session_start();
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
     $eventDate = date("Y-M-d H:m:s");
-    $message = "Error: [$errno] $errstr - $errfile:$errline - [Date/time] - $eventDate";
+	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
     error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
 set_error_handler("errorHandler");
@@ -37,7 +37,7 @@ $carBrands = $controller->getCarBrands();
 		<div class="row">
 			<div class="col-md-12 grid-margin">
 				<div class="card rounded-3 p-5">
-					<h4 class="text-center">Add Spare Part</h4>
+					<h4 class="text-center"><?= $_SESSION['userId']; ?></h4></h4>
 					<form class="pt-3" id="add-spare-part-form" action="../logic/add-spare-part-logic.php" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
 						<div class="row">
 							<div class="col-md-6">

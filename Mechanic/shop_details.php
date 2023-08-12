@@ -1,12 +1,12 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
-
+session_start();
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
     $eventDate = date("Y-M-d H:m:s");
-    $message = "Error: [$errno] $errstr - $errfile:$errline - [Date/time] - $eventDate";
+	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
     error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
 set_error_handler("errorHandler");

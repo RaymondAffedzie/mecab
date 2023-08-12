@@ -26,12 +26,16 @@ if (isset($_GET['product'])) {
                 INNER JOIN categories c ON c.category_id = s.category_id
                 INNER JOIN car_brand b ON b.car_brand_id = s.car_brand_id
                 INNER JOIN car_model m ON m.car_model_id = s.car_model_id
-                INNER JOIN stores st ON st.store_id = s.store_id
+                LEFT JOIN stores st ON st.store_id = s.store_id
                 WHERE s.sparepart_id = :product
                 LIMIT 1";
 
     $params = array(':product' => $product);
-    $data = $controller->getSingleRecordsByValue($query, $params);  
+    $record = $controller->getSingleRecordsByValue($query, $params);
+
+    if ($record === null) {
+
+    }    
 }
 
 ?>		           
@@ -41,22 +45,29 @@ if (isset($_GET['product'])) {
            <!--#ProductSection-product-template-->
             <div id="ProductSection-product-template" class="product-template__container prstyle2 container pt-5">
                 <!--Product-single-->
-                <div class="product-single product-single-1">
+                <?php
+                    if(!empty($record)){
+                ?>
+                 <div class="product-single product-single-1">
+                    <div class="row">
+                        <col-lg-12 class="col-md-12 col-sm-12 col-12">
+                        </col-lg-12>
+                    </div>
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="product-details-img product-single__photos bottom">
                                 <div class="zoompro-wrap product-zoom-right pl-20">
                                     <div class="zoompro-span">
-                                        <img class="blur-up lazyload zoompro" data-zoom-image="uploads/<?=$data['image']; ?>" alt="<?= $data['name']; ?>" src="uploads/<?=$data['image']; ?>" />               
+                                        <img class="blur-up lazyload zoompro" data-zoom-image="uploads/<?=$record['image']; ?>" alt="<?= $record['name']; ?>" src="uploads/<?=$record['image']; ?>" />               
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="product-single__meta">
-                                <h1 class="product-single__title"><?= $data['name']; ?></h1>
+                                <h1 class="product-single__title"><?= $record['name']; ?></h1>
                                 <div class="prInfoRow">
-                                    <div class="product-sku">Product Category: <span class="variant-sku"><b><?= $data['category_name']; ?></b></span></div>
+                                    <div class="product-sku">Product Category: <span class="variant-sku"><b><?= $record['category_name']; ?></b></span></div>
                                     <div class="product-review">
                                         <a class="reviewLink" href="#tab2">
                                             <i class="font-13 fa fa-star"></i>
@@ -71,7 +82,7 @@ if (isset($_GET['product'])) {
                                 <p class="product-single__price product-single__price-product-template">
                                     <span class="visually-hidden">Regular price</span>
                                     <span class="product-price__price product-price__price-product-template product-price__sale product-price__sale--single">
-                                        <span id="ProductPrice-product-template"><span class="money"><?= "GHC ". $data['price']; ?></span></span>
+                                        <span id="ProductPrice-product-template"><span class="money"><?= "GHC ". $record['price']; ?></span></span>
                                     </span>
                                     <!-- Discount badge || for future use -->
                                     <!-- <span class="discount-badge"> <span class="devider">|</span>&nbsp;
@@ -85,13 +96,13 @@ if (isset($_GET['product'])) {
 
                                 <!-- Description -->
                                 <div class="product-single__description rte">
-                                    <p><?= $data['description']; ?></p>
+                                    <p><?= $record['description']; ?></p>
                                 </div>
                                 <form method="post" action="" id="product_form_10508262282" class="product-form product-form-product-template hidedropdown"">
                                     <div class="swatch clearfix swatch-0 option1" data-option-index="0">
                                         <div class="product-form__data">
-                                            <label class="header">Car Brand: <span class="slVariant"><?= $data['brand_name']; ?></span></label>
-                                            <label class="header">Car Model: <span class="slVariant"><?= $data['model_name']; ?></span></label>
+                                            <label class="header">Car Brand: <span class="slVariant"><?= $record['brand_name']; ?></span></label>
+                                            <label class="header">Car Model: <span class="slVariant"><?= $record['model_name']; ?></span></label>
                                         </div>
                                     </div>
                                     <!-- Product Action -->
@@ -153,23 +164,23 @@ if (isset($_GET['product'])) {
                                             <h5 class="card-title">PRODUCT DETAILS</h5>
                                             <div class="prInfoRow">
                                                 <div class="product-sku">Product name: 
-                                                    <span class="variant-sku"><b><?= $data['name']; ?></b></span>
+                                                    <span class="variant-sku"><b><?= $record['name']; ?></b></span>
                                                 </div>
                                                 <div class="product-sku">Product Category: 
-                                                    <span class="variant-sku"><b><?= $data['category_name']; ?></b></span>
+                                                    <span class="variant-sku"><b><?= $record['category_name']; ?></b></span>
                                                 </div>
                                                 <div class="product-sku">Product Car Brand: 
-                                                    <span class="variant-sku"><b><?= $data['brand_name']; ?></b></span>
+                                                    <span class="variant-sku"><b><?= $record['brand_name']; ?></b></span>
                                                 </div>
                                                 <div class="product-sku">Product Car Model: 
-                                                    <span class="variant-sku"><b><?= $data['model_name']; ?></b></span>
+                                                    <span class="variant-sku"><b><?= $record['model_name']; ?></b></span>
                                                 </div>
                                             </div>
                                             <div class="row pt-3">
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                                                     <h5 class="card-title">PRODUCT DESCRIPTION</h5>
                                                     <div class="product-single__description rte">
-                                                        <p><?= $data['description']; ?></p>
+                                                        <p><?= $record['description']; ?></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -246,27 +257,27 @@ if (isset($_GET['product'])) {
                                             <h5 class="card-title">STORE DETAILS</h5>
                                             <div class="prInfoRow">
                                                 <div class="product-sku">Store name: 
-                                                    <span class="variant-sku"><b><?= strtoupper($data['store_name']); ?></b></span>
+                                                    <span class="variant-sku"><b><?= strtoupper($record['store_name']); ?></b></span>
                                                 </div>
                                                 <div class="product-sku">Store contact: 
-                                                    <span class="variant-sku"><b><?= $data['store_contact']; ?></b></span>
+                                                    <span class="variant-sku"><b><?= $record['store_contact']; ?></b></span>
                                                 </div>
                                                 <div class="product-sku">Store email: 
-                                                    <span class="variant-sku"><b><?= strtolower($data['store_email']); ?></b></span>
+                                                    <span class="variant-sku"><b><?= strtolower($record['store_email']); ?></b></span>
                                                 </div>
                                             </div>
                                             <div class="prInfoRow">
                                                 <div class="product-sku">Town: 
-                                                    <span class="variant-sku"><b><?= strtoupper($data['store_town']); ?></b></span>
+                                                    <span class="variant-sku"><b><?= strtoupper($record['store_town']); ?></b></span>
                                                 </div>
                                                 <div class="product-sku">Community: 
-                                                    <span class="variant-sku"><b><?= strtoupper($data['store_location']); ?></b></span>
+                                                    <span class="variant-sku"><b><?= strtoupper($record['store_location']); ?></b></span>
                                                 </div>
                                                 <div class="product-sku">GPS Address: 
-                                                    <span class="variant-sku"><b><?= strtoupper($data['gps_address']) ; ?></b></span>
+                                                    <span class="variant-sku"><b><?= strtoupper($record['gps_address']) ; ?></b></span>
                                                 </div>
                                                 <div class="product-sku">Street Name:    
-                                                    <span class="variant-sku"><b><?= strtoupper($data['street_name']); ?></b></span>
+                                                    <span class="variant-sku"><b><?= strtoupper($record['street_name']); ?></b></span>
                                                 </div>
                                             </div> 
                                         </div>
@@ -277,6 +288,12 @@ if (isset($_GET['product'])) {
                     </div>
                     <!--End-product-single-->
                 </div>
+                <?php
+                    } else {
+                        echo '<h1 class="text-center pt-5">No Record Found</h1>';
+                    }
+                ?>
+               
                 <!--#ProductSection-product-template-->
             </div>
         </div>

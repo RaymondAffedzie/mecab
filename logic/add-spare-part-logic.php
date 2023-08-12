@@ -1,14 +1,16 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
+session_start();
 
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-    $eventDate = date("Y-M-d H:m:s");
-    $message = "Error: [$errno] $errstr - $errfile:$errline - [Date/time] - $eventDate";
-    error_log($message . PHP_EOL, 3, "../error-log.txt");
+	$eventDate = date("Y-M-d H:m:s");
+	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
+	error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
+
 set_error_handler("errorHandler");
 
 // Prevent user from accessing this page when not logged in
@@ -62,8 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Call the method to get the user's store
         $store = $storeController->getUserStore($_SESSION['userId']);
 
-        // Ensure $store is an integer
-        $store = is_array($store) ? (int)$store['store_id'] : (int)$store;
+        // Ensure $store is an string
+        $store = is_array($store) ? $store['store_id'] : $store;
 
         // Set car_brand_id and car_model_id to NULL if they are empty
         $car_brand = empty($car_brand) ? null : $car_brand;
