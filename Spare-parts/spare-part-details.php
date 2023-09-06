@@ -280,7 +280,7 @@ $controller = new storeController()
         // Fetch spare part details
         <?php
         if (isset($_GET['sparepart_id'])) {
-            $sparepart_id = filter_input(INPUT_GET, 'spare_part_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $sparepart_id = filter_input(INPUT_GET, 'sparepart_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         ?>
             $.ajax({
                 url: "../logic/get-spare-part-details.php",

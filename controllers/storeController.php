@@ -6,7 +6,7 @@ class storeController
 
     public function __construct()
     {
-        $databaseConfig = new DatabaseConnection('localhost', 'mecab', 'irbba', 'Hello!irbba');
+        $databaseConfig = new DatabaseConnection('localhost', 'mecab', 'irbba', 'hello!iRBbA');
         $this->pdo = $databaseConfig->connect();
     }
 

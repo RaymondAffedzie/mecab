@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $response = array(
                         'status' => 'success',
                         'message' => 'Login successful as a customer!',
-                        'redirect' => './Customer/index.php'
+                        'redirect' => './index.php'
                     );
                     break;
                 default:

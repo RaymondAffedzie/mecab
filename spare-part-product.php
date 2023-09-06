@@ -24,8 +24,8 @@ if (isset($_GET['product'])) {
     $query = "SELECT c.*, s.*, b.*, m.*, st.*
                 FROM spare_parts s
                 INNER JOIN categories c ON c.category_id = s.category_id
-                INNER JOIN car_brand b ON b.car_brand_id = s.car_brand_id
-                INNER JOIN car_model m ON m.car_model_id = s.car_model_id
+                LEFT JOIN car_brand b ON b.car_brand_id = s.car_brand_id
+                LEFT JOIN car_model m ON m.car_model_id = s.car_model_id
                 LEFT JOIN stores st ON st.store_id = s.store_id
                 WHERE s.sparepart_id = :product
                 LIMIT 1";
@@ -103,6 +103,21 @@ if (isset($_GET['product'])) {
                                         <div class="product-form__data">
                                             <label class="header">Car Brand: <span class="slVariant"><?= $record['brand_name']; ?></span></label>
                                             <label class="header">Car Model: <span class="slVariant"><?= $record['model_name']; ?></span></label>
+                                            
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" id="product_id" name="" value="<?= $record['sparepart_id']; ?>" hidden>
+                                            <input type="text" id="product_name" name="" value="<?= $record['name']; ?>" hidden>
+                                            <input type="text" id="product_price" name="" value="<?= $record['price']; ?>" hidden>
+                                            <input type="text" id="product_image" name="" value="<?= $record['image']; ?>" hidden>
+                                            <input type="text" id="product_cat_id" name="" value="<?= $record['category_id']; ?>" hidden>
+                                            <input type="text" id="product_cat_name" name="" value="<?= $record['category_name']; ?>" hidden>
+                                            <input type="text" id="product_brand_id" name="" value="<?= $record['car_brand_id']; ?>" hidden>
+                                            <input type="text" id="product_brand_name" name="" value="<?= $record['brand_name']; ?>" hidden>
+                                            <input type="text" id="product_model_id" name="" value="<?= $record['car_model_id']; ?>" hidden>
+                                            <input type="text" id="product_model_name" name="" value="<?= $record['model_name']; ?>" hidden>
+                                            <input type="text" id="product_store_id" name="" value="<?= $record['store_id']; ?>" hidden>
+                                            <input type="text" id="product_store_name" name="" value="<?= $record['store_name']; ?>" hidden>
                                         </div>
                                     </div>
                                     <!-- Product Action -->
@@ -113,7 +128,7 @@ if (isset($_GET['product'])) {
                                                     <a class="qtyBtn minus" href="">
                                                         <i class="fa anm anm-minus-r" aria-hidden="true"></i>
                                                     </a>
-                                                    <input type="text" id="Quantity" name="quantity" value="1" class="product-form__input qty">
+                                                    <input type="text" id="Quantity" name="quantity" value="1" class="product-form__input qty quantity-input">
                                                     <a class="qtyBtn plus" href="">
                                                         <i class="fa anm anm-plus-r" aria-hidden="true"></i>
                                                     </a>
@@ -121,7 +136,7 @@ if (isset($_GET['product'])) {
                                             </div>
                                         </div>                                
                                         <div class="product-form__item--submit">
-                                            <button type="button" name="add" class="btn product-form__cart-submit">
+                                            <button type="button" id="addToCartBtn" class="btn product-form__cart-submit">
                                                 <span id="AddToCartText-product-template">Add to cart</span>
                                             </button>
                                         </div>
@@ -187,7 +202,7 @@ if (isset($_GET['product'])) {
                                         </div>
 
                                         <div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="second-tab">
-                                            <div id="shopify-product-reviews">
+                                            <div id="shopify-product-reviews" hidden>
                                                 <div class="spr-container">
                                                     <div class="spr-header clearfix">
                                                         <div class="spr-summary">
