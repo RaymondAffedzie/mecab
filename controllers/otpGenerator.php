@@ -7,7 +7,7 @@ class OTPGenerator
 
     public function __construct()
     {
-        $databaseConfig = new DatabaseConnection('localhost', 'mecab', 'irbba', 'hello!iRBbA');
+        $databaseConfig = new DatabaseConnection('localhost', 'mecab', 'lollipop', 'afterworld@Ghana1');
         $this->pdo = $databaseConfig->connect();
     }
 
@@ -55,6 +55,41 @@ class OTPGenerator
             'recipient' => [$storeContact],
             'sender' => 'MeCAB',
             'message' => $msg.' : '.$otp,
+            'is_schedule' => 'false',
+            'schedule_date' => ''
+        ];
+
+        $ch = curl_init();
+        $headers = array();
+        $headers[] = "Content-Type: application/json";
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        $result = curl_exec($ch);
+        $result = json_decode($result, TRUE);
+        curl_close($ch);
+
+        // Check if the SMS was sent successfully
+        // if ($result['status'] === 'success') {
+        //     return 'OTP success';
+        // } else {
+        //     return $result['status'].' : '.$result['message'];
+        // }
+    }
+
+    // Send Default password
+    public function sendDefaultPassword($storeContact, $msg)
+    {
+        $endPoint = 'https://api.mnotify.com/api/sms/quick';
+        $msg = $msg;
+        $apiKey = 'xdizoHkuAdlMuuD93yghJnP7O';
+        $url = $endPoint . '?key=' . $apiKey;
+        $data = [
+            'recipient' => [$storeContact],
+            'sender' => 'MeCAB',
+            'message' => $msg,
             'is_schedule' => 'false',
             'schedule_date' => ''
         ];

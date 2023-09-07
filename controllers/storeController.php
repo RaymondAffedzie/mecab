@@ -136,6 +136,28 @@ class storeController
         }
     }
 
+    // Add new admin
+    public function addAdmin($user_id, $first_name, $last_name, $other_names, $email, $password)
+    {
+        // Check if a admin or user with the email already exists
+        if ($this->isUserExists($email)) {
+            return 'exists';
+        }
+
+        try {
+            $query = "INSERT INTO `users`(`user_id`, `first_name`, `last_name`, `other_names`, `users_email`,
+             `users_password`, `users_role`) VALUES (?, ?, ?, ?, ?, ?, 'Admin')";
+            $stmt = $this->pdo->prepare($query);
+
+            $stmt->execute([$user_id, $first_name, $last_name, $other_names, $email, $password]);
+
+            return 'success';
+        } catch (PDOException $e) {
+            echo "Admin registration failed: " . $e->getMessage();
+            return 'error';
+        }
+    }
+
     // Add user details
     public function addUserDetails($userId, $contact, $specialisation, $storeId)
     {
@@ -281,14 +303,46 @@ class storeController
         }
     }
 
+    // Add record with single check
+    public function addRecordCheck($data, $tableName, $columnName, $value)
+    {
+        // call the checkISingleField function
+        if ($this->checkISingleField($tableName, $columnName, $value)) {
+            return 'exists';
+        } else {
+            try {
+                $table = $tableName;
+
+                // Prepare the column names and values
+                $columns = implode(", ", array_keys($data));
+                $values = ":" . implode(", :", array_keys($data));
+
+                // Query statement
+                $query = "INSERT INTO $table ($columns) VALUES ($values)";
+
+                // Prepare and execute the statement
+                $stmt = $this->pdo->prepare($query);
+                $stmt->execute($data);
+                if ($stmt->rowCount() > 0) {
+                    return true; // Record added successfully
+                } else {
+                    return 'failed'; // Failed to add record 
+                }
+            } catch (PDOException $e) {
+                echo "Failed to insert data : " . $e->getMessage();
+                return false; // Error occurred while adding record
+            }
+        }
+    }
+
     // Add a record with an image
     public function addRecordWithImage($data, $imageData, $tableName)
     {
         try {
             $table = $tableName;
 
-             // Check if the file upload is successful
-             if ($imageData['error'] === UPLOAD_ERR_OK) {
+            // Check if the file upload is successful
+            if ($imageData['error'] === UPLOAD_ERR_OK) {
                 $uploadResult = $this->handleImageUpload($imageData);
                 if (!is_array($uploadResult) || !isset($uploadResult['filename'])) {
                     return array(
@@ -746,7 +800,7 @@ class storeController
     // Get all car models
     public function getCarModels()
     {
-        try{
+        try {
             $query = "SELECT * FROM car_model";
             $stmt = $this->pdo->prepare($query);
             $stmt->execute();
@@ -755,7 +809,7 @@ class storeController
 
             return $carModels;
         } catch (PDOException $e) {
-            throw new Exception("Failed to fetch car models: ". $e->getMessage());
+            throw new Exception("Failed to fetch car models: " . $e->getMessage());
         }
     }
 
@@ -787,6 +841,54 @@ class storeController
             $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             return $categories;
+        } catch (PDOException $e) {
+            throw new Exception("Failed to fetch categories: " . $e->getMessage());
+        }
+    }
+
+    // Get all carousel
+    public function getCarousel()
+    {
+        try {
+            $query = "SELECT * FROM carousel";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute();
+
+            $carousel = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $carousel;
+        } catch (PDOException $e) {
+            throw new Exception("Failed to fetch carousel: " . $e->getMessage());
+        }
+    }
+
+    // Get all carousel
+    public function getCarousels()
+    {
+        try {
+            $query = "SELECT * FROM `carousel` ORDER BY carousel_ID DESC LIMIT 3";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute();
+
+            $carousel = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $carousel;
+        } catch (PDOException $e) {
+            throw new Exception("Failed to fetch carousel: " . $e->getMessage());
+        }
+    }
+
+    // Get all services
+    public function getServices()
+    {
+        try {
+            $query = "SELECT * FROM service";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute();
+
+            $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $services;
         } catch (PDOException $e) {
             throw new Exception("Failed to fetch categories: " . $e->getMessage());
         }
@@ -952,7 +1054,7 @@ class storeController
             $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $records;
         } catch (PDOException $e) {
-            throw new Exception("Error Fetching Records". $e->getMessage());
+            throw new Exception("Error Fetching Records" . $e->getMessage());
         }
     }
 
@@ -1126,7 +1228,7 @@ class storeController
     {
         try {
             $table = $tableName;
-            
+
             // Generate SET clause for UPDATE query
             $updateColumns = array_keys($updateData);
             $updateValues = array_values($updateData);
@@ -1153,7 +1255,7 @@ class storeController
             }
         } catch (PDOException $e) {
             echo "Error updating record: " . $e->getMessage();
-            return 'error'; // Error occurred during the update process
+            return false; // Error occurred during the update process
         }
     }
 
@@ -1170,7 +1272,7 @@ class storeController
             $existingImageFileName = $this->getExistingImageFileName($table, $column, $value);
 
             if (isset($image['tmp_name']) && $image['tmp_name']) {
-                
+
                 // New image uploaded, process the uploaded image
                 $imageFileName = $this->handleImageUpload($image);
 
@@ -1275,7 +1377,7 @@ class storeController
     // Delete a record
     public function deleteRecord($tableName, $primaryKeyColumn, $primaryKeyValue)
     {
-        try{
+        try {
             $table = $tableName;
             $column = $primaryKeyColumn;
             $value = $primaryKeyValue;
@@ -1285,7 +1387,7 @@ class storeController
             $stmt->execute([$value]);
 
             return true;
-        }catch(PDOException $e){
+        } catch (PDOException $e) {
             echo "Error deleting record: " . $e->getMessage();
             return false;
         }
@@ -1414,7 +1516,7 @@ class storeController
     // insert function that checks if data already exists in different feilds
     public function insertWithCheckSingleFeild($data, $tableName, $columnName, $value)
     {
-        // call the insertWithCheckSingleFeild function
+        // call the insertWithCheckSingleFelid function
         if ($this->checkISingleField($tableName, $columnName, $value)) {
             return 'exists';
         } else {
@@ -1465,4 +1567,3 @@ class storeController
         }
     }
 }
-
