@@ -17,11 +17,11 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-10 col-sm-8 col-md-5 col-lg-4">
-                        <p class="phone-no"><i class="anm anm-phone-s"></i> +233 (0)24 769 2388 / +233 (0)24 816 5601</p>
+                        <p class="phone-no"><i class="anm anm-phone-s"> +233 24 479 1855</i></p>
                     </div>
                     <div class="col-sm-4 col-md-4 col-lg-4 d-none d-lg-none d-md-block d-lg-block">
                         <div class="text-center">
-                            <p class="top-header_middle-text">iRBbA Devs & iQuco Tech</p>
+                            <p class="top-header_middle-text"></p>
                         </div>
                     </div>
                     <div class="col-2 col-sm-4 col-md-3 col-lg-4 text-right">
