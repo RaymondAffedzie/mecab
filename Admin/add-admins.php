@@ -42,32 +42,25 @@ include_once('includes/navbar.php');
                                         <input type="text" id="first_name" class="form-control form-control-lg" name="first_name" placeholder="First Name" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="other_names">Other Name</label> <!-- Changed the field name -->
+                                        <label for="other_names">Other Names</label>
                                         <input type="text" id="other_names" class="form-control form-control-lg" name="other_names" placeholder="Other Name" required>
                                     </div>
-                                </fieldset>
-                            </div>
-                            <div class="col-md-6">
-                                <fieldset style="border: 1px solid #ccc; border-radius: 4px; padding: 5px;">
-                                    <legend style="color: #fe6633; font-size: 12px;">Required</legend>
                                     <div class="form-group">
                                         <label for="last_name">Last name</label>
                                         <input type="text" id="last_name" class="form-control form-control-lg" name="last_name" placeholder="Last name" required>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="last_name">Contact</label>
-                                        <input type="text" id="contact" class="form-control form-control-lg" name="contact" placeholder="Contact" required>
-                                    </div>
                                 </fieldset>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-6">
                                 <fieldset style="border: 1px solid #ccc; border-radius: 4px; padding: 5px;">
                                     <legend style="color: #fe6633; font-size: 12px;">Required</legend>
                                     <div class="form-group">
                                         <label for="email">Email</label>
                                         <input type="email" id="email" class="form-control form-control-lg" name="email" placeholder="Email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="last_name">Contact</label>
+                                        <input type="text" id="contact" class="form-control form-control-lg" name="contact" placeholder="Contact" required>
                                     </div>
                                 </fieldset>
                             </div>
