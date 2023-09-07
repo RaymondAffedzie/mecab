@@ -20,42 +20,44 @@
                         <p class="phone-no"><i class="anm anm-phone-s"></i> +233 (0)24 769 2388 / +233 (0)24 816 5601</p>
                     </div>
                     <div class="col-sm-4 col-md-4 col-lg-4 d-none d-lg-none d-md-block d-lg-block">
-                        <div class="text-center"><p class="top-header_middle-text">iRBbA Devs & iQuco Tech</p></div>
+                        <div class="text-center">
+                            <p class="top-header_middle-text">iRBbA Devs & iQuco Tech</p>
+                        </div>
                     </div>
                     <div class="col-2 col-sm-4 col-md-3 col-lg-4 text-right">
                         <span class="user-menu d-block d-lg-none"><i class="anm anm-user-al" aria-hidden="true"></i></span>
-						<?php
-							if (isset($_SESSION['loggedIn'])) {
-							?>
-							<ul class="customer-links list-inline">
-								<li>
-									<form id="logoutForm" action="./logic/logout.php" method="post">
-										<button type="submit" name="logout" class="border-0 text-light" style="cursor: pointer;">
-											<i class="ti-power-off text-primary"></i> Logout
-										</button>
-									</form>
-								</li>
-							</ul>
-							<?php
-							} else {
-							?>
-								<ul class="customer-links list-inline">
-									<li><a href="./login.php">Login</a></li>
-									<li><a href="./register-user.php">Create Account</a></li>
-									<li><a href="./register-store.php">Purchase Store</a></li>
-								</ul>
-							<?php
-							}
-							?>
+                        <?php
+                        if (isset($_SESSION['loggedIn'])) {
+                        ?>
+                            <ul class="customer-links list-inline">
+                                <li>
+                                    <form id="logoutForm" action="./logic/logout.php" method="post">
+                                        <button type="submit" name="logout" class="border-0 text-light" style="cursor: pointer;">
+                                            <i class="ti-power-off text-primary"></i> Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        <?php
+                        } else {
+                        ?>
+                            <ul class="customer-links list-inline">
+                                <li><a href="./login.php">Login</a></li>
+                                <li><a href="./register-user.php">Create Account</a></li>
+                                <li><a href="./register-store.php">Purchase Store</a></li>
+                            </ul>
+                        <?php
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
         </div>
         <!--End Top Header-->
-		
+
         <!--Header-->
         <div class="header-wrap animated d-flex">
-            <div class="container-fluid">        
+            <div class="container-fluid">
                 <div class="row align-items-center">
                     <!--Desktop Logo-->
                     <div class="logo col-md-2 col-lg-2 d-none d-lg-block">
@@ -73,60 +75,14 @@
                         </div>
                         <!--Desktop Menu-->
                         <nav class="grid__item" id="AccessibleNav" role="navigation">
-                        <ul id="siteNav" class="site-nav medium center hidearrow">
-                                    <li class="lvl1"><a href="index.php">Home<i class="anm anm-angle-down-l"></i></a></li>
-                                    <li class="lvl1 parent dropdown"><a href="#">Shops <i class="anm anm-angle-down-l"></i></a>
-                                        <ul class="dropdown">
-                                            <li><a href="#" class="site-nav">Mechanic</a></li>
-                                            <li><a href="spare-parts.html" class="site-nav">Spare Parts</a></li>
-                                            <li><a href="#" class="site-nav">Car Rentals</a></li>
-                                            <li><a href="#" class="site-nav">Transport Service</a></li>
-                                            <li><a href="#" class="site-nav">FAQs</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="lvl1 parent megamenu"><a href="#">Products <i class="anm anm-angle-down-l"></i></a>
-                                        <div class="megamenu style2">
-                                            <ul class="grid mmWrapper">
-                                                <li class="grid__item one-whole">
-                                                    <ul class="grid">
-                                                        <li class="grid__item lvl-1 col-md-3 col-lg-3"><a href="#" class="site-nav lvl-1">Spare Parts Products</a>
-                                                            <ul class="subLinks">
-                                                                <li class="lvl-2"><a href="#" class="site-nav lvl-2">Product 1</a></li>
-                                                                <li class="lvl-2"><a href="#" class="site-nav lvl-2">Product 2</a></li>
-                                                            </ul>
-                                                        </li>
-                                                        <li class="grid__item lvl-1 col-md-3 col-lg-3"><a href="#" class="site-nav lvl-1">Auto Mecahnic Services</a>
-                                                            <ul class="subLinks">
-                                                                <li class="lvl-2"><a href="#" class="site-nav lvl-2">Service 1</a></li>
-                                                                <li class="lvl-2"><a href="#" class="site-nav lvl-2">Service 2</a></li>
-                                                            </ul>
-                                                        </li>
-                                                        <li class="grid__item lvl-1 col-md-3 col-lg-3"><a href="#" class="site-nav lvl-1">Transport Servies</a>
-                                                            <ul class="subLinks">
-                                                                <li class="lvl-2"><a href="#" class="site-nav lvl-2">Service 1</a></li>
-                                                                <li class="lvl-2"><a href="#" class="site-nav lvl-2">Service 2</a></li>
-                                                            </ul>
-                                                        </li>
-                                                        <li class="grid__item lvl-1 col-md-3 col-lg-3"><a href="#" class="site-nav lvl-1">Car Rental Services</a>
-                                                            <ul class="subLinks">
-                                                                <li class="lvl-2"><a href="#" class="site-nav lvl-2">Service 1</a></li>
-                                                                <li class="lvl-2"><a href="#" class="site-nav lvl-2">Service 2</a></li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="lvl1 parent dropdown"><a href="#">Blog <i class="anm anm-angle-down-l"></i></a>
-                                        <ul class="dropdown">
-                                            <li><a href="blog-grid-view.html" class="site-nav">All blogs</a></li>
-                                            <li><a href="blog-article.html" class="site-nav">Read Article</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="lvl1"><a href="about-us.html">About Us<i class="anm anm-angle-down-l"></i></a></li>
-                                    <li class="lvl1"><a href="contact-us.html">Contact Us<i class="anm anm-angle-down-l"></i></a></li>
-                                </ul>
+                            <ul id="siteNav" class="site-nav medium center hidearrow">
+                                <li class="lvl1"><a href="index.php">Home<i class="anm anm-angle-down-l"></i></a></li>
+                                <li class="lvl1"><a href="#">Mechanic<i class="anm anm-angle-down-l"></i></a></li>
+                                <li class="lvl1"><a href="#">Spare Parts<i class="anm anm-angle-down-l"></i></a></li>
+                                <li class="lvl1"><a href="#">Car Rentals<i class="anm anm-angle-down-l"></i></a></li>
+                                <li class="lvl1"><a href="#">Transport Service<i class="anm anm-angle-down-l"></i></a></li>
+                                <li class="lvl1"><a href="#">About Us<i class="anm anm-angle-down-l"></i></a></li>
+                            </ul>
                         </nav>
                         <!--End Desktop Menu-->
                     </div>
@@ -196,54 +152,14 @@
             <div class="closemobileMenu"><i class="icon anm anm-times-l pull-right"></i> Close Menu</div>
             <ul id="MobileNav" class="mobile-nav">
                 <li class="lvl1"><a href="index.php">Home</a></li>
-                <li class="lvl1 parent megamenu"><a href="#">Shops <i class="anm anm-plus-l"></i></a>
-                    <ul>
-                        <li><a href="#" class="site-nav">Mecahnic</a></li>
-                        <li><a href="spare-parts.html" class="site-nav">Spare Parts</a></li>
-                        <li><a href="#" class="site-nav">Car Rentals</a></li>
-                        <li><a href="#" class="site-nav">Transport Services</a></li>
-                        <li><a href="#" class="site-nav">FAQs</a></li>
-                    </ul>
-                </li>
-                <li class="lvl1 parent megamenu"><a href="#">Products <i class="anm anm-plus-l"></i></a>
-                    <ul>
-                        <li><a href="#" class="site-nav">Spare Part Products<i class="anm anm-plus-l"></i></a>
-                            <ul>
-                                <li><a href="product-layout-1.html" class="site-nav">Product Layout 1</a></li>
-                                <li><a href="product-layout-2.html" class="site-nav">Product Layout 2</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#" class="site-nav">Auto Mechanic Servies<i class="anm anm-plus-l"></i></a>
-                            <ul>
-                                <li><a href="short-description.html" class="site-nav">Short Description</a></li>
-                                <li><a href="product-countdown.html" class="site-nav">Product Countdown</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#" class="site-nav">Transport Services<i class="anm anm-plus-l"></i></a>
-                            <ul>
-                                <li><a href="product-accordion.html" class="site-nav">Product Accordion</a></li>
-                                <li><a href="product-pre-orders.html" class="site-nav">Product Pre-orders </a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#" class="site-nav">Car Rentals Services<i class="anm anm-plus-l"></i></a>
-                            <ul>
-                                <li><a href="product-with-variant-image.html" class="site-nav">Product with Variant Image</a></li>
-                                <li><a href="product-with-color-swatch.html" class="site-nav">Product with Color Swatch</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li class="lvl1 parent megamenu"><a href="blog-left-sidebar.html">Blog <i class="anm anm-plus-l"></i></a>
-                    <ul>
-                        <li><a href="blog-grid-view.html" class="site-nav">Gridview</a></li>
-                        <li><a href="blog-article.html" class="site-nav">Article</a></li>
-                    </ul>
-                </li>
-                <li class="lvl1"><a href="about-us.html"> <b>About Us</b></a></li>
-                <li class="lvl1"><a href="contact-us.html"><b>Contact Us</b></a></li>
+                <li class="lvl1"><a href="#">Mecahnic</a></li>
+                <li class="lvl1"><a href="#">Spare Parts</a></li>
+                <li class="lvl1"><a href="#">Car Rentals</a></li>
+                <li class="lvl1"><a href="#">Transport Services</a></li>
+                <li class="lvl1"><a href="#">About Us</a></li>
             </ul>
         </div>
         <!--End Mobile Menu-->
-    
-    <!--Body Content-->
-    <div id="page-content">
+
+        <!--Body Content-->
+        <div id="page-content">
