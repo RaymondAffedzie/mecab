@@ -315,10 +315,6 @@ $controller = new storeController();
 </div>
 <?php
 include_once('includes/footer.php');
-
-
-$databaseConfig = new DatabaseConnection('mecab.org', 'mecabor6_main', 'mecabor6_admin', 'DB_meCAB_main');
-
 ?>
 
 

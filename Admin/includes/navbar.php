@@ -365,7 +365,7 @@
 						</a>
 						<div class="collapse" id="form-elements">
 							<ul class="nav flex-column sub-menu">
-								<li class="nav-item"><a class="nav-link" href="add-admins.php">Create new Admin</a></li>
+								<li class="nav-item"><a class="nav-link" href="add-admins.php">Add Admin</a></li>
 								<li class="nav-item"><a class="nav-link" href="add-car-brand.php">Add Car brand</a></li>
 								<li class="nav-item"><a class="nav-link" href="add-car-model.php">Add Car Model</a></li>
 								<li class="nav-item"><a class="nav-link" href="add-carousel.php">Add Carousel</a></li>
