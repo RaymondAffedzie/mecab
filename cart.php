@@ -82,7 +82,7 @@ $controller = new storeController();
                             ?>
                             <tr class="empty-cart">
                                 <td colspan="6" class="text-center">
-                                    <h1 class="text-danger" style="text-transform: uppercase;">Empty Cart</h1>
+                                    <h1 class="text-danger" style="text-transform: uppercase;">Your cart is empty</h1>
                                 </td>
                             </tr>
                         <?php

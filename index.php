@@ -17,32 +17,36 @@ include_once('includes/head.php');
 include_once('includes/navbar.php');
 
 $controller = new storeController();
-$controller = new storeController();
 $query = "SELECT * FROM carousel ORDER BY carousel_ID DESC LIMIT 3";
 $carousels = $controller->getRecords($query);
 ?>
 
-<!-- Home slider -->
-<div class="slideshow slideshow-wrapper pb-section sliderFull">
-    <div class="home-slideshow">
-        <?php foreach ($carousels as $carouselData) { ?>
-            <div class="slide">
-                <div class="blur-up lazyload bg-size">
-                    <img src="uploads/<?= $carouselData['image']; ?>" />
-                    <div class="slideshow__text-wrap slideshow__overlay classic bottom">
-                        <div class="slideshow__text-content bottom">
-                            <div class="wrap-caption center">
-                                <h2 class="h1 mega-title slideshow__title" id="carouselName"><?= $carouselData['carousel_caption']; ?></h2>
-                                <!-- <span class="mega-subtitle slideshow__subtitle" id="carouselCaption"></span> -->
-                                <span class="btn">SHOP NOW</span>
-                            </div>
-                        </div>
-                    </div>
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+        <?php foreach ($carousels as $key => $carouselData) { ?>
+            <div class="carousel-item <?= ($key === 0) ? 'active' : ''; ?>">
+                <img class="d-block w-100" src="uploads/<?= $carouselData['image']; ?>" alt="uploads/<?= $carouselData['image']; ?>">
+                <div class="carousel-caption">
+                    <p class="fst-italic text-white" style="font-size: 20px"><?= $carouselData['carousel_caption']; ?></p>
                 </div>
             </div>
         <?php } ?>
     </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
 </div>
+
 <!--Popular Categories-->
 <div class="section" hidden>
     <div class="container">

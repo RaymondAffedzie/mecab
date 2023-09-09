@@ -5,7 +5,7 @@
             <div class="search__form">
                 <form class="search-bar__form" action="#">
                     <button class="go-btn search__button" type="submit"><i class="icon anm anm-search-l"></i></button>
-                    <input class="search__input" type="search" name="q" value="" placeholder="Search entire store..." aria-label="Search" autocomplete="off">
+                    <input class="search__input" type="search" name="q" value="" placeholder="Search all stores store..." aria-label="Search" autocomplete="off">
                 </form>
                 <button type="button" class="search-trigger close-btn"><i class="anm anm-times-l"></i></button>
             </div>
@@ -101,41 +101,59 @@
                             </a>
                             <!--Minicart Popup-->
                             <div id="header-cart" class="block block-cart">
-                                <ul class="mini-products-list">
-                                    <li class="item">
-                                        <a class="product-image" href="#">
-                                            <img src="assets/images/product-images/cape-dress-1.jpg" alt="3/4 Sleeve Kimono Dress" title="" />
-                                        </a>
-                                        <div class="product-details">
-                                            <a href="#" class="remove"><i class="anm anm-times-l" aria-hidden="true"></i></a>
-                                            <a href="#" class="edit-i remove"><i class="anm anm-edit" aria-hidden="true"></i></a>
-                                            <a class="pName" href="cart.html">Sleeve Kimono Dress</a>
-                                            <div class="variant-cart">Black / XL</div>
-                                            <div class="wrapQtyBtn">
-                                                <div class="qtyField">
-                                                    <span class="label">Qty:</span>
-                                                    <a class="qtyBtn minus" href="javascript:void(0);"><i class="fa anm anm-minus-r" aria-hidden="true"></i></a>
-                                                    <input type="text" id="Quantity" name="quantity" value="1" class="product-form__input qty">
-                                                    <a class="qtyBtn plus" href="javascript:void(0);"><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
+                                <?php
+                                if (isset($_SESSION['cart']) && count($_SESSION['cart']) > 0) {
+                                ?>
+                                    <ul class="mini-products-list">
+                                        <?php
+                                        foreach ($_SESSION['cart'] as $item) {
+                                        ?>
+                                            <li class="item">
+                                                <a class="product-image" href="#">
+                                                    <img src="uploads/<?= $item['image']; ?>" alt="uploads/<?= $item['image']; ?>" />
+                                                </a>
+                                                <div class="product-details">
+                                                    <a href="#" class="cart__remove" data-product-id="<?= $item['id']; ?>"><i class="anm anm-times-l" aria-hidden="true"></i></a>
+                                                    <a class="pName" href="#"><?= $item['name']; ?></a>
+                                                    <div class="wrapQtyBtn">
+                                                        <div class="qtyField">
+                                                            <span class="label">Qty: <?= $item['quantity']; ?></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="priceRow">
+                                                        <div class="product-price">
+                                                            <span class="money">GHC <?= $item['price']; ?></span>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="priceRow">
-                                                <div class="product-price">
-                                                    <span class="money">$59.00</span>
-                                                </div>
-                                            </div>
+                                            </li>
+                                        <?php
+                                        }
+                                        ?>
+                                    </ul>
+                                    <div class="total">
+                                        <div class="total-in">
+                                            <span class="label">Cart Subtotal:</span>
+                                            <span class="product-price">
+                                                <span class="money">$748.00</span>
+                                            </span>
                                         </div>
-                                    </li>
-                                </ul>
-                                <div class="total">
-                                    <div class="total-in">
-                                        <span class="label">Cart Subtotal:</span><span class="product-price"><span class="money">$748.00</span></span>
+                                        <div class="buttonSet text-center">
+                                            <a href="cart.php" class="btn btn-secondary btn--small">View Cart</a>
+                                            <a href="checkout.php" class="btn btn-secondary btn--small">Checkout</a>
+                                        </div>
                                     </div>
-                                    <div class="buttonSet text-center">
-                                        <a href="cart.php" class="btn btn-secondary btn--small">View Cart</a>
-                                        <a href="checkout.html" class="btn btn-secondary btn--small">Checkout</a>
-                                    </div>
-                                </div>
+                                <?php
+                                } else {
+                                ?>
+                                    <ul class="mini-products-list">
+                                        <li class="item">
+                                            <p class="text-center text-danger ">Your car is empty</p>
+                                        </li>
+                                    </ul>
+                                <?php
+                                }
+                                ?>
                             </div>
                             <!--End Minicart Popup-->
                         </div>

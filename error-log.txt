@@ -44,3 +44,7 @@
 [2023-Sep-06 15:09:42] - Error: [2] Undefined array key "name" - /var/www/mecab/includes/footer.php:330
 [2023-Sep-06 15:09:23] - Error: [2] Undefined array key "name" - /var/www/mecab/includes/footer.php:330
 [2023-Sep-06 15:09:11] - Error: [2] Undefined array key "name" - /var/www/mecab/includes/footer.php:330
+[2023-Sep-08 11:09:55] - Error: [2] Undefined array key "loggedIn" - /var/www/mecab/Admin/index.php:16
+[2023-Sep-08 18:09:39] - Error: [2] Undefined variable $sparepart_id - /var/www/mecab/Admin/car-brand-details.php:204
+[2023-Sep-08 19:09:04] - Error: [2] Undefined array key "loggedIn" - /var/www/mecab/logic/logout.php:15
+[2023-Sep-08 19:09:17] - Error: [2] Undefined array key "loggedIn" - /var/www/mecab/logic/logout.php:15
