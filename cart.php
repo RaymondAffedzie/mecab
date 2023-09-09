@@ -39,10 +39,11 @@ $controller = new storeController();
                 <table id="cartTable" class="table">
                     <thead class="cart__row cart__header">
                         <tr>
-                            <th colspan="2" class="text-center">Product</th>
+                            <th class="text-center">Image</th>
+                            <th class="text-center">Product Name</th>
                             <th class="text-center">Price</th>
                             <th class="text-center">Quantity</th>
-                            <th class="text-center">Total</th>
+                            <th class="text-center">Total Amount</th>
                             <th class="text-center">Remove</th>
                         </tr>
                     </thead>
@@ -55,19 +56,19 @@ $controller = new storeController();
                                     <td class="cart__image-wrapper cart-flex-item">
                                         <a href="#"><img class="cart__image" src="uploads/<?= $item['image']; ?>" alt="uploads/<?= $item['image']; ?>"></a>
                                     </td>
-                                    <td class="cart__meta small--text-left cart-flex-item">
+                                    <td class="text-center cart-flex-item">
                                         <div class="list-view-item__title">
                                             <a href="#"><?= $item['name']; ?></a>
                                         </div>
                                     </td>
                                     <td class="cart__price-wrapper cart-flex-item text-center product-price">
-                                        <span class="money"><?= $item['price'] ?></span>
+                                        <span class="money">&#x20B5;<?= $item['price'] ?></span>
                                     </td>
                                     <td class="cart__update-wrapper cart-flex-item text-center product-quantity">
                                         <span class="money"><?= $item['quantity']; ?></span>
                                     </td>
-                                    <td class="text-right small--hide cart-price text-center">
-                                        <span class="money" id="amount"></span>
+                                    <td class="text-center small--hide cart-price">
+                                        <span class="money" id="amount"><?= $item['quantity'] * $item['price']; ?></span>
                                     </td>
                                     <td class="text-left small--hide text-center">
                                         <a href="#" class="btn btn--secondary cart__remove" title="Remove item" data-product-id="<?= $item['id']; ?>">
@@ -120,7 +121,7 @@ $controller = new storeController();
                         <div class="row border-bottom pb-2">
                             <span class="col-12 col-sm-6 cart__subtotal-title">Subtotal</span>
                             <span class="col-12 col-sm-6 text-right">
-                                <span class="money sub-total"></span>
+                                <span class="money sub-total">Amount: &#x20B5;0.00</span>
                             </span>
                         </div>
 
@@ -129,10 +130,10 @@ $controller = new storeController();
                                 <strong>Grand Total</strong>
                             </span>
                             <span class="col-12 col-sm-6 cart__subtotal-title cart__subtotal text-right">
-                                <span class="money grand-total"></span>
+                                <span class="money grand-total">&#x20B5;</span>
                             </span>
                         </div>
-                        <p class="cart_tearm pt-3">
+                        <p class="cart_tearm pt-3" hidden>
                             <label for="tnc">
                                 <input type="checkbox" id="tnc" name="tnc" class="checkbox" value="tearm" required="">
                                 I agree with the <a href="#">terms</a> and <a href="#">conditions</a>

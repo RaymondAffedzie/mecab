@@ -101,59 +101,23 @@
                             </a>
                             <!--Minicart Popup-->
                             <div id="header-cart" class="block block-cart">
-                                <?php
-                                if (isset($_SESSION['cart']) && count($_SESSION['cart']) > 0) {
-                                ?>
-                                    <ul class="mini-products-list">
-                                        <?php
-                                        foreach ($_SESSION['cart'] as $item) {
-                                        ?>
-                                            <li class="item">
-                                                <a class="product-image" href="#">
-                                                    <img src="uploads/<?= $item['image']; ?>" alt="uploads/<?= $item['image']; ?>" />
-                                                </a>
-                                                <div class="product-details">
-                                                    <a href="#" class="cart__remove" data-product-id="<?= $item['id']; ?>"><i class="anm anm-times-l" aria-hidden="true"></i></a>
-                                                    <a class="pName" href="#"><?= $item['name']; ?></a>
-                                                    <div class="wrapQtyBtn">
-                                                        <div class="qtyField">
-                                                            <span class="label">Qty: <?= $item['quantity']; ?></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="priceRow">
-                                                        <div class="product-price">
-                                                            <span class="money">GHC <?= $item['price']; ?></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        <?php
-                                        }
-                                        ?>
-                                    </ul>
-                                    <div class="total">
-                                        <div class="total-in">
-                                            <span class="label">Cart Subtotal:</span>
-                                            <span class="product-price">
-                                                <span class="money">$748.00</span>
-                                            </span>
-                                        </div>
-                                        <div class="buttonSet text-center">
-                                            <a href="cart.php" class="btn btn-secondary btn--small">View Cart</a>
-                                            <a href="checkout.php" class="btn btn-secondary btn--small">Checkout</a>
-                                        </div>
+                                <ul class="mini-products-list" id="cart-items">
+                                    <!-- Cart items will be dynamically added here -->
+                                </ul>
+
+                                <div class="total">
+                                    <div class="total-in">
+                                        <span class="label">Cart Subtotal:</span>
+                                        <span class="product-price">
+                                            <span class="money sub-total">Amount: &#x20B5;0.00</span>
+                                        </span>
                                     </div>
-                                <?php
-                                } else {
-                                ?>
-                                    <ul class="mini-products-list">
-                                        <li class="item">
-                                            <p class="text-center text-danger ">Your car is empty</p>
-                                        </li>
-                                    </ul>
-                                <?php
-                                }
-                                ?>
+
+                                    <div class="buttonSet text-center">
+                                        <a href="cart.php" class="btn btn-secondary btn--small">View Cart</a>
+                                        <a href="checkout.php" class="btn btn-secondary btn--small" id="cartCheckout">Checkout</a>
+                                    </div>
+                                </div>
                             </div>
                             <!--End Minicart Popup-->
                         </div>

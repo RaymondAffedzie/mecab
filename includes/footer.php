@@ -245,7 +245,6 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             $(document).ready(function() {
-
                 // user logout
                 $('#logoutForm').submit(function(e) {
                     e.preventDefault(); // Prevent the default form submission
@@ -317,40 +316,6 @@
                     }
                 }
 
-                $(document).ready(function() {
-                    // update subtotal on page load
-                    var totalAmount = calculateTotalAmount();
-                    $('.sub-total').text(totalAmount.toFixed(2));
-
-                    // redirect user to checkout
-                    $('#cartCheckout').click(function() {
-                        window.location.href = 'checkout.php';
-                    });
-                });
-
-                // total amount of items
-                function calculateTotalAmount() {
-                    var totalAmount = 0;
-                    $('.cart__row').each(function(index, row) {
-                        var itemAmount = calculateItemAmount(row);
-                        $(row).find('#amount').text(itemAmount.toFixed(2));
-                        totalAmount += itemAmount;
-                    });
-                    return totalAmount;
-                }
-
-                // update the subtotal
-                function updateSubtotal() {
-                    var totalAmount = calculateTotalAmount();
-                    $('.sub-total').text(totalAmount.toFixed(2));
-
-                    if (totalAmount > 0) {
-                        $('#cartCheckout').prop('disabled', false);
-                    } else {
-                        $('#cartCheckout').prop('disabled', true);
-                    }
-                }
-
                 // Function to remove an item from the cart
                 function removeItemFromCart(productId) {
                     $.ajax({
@@ -361,9 +326,8 @@
                         },
                         success: function(response) {
                             if (response === 'success') {
-                                // Remove the corresponding table row from the UI
                                 $('tr[data-product-id="' + productId + '"]').remove();
-                                updateSubtotal(); // Update the total amount after removing the item
+                                updateSubtotal();
                                 Swal.fire('Removed!', 'Item has been removed from the cart.', 'success');
                             } else {
                                 Swal.fire('Error!', 'An error occurred while removing the item.', 'error');
@@ -376,7 +340,7 @@
                 }
 
                 // Remove item from cart script
-                $('.cart__remove').click(function(e) {
+                $(document).on('click', '.cart__remove', function(e) {
                     e.preventDefault(); // Prevent the default link behavior
                     var productId = $(this).data('product-id');
                     Swal.fire({
@@ -407,7 +371,7 @@
                         cancelButtonText: 'Cancel',
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            clearCart(); // Call the function to clear the cart
+                            clearCart();
                         }
                     });
                 });
@@ -416,19 +380,88 @@
                 function clearCart() {
                     $.ajax({
                         type: 'POST',
-                        url: 'logic/clear-cart.php', // Create a PHP script to handle cart clearing
+                        url: 'logic/clear-cart.php',
                         success: function(response) {
 
                             // Clear the table row content
                             $('#cartTable tbody').empty();
 
-                            updateSubtotal(); // update the subtotal
+                            updateSubtotal();
                         },
                         error: function(xhr, status, error) {
                             Swal.fire('Error!', 'An error occurred while clearing the cart.', 'error');
                         }
                     });
                 }
+
+                // Function to fetch and update the cart
+                function fetchCart() {
+                    $.ajax({
+                        url: 'logic/fetch-cart.php',
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            // Update the cart on the page based on the data
+                            updateCartItems(data);
+                            updateSubtotal(); // Update the subtotal after fetching cart data
+                        },
+                        error: function() {
+                            swal("Error", "Error fetching cart data!", "error");
+                        }
+                    });
+                }
+
+                // Function to update the cart items
+                function updateCartItems(cartData) {
+                    var cartItemsHtml = '';
+                    $.each(cartData, function(index, item) {
+                        var cartItemHtml = '<li class="item">';
+                        cartItemHtml += '<a class="product-image" href="#"><img src="uploads/' + item.image + '" alt="" /></a>';
+                        cartItemHtml += '<div class="product-details">';
+                        cartItemHtml += '<a href="#" class="cart__remove" data-product-id="' + item.id + '"><i class="anm anm-times-l" aria-hidden="true"></i></a>';
+                        cartItemHtml += '<a class="pName" href="#"><h3>' + item.name + '</h3></a>';
+                        cartItemHtml += '<div class="priceRow"><div class="product-price"><span class="money"><em>Item price: &#x20B5;' + item.price + '</em></span></div></div>';
+                        cartItemHtml += '<div class="wrapQtyBtn"><div class="qtyField"><span class="label">Qty: ' + item.quantity + '</span></div></div>';
+                        cartItemHtml += '<div class="amountRow"><div class="product-amount"><span class="money" id="amount"><b>Amount: &#x20B5;' + (item.amount).toFixed(2) + '</b></span></div></div>';
+                        cartItemHtml += '</div></li>';
+                        cartItemsHtml += cartItemHtml;
+                    });
+
+                    // Update the cart items in the HTML
+                    $('#cart-items').html(cartItemsHtml);
+                }
+
+                // Initial fetch of the cart when the page loads
+                fetchCart();
+
+                // Periodic updates by calling fetchCart() on a timer (adjust the interval as needed)
+                setInterval(fetchCart, 5000);
+
+                function calculateTotalAmount() {
+                    var totalAmount = 0;
+                    $('.cart__row').each(function(index, row) {
+                        var itemAmount = parseFloat($(row).find('.product-amount .money').text().replace('Amount: &#x20B5;', '').trim());
+                        if (!isNaN(itemAmount)) {
+                            totalAmount += itemAmount;
+                        }
+                    });
+                    return totalAmount;
+                }
+
+                // Function to update the subtotal
+                function updateSubtotal() {
+                    var totalAmount = calculateTotalAmount();
+                    $('.sub-total .money').text('Amount: &#x20B5;' + totalAmount.toFixed(2));
+
+                    if (totalAmount > 0) {
+                        $('#cartCheckout').prop('disabled', false);
+                    } else {
+                        $('#cartCheckout').prop('disabled', true);
+                    }
+                }
+
+                // Initial update of the subtotal when the page loads
+                updateSubtotal();
 
             });
 
