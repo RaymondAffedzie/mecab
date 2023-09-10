@@ -17,7 +17,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-10 col-sm-8 col-md-5 col-lg-4">
-                        <p class="phone-no"><i class="anm anm-phone-s"> +233 24 479 1855</i></p>
+                        <!-- <p class="phone-no"><i class="anm anm-phone-s"></i></p> -->
                     </div>
                     <div class="col-sm-4 col-md-4 col-lg-4 d-none d-lg-none d-md-block d-lg-block">
                         <div class="text-center">
@@ -77,11 +77,40 @@
                         <nav class="grid__item" id="AccessibleNav" role="navigation">
                             <ul id="siteNav" class="site-nav medium center hidearrow">
                                 <li class="lvl1"><a href="index.php">Home<i class="anm anm-angle-down-l"></i></a></li>
-                                <li class="lvl1"><a href="#">Mechanic<i class="anm anm-angle-down-l"></i></a></li>
-                                <li class="lvl1"><a href="#">Spare Parts<i class="anm anm-angle-down-l"></i></a></li>
+                                <li class="lvl1 parent dropdown"><a href="#">Mecahnic <i class="anm anm-angle-down-l"></i></a>
+                                    <ul class="dropdown scrollable-container">
+                                        <?php
+                                        $query = "SELECT * FROM service ORDER BY service_name ASC;";
+                                        $data = $controller->getRecords($query);
+                                        foreach ($data as $service) {
+                                            $serviceId = $service['service_id'];
+                                            $serviceName = $service['service_name'];
+                                        ?>
+                                            <li>
+                                                <a href="service-mechanic.php?service=<?= $serviceId; ?>" class="site-nav"><?= $serviceName; ?></a>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
+                                </li>
+                                <li class="lvl1 parent dropdown"><a href="#">Spare Parts <i class="anm anm-angle-down-l"></i></a>
+                                    <ul class="dropdown scrollable-container">
+                                        <?php
+                                        $query = "SELECT * FROM categories ORDER BY category_name ASC;";
+                                        $data = $controller->getRecords($query);
+                                        foreach ($data as $category) {
+                                            $categoryId = $category['category_id'];
+                                            $categoryName = $category['category_name'];
+                                        ?>
+                                            <li>
+                                                <a href="category-spare-parts.php?category=<?= $categoryId; ?>" class="site-nav"><?= $categoryName ?></a>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
+                                </li>
                                 <li class="lvl1"><a href="#">Car Rentals<i class="anm anm-angle-down-l"></i></a></li>
                                 <li class="lvl1"><a href="#">Transport Service<i class="anm anm-angle-down-l"></i></a></li>
                                 <li class="lvl1"><a href="#">About Us<i class="anm anm-angle-down-l"></i></a></li>
+
                             </ul>
                         </nav>
                         <!--End Desktop Menu-->
@@ -101,7 +130,7 @@
                             </a>
                             <!--Minicart Popup-->
                             <div id="header-cart" class="block block-cart">
-                                <ul class="mini-products-list" id="cart-items">
+                                <ul class="mini-products-list cart__row" id="cart-items">
                                     <!-- Cart items will be dynamically added here -->
                                 </ul>
 
@@ -109,7 +138,7 @@
                                     <div class="total-in">
                                         <span class="label">Cart Subtotal:</span>
                                         <span class="product-price">
-                                            <span class="money sub-total">Amount: &#x20B5;0.00</span>
+                                            <span class="money sub-total" id="sub-total-1">Amount: &#x20B5;0.00</span>
                                         </span>
                                     </div>
 
@@ -134,8 +163,26 @@
             <div class="closemobileMenu"><i class="icon anm anm-times-l pull-right"></i> Close Menu</div>
             <ul id="MobileNav" class="mobile-nav">
                 <li class="lvl1"><a href="index.php">Home</a></li>
-                <li class="lvl1"><a href="#">Mecahnic</a></li>
-                <li class="lvl1"><a href="#">Spare Parts</a></li>
+                <li class="lvl1 parent"><a href="#">Mecahnic <i class="anm anm-plus-l"></i></a>
+                    <ul>
+                        <li><a href="#" class="site-nav">Service 1</a></li>
+                        <li><a href="#" class="site-nav">Service 2</a></li>
+                        <li><a href="#" class="site-nav">Service 3</a></li>
+                    </ul>
+                </li>
+                <li class="lvl1 parent"><a href="#">Spare Parts <i class="anm anm-plus-l"></i></a>
+                    <ul>
+                        <?php
+                        $query = "SELECT * FROM categories ORDER BY category_name ASC;";
+                        $data = $controller->getRecords($query);
+                        foreach ($data as $category) {
+                            $categoryId = $category['category_id'];
+                            $categoryName = $category['category_name'];
+                        ?>
+                            <li><a href="category-spare-parts.php?category=<?= $categoryId; ?>" class="site-nav"><?= $categoryName?></a></li>
+                        <?php } ?>
+                    </ul>
+                </li>
                 <li class="lvl1"><a href="#">Car Rentals</a></li>
                 <li class="lvl1"><a href="#">Transport Services</a></li>
                 <li class="lvl1"><a href="#">About Us</a></li>

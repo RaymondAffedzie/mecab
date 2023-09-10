@@ -16,7 +16,8 @@ if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']) {
     header("Location: index.php");
     exit;
 }
-
+require_once 'controllers/storeController.php';
+$controller = new storeController();
 include_once('includes/head.php');
 include_once('includes/navbar.php');
 ?>

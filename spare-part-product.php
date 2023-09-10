@@ -13,10 +13,9 @@ function errorHandler($errno, $errstr, $errfile, $errline)
 set_error_handler("errorHandler");
 
 require_once 'controllers/storeController.php';
+$controller = new storeController();
 include_once('includes/head.php');
 include_once('includes/navbar.php');
-
-$controller = new storeController();
 
 if (isset($_GET['product'])) {
     $product =  filter_input(INPUT_GET, 'product', FILTER_SANITIZE_FULL_SPECIAL_CHARS);

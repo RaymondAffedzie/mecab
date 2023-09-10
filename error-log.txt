@@ -48,3 +48,8 @@
 [2023-Sep-08 18:09:39] - Error: [2] Undefined variable $sparepart_id - /var/www/mecab/Admin/car-brand-details.php:204
 [2023-Sep-08 19:09:04] - Error: [2] Undefined array key "loggedIn" - /var/www/mecab/logic/logout.php:15
 [2023-Sep-08 19:09:17] - Error: [2] Undefined array key "loggedIn" - /var/www/mecab/logic/logout.php:15
+[2023-Sep-10 13:09:07] - Error: [2] foreach() argument must be of type array|object, bool given - /var/www/mecab/includes/navbar.php:85
+[2023-Sep-10 13:09:09] - Error: [2] Undefined variable $controller - /var/www/mecab/includes/navbar.php:84
+[2023-Sep-10 13:09:29] - Error: [2] Undefined variable $controller - /var/www/mecab/includes/navbar.php:84
+[2023-Sep-10 13:09:50] - Error: [2] Undefined variable $controller - /var/www/mecab/includes/navbar.php:84
+[2023-Sep-10 14:09:01] - Error: [2] Undefined variable $controller - /var/www/mecab/includes/navbar.php:84

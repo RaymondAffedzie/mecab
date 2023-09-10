@@ -14,10 +14,9 @@ function errorHandler($errno, $errstr, $errfile, $errline)
 set_error_handler("errorHandler");
 
 require_once 'controllers/storeController.php';
+$controller = new storeController();
 include_once('includes/head.php');
 include_once('includes/navbar.php');
-
-$controller = new storeController();
 ?>
 
 
@@ -37,7 +36,7 @@ $controller = new storeController();
 
             <form action="#" method="post" class="cart style2">
                 <table id="cartTable" class="table">
-                    <thead class="cart__row cart__header">
+                    <thead class="cart__header">
                         <tr>
                             <th class="text-center">Image</th>
                             <th class="text-center">Product Name</th>
@@ -67,7 +66,7 @@ $controller = new storeController();
                                     <td class="cart__update-wrapper cart-flex-item text-center product-quantity">
                                         <span class="money"><?= $item['quantity']; ?></span>
                                     </td>
-                                    <td class="text-center small--hide cart-price">
+                                    <td class="text-center small--hide cart-price product-amount">
                                         <span class="money" id="amount"><?= $item['quantity'] * $item['price']; ?></span>
                                     </td>
                                     <td class="text-left small--hide text-center">
@@ -120,8 +119,8 @@ $controller = new storeController();
                     <div class="solid-border">
                         <div class="row border-bottom pb-2">
                             <span class="col-12 col-sm-6 cart__subtotal-title">Subtotal</span>
-                            <span class="col-12 col-sm-6 text-right">
-                                <span class="money sub-total">Amount: &#x20B5;0.00</span>
+                            <span class="col-12 col-sm-6 text-right product-price">
+                                <span class="money sub-total" id="sub-total-2"></span>
                             </span>
                         </div>
 

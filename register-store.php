@@ -17,6 +17,8 @@ if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']) {
     exit;
 }
 
+require_once 'controllers/storeController.php';
+$controller = new storeController();
 include_once('includes/head.php');
 include_once('includes/navbar.php');
 

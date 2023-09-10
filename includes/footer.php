@@ -12,9 +12,9 @@
                                     </div>
                                     <form action="#" method="post">
                                         <div class="input-group">
-                                            <input type="email" class="input-group__field newsletter__input" name="EMAIL" value="" placeholder="Email address" required="">
+                                            <input type="email" class="input-group__field newsletter__input" name="EMAIL" value="" placeholder="Email address" required="" disabled>
                                             <span class="input-group__btn">
-                                                <button type="submit" class="btn newsletter__submit" name="commit" id="Subscribe"><span class="newsletter__submit-text--large">Subscribe</span></button>
+                                                <button type="submit" class="btn newsletter__submit" name="commit" id="Subscribe" disabled><span class="newsletter__submit-text--large">Subscribe</span></button>
                                             </span>
                                         </div>
                                     </form>
@@ -42,10 +42,10 @@
                             <div class="col-12 col-sm-12 col-md-3 col-lg-3 footer-links">
                                 <h4 class="h4">Quick Shop</h4>
                                 <ul>
-                                    <li><a href="#">Lights</a></li>
-                                    <li><a href="#">Mirrors</a></li>
-                                    <li><a href="#">Exhaust</a></li>
-                                    <li><a href="#">Body Parts</a></li>
+                                    <li><a href="#">Spare Parts</a></li>
+                                    <li><a href="#">Mechanic</a></li>
+                                    <li><a href="#">Car Rentals</a></li>
+                                    <li><a href="#">Transport Management</a></li>
                                 </ul>
                             </div>
                             <div class="col-12 col-sm-12 col-md-3 col-lg-3 footer-links">
@@ -61,7 +61,7 @@
                             <div class="col-12 col-sm-12 col-md-3 col-lg-3 footer-links">
                                 <h4 class="h4">Customer Services</h4>
                                 <ul>
-                                    <li><a href="#">Request Personal Data</a></li>
+                                    <!-- <li><a href="#">Request Personal Data</a></li> -->
                                     <li><a href="#">FAQ's</a></li>
                                     <li><a href="#">Contact Us</a></li>
                                     <li><a href="#">Orders and Returns</a></li>
@@ -71,11 +71,12 @@
                             <div class="col-12 col-sm-12 col-md-3 col-lg-3 contact-box">
                                 <h4 class="h4">Contact Us</h4>
                                 <ul class="addressFooter">
-                                    <li><i class="icon anm anm-map-marker-al"></i>
+                                    <!-- <li>
+                                        <i class="icon anm anm-map-marker-al"></i>
                                         <p>Commercial Road, A003 <br> CE-001-2923, Winneba</p>
-                                    </li>
+                                    </li> -->
                                     <li class="phone"><i class="icon anm anm-phone-s"></i>
-                                        <p>(+233) (0)24 769 2388</p>
+                                        <p>+233 (0) 24 479 1855</p>
                                     </li>
                                     <li class="email"><i class="icon anm anm-envelope-l"></i>
                                         <p>admin@mecab.org</p>
@@ -96,11 +97,11 @@
                             <!--End Footer Copyright-->
                             <!--Footer Payment Icon-->
                             <div class="col-12 col-sm-12 col-md-6 col-lg-6 order-0 order-md-1 order-lg-1 order-sm-0 payment-icons text-right text-md-center">
-                                <ul class="payment-icons list--inline">
+                                <!-- <ul class="payment-icons list--inline">
                                     <li><i class="icon fa fa-cc-visa" aria-hidden="true"></i></li>
                                     <li><i class="icon fa fa-cc-mastercard" aria-hidden="true"></i></li>
                                     <li><i class="icon fa fa-cc-paypal" aria-hidden="true"></i></li>
-                                </ul>
+                                </ul> -->
                             </div>
                             <!--End Footer Payment Icon-->
                         </div>
@@ -418,7 +419,7 @@
                         var cartItemHtml = '<li class="item">';
                         cartItemHtml += '<a class="product-image" href="#"><img src="uploads/' + item.image + '" alt="" /></a>';
                         cartItemHtml += '<div class="product-details">';
-                        cartItemHtml += '<a href="#" class="cart__remove" data-product-id="' + item.id + '"><i class="anm anm-times-l" aria-hidden="true"></i></a>';
+                        cartItemHtml += '<a href="#" class="cart__remove float-right" data-product-id="' + item.id + '"><i class="anm anm-times-l" aria-hidden="true"></i></a>';
                         cartItemHtml += '<a class="pName" href="#"><h3>' + item.name + '</h3></a>';
                         cartItemHtml += '<div class="priceRow"><div class="product-price"><span class="money"><em>Item price: &#x20B5;' + item.price + '</em></span></div></div>';
                         cartItemHtml += '<div class="wrapQtyBtn"><div class="qtyField"><span class="label">Qty: ' + item.quantity + '</span></div></div>';
@@ -451,7 +452,9 @@
                 // Function to update the subtotal
                 function updateSubtotal() {
                     var totalAmount = calculateTotalAmount();
-                    $('.sub-total .money').text('Amount: &#x20B5;' + totalAmount.toFixed(2));
+                    var formattedTotal = '₵' + totalAmount.toFixed(2);
+                    
+                    $('.sub-total').text(formattedTotal);
 
                     if (totalAmount > 0) {
                         $('#cartCheckout').prop('disabled', false);
