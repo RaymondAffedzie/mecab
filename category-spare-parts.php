@@ -5,7 +5,7 @@ session_start();
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-	$eventDate = date("Y-M-d H:m:s");
+	$eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
 	error_log($message . PHP_EOL, 3, "error-log.txt");
 }
@@ -19,7 +19,6 @@ include_once('includes/navbar.php');
 
 if (isset($_GET['category'])) {
     $category =  filter_input(INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
     $query = "SELECT  c.*, s.* FROM categories c 
               INNER JOIN spare_parts s ON c.category_id = s.category_id 
               WHERE s.category_id = :category ";

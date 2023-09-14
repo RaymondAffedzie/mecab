@@ -6,7 +6,7 @@ session_start();
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-	$eventDate = date("Y-M-d H:m:s");
+	$eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
 	error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
@@ -51,8 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($errors)) {
         $response = array(
             'status' => 'error',
-            'message' => 'Validation error',
-            'errors' => $errors
+            'message' => $errors[0]
         );
     } else {
         include_once "../controllers/uniqueCode.php";
@@ -83,10 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'car_model_id' => $car_model
         );
 
-        // Database values
         $table = 'spare_parts';
-
-        // Call the method to add the spare part with image
+        
         $result = $storeController->addRecordWithImage($data, $imageData, $table);
 
         if ($result['status'] === 'success') {

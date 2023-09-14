@@ -360,14 +360,14 @@ class storeController
                 if ($addRecord) {
                     return array(
                         'status' => 'success',
-                        'message' => 'New record added successfully!'
+                        'message' => 'Record added successfully!'
                     );
                 } else {
                     return array(
                         'status' => 'error',
                         'message' => 'Failed to add record: Database insertion failed!'
                     );
-                }
+                }   
             } else {
                 // echo "File upload failed or no file selected.";
                 return array(
@@ -459,6 +459,11 @@ class storeController
 
         // Define the target directory to store the uploaded images
         $targetDir = "../uploads/";
+
+        // Create the target directory if it doesn't exist
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0755, true);
+        } 
 
         // Generate a unique filename for the uploaded image
         $filename = uniqid() . '_' . $image['name'];

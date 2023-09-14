@@ -77,21 +77,8 @@
                         <nav class="grid__item" id="AccessibleNav" role="navigation">
                             <ul id="siteNav" class="site-nav medium center hidearrow">
                                 <li class="lvl1"><a href="index.php">Home<i class="anm anm-angle-down-l"></i></a></li>
-                                <li class="lvl1 parent dropdown"><a href="#">Mecahnic <i class="anm anm-angle-down-l"></i></a>
-                                    <ul class="dropdown scrollable-container">
-                                        <?php
-                                        $query = "SELECT * FROM service ORDER BY service_name ASC;";
-                                        $data = $controller->getRecords($query);
-                                        foreach ($data as $service) {
-                                            $serviceId = $service['service_id'];
-                                            $serviceName = $service['service_name'];
-                                        ?>
-                                            <li>
-                                                <a href="service-mechanic.php?service=<?= $serviceId; ?>" class="site-nav"><?= $serviceName; ?></a>
-                                            </li>
-                                        <?php } ?>
-                                    </ul>
-                                </li>
+                                <li class="lvl1"><a href="about-us.php">About Us<i class="anm anm-angle-down-l"></i></a></li>
+                                <li class="lvl1"><a href="mechanics.php">Mechanic<i class="anm anm-angle-down-l"></i></a></li>
                                 <li class="lvl1 parent dropdown"><a href="#">Spare Parts <i class="anm anm-angle-down-l"></i></a>
                                     <ul class="dropdown scrollable-container">
                                         <?php
@@ -107,9 +94,14 @@
                                         <?php } ?>
                                     </ul>
                                 </li>
-                                <li class="lvl1"><a href="#">Car Rentals<i class="anm anm-angle-down-l"></i></a></li>
-                                <li class="lvl1"><a href="#">Transport Service<i class="anm anm-angle-down-l"></i></a></li>
-                                <li class="lvl1"><a href="#">About Us<i class="anm anm-angle-down-l"></i></a></li>
+                                <li class="lvl1 parent dropdown"><a href="#">Services <i class="anm anm-angle-down-l"></i></a>
+                                    <ul class="dropdown scrollable-container">
+                                        <li>
+                                            <a href="#" class="site-nav">Car Rentals</a>
+                                            <a href="#" class="site-nav">Transport Service</a>
+                                        </li>
+                                    </ul>
+                                </li>
 
                             </ul>
                         </nav>
@@ -163,13 +155,8 @@
             <div class="closemobileMenu"><i class="icon anm anm-times-l pull-right"></i> Close Menu</div>
             <ul id="MobileNav" class="mobile-nav">
                 <li class="lvl1"><a href="index.php">Home</a></li>
-                <li class="lvl1 parent"><a href="#">Mecahnic <i class="anm anm-plus-l"></i></a>
-                    <ul>
-                        <li><a href="#" class="site-nav">Service 1</a></li>
-                        <li><a href="#" class="site-nav">Service 2</a></li>
-                        <li><a href="#" class="site-nav">Service 3</a></li>
-                    </ul>
-                </li>
+                <li class="lvl1"><a href="about-us.php">About Us</a></li>
+                <li class="lvl1"><a href="mechanics.php">Mechanics</a></li>
                 <li class="lvl1 parent"><a href="#">Spare Parts <i class="anm anm-plus-l"></i></a>
                     <ul>
                         <?php
@@ -179,13 +166,16 @@
                             $categoryId = $category['category_id'];
                             $categoryName = $category['category_name'];
                         ?>
-                            <li><a href="category-spare-parts.php?category=<?= $categoryId; ?>" class="site-nav"><?= $categoryName?></a></li>
+                            <li><a href="category-spare-parts.php?category=<?= $categoryId; ?>" class="site-nav"><?= $categoryName ?></a></li>
                         <?php } ?>
                     </ul>
                 </li>
-                <li class="lvl1"><a href="#">Car Rentals</a></li>
-                <li class="lvl1"><a href="#">Transport Services</a></li>
-                <li class="lvl1"><a href="#">About Us</a></li>
+                <li class="lvl1 parent"><a href="#">Services <i class="anm anm-plus-l"></i></a>
+                    <ul>
+                        <li><a href="#" class="site-nav">Car Rentals</a></li>
+                        <li><a href="#" class="site-nav">Transport Service</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
         <!--End Mobile Menu-->

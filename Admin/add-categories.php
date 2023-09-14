@@ -47,9 +47,9 @@ $controller = new storeController();
                                                 <input type="file" class="form-control" id="image-upload" name="image" accept="image/*">
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 py-3">
                                             <div id="image-preview-container">
-                                                <img id="image-preview" src="" alt="Image Preview" width="134px" height="186px">
+                                                <img id="image-preview" src="" alt="Image Preview" width="100%" height="auto">
                                             </div>
                                         </div>
                                     </div>
@@ -140,7 +140,7 @@ $controller = new storeController();
                     if (response.status === 'success') {
                         $("#add-categories-form")[0].reset();
                         swal("Success", response.message, "success").then(function() {
-                            window.location.href = response.redirect; // redirect to desired page
+                            window.location.href = response.redirect;
                         });
                     } else {
                         swal("Error", response.message, "error");

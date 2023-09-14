@@ -53,3 +53,45 @@
 [2023-Sep-10 13:09:29] - Error: [2] Undefined variable $controller - /var/www/mecab/includes/navbar.php:84
 [2023-Sep-10 13:09:50] - Error: [2] Undefined variable $controller - /var/www/mecab/includes/navbar.php:84
 [2023-Sep-10 14:09:01] - Error: [2] Undefined variable $controller - /var/www/mecab/includes/navbar.php:84
+[2023-Sep-10 14:09:53] - Error: [2] Undefined variable $controller - /var/www/mecab/logic/add-service-logic.php:54
+[2023-Sep-10 14:09:16] - Error: [2] Undefined variable $controller - /var/www/mecab/logic/add-service-logic.php:54
+[2023-Sep-10 14:09:31] - Error: [2] Undefined variable $controller - /var/www/mecab/logic/add-service-logic.php:56
+[2023-Sep-10 14:09:50] - Error: [2] Undefined variable $controller - /var/www/mecab/logic/add-service-logic.php:56
+[2023-Sep-10 15:09:32] - Error: [2] Undefined variable $controller - /var/www/mecab/logic/add-service-logic.php:56
+[2023-Sep-10 15:09:48] - Error: [2] Undefined variable $controller - /var/www/mecab/logic/add-service-logic.php:56
+[2023-Sep-10 15:09:56] - Error: [2] Undefined variable $controller - /var/www/mecab/logic/add-service-logic.php:56
+[2023-Sep-10 15:09:30] - Error: [2] Undefined variable $controller - /var/www/mecab/logic/add-service-logic.php:56
+[2023-Sep-10 15:09:44] - Error: [2] Undefined variable $data - /var/www/mecab/logic/add-service-logic.php:54
+[2023-Sep-10 15:09:44] - Error: [2] Undefined variable $table - /var/www/mecab/logic/add-service-logic.php:54
+[2023-Sep-10 15:09:23] - Error: [2] Undefined variable $data - /var/www/mecab/logic/add-service-logic.php:53
+[2023-Sep-10 15:09:23] - Error: [2] Undefined variable $table - /var/www/mecab/logic/add-service-logic.php:53
+[2023-Sep-10 15:09:58] - Error: [2] Undefined variable $response - /var/www/mecab/logic/add-service-logic.php:75
+[2023-Sep-10 15:09:51] - Error: [2] Undefined variable $response - /var/www/mecab/logic/add-service-logic.php:75
+[2023-Sep-10 15:09:17] - Error: [2] Undefined variable $response - /var/www/mecab/logic/add-service-logic.php:75
+[2023-Sep-10 15:09:25] - Error: [2] Undefined variable $response - /var/www/mecab/logic/add-service-logic.php:75
+[2023-Sep-10 15:09:30] - Error: [2] Undefined variable $response - /var/www/mecab/logic/add-service-logic.php:75
+[2023-Sep-10 15:09:31] - Error: [2] Undefined variable $response - /var/www/mecab/logic/add-service-logic.php:72
+[2023-Sep-10 15:09:47] - Error: [2] Undefined variable $controller - /var/www/mecab/logic/add-service-logic.php:55
+[2023-Sep-10 15:09:40] - Error: [2] Undefined variable $controller - /var/www/mecab/logic/add-service-logic.php:55
+[2023-Sep-10 15:37:09] - Error: [2] Undefined variable $controller - /var/www/mecab/logic/add-service-logic.php:55
+[2023-Sep-10 16:08:45] - Error: [2] Array to string conversion - /var/www/mecab/controllers/storeController.php:1058
+[2023-Sep-10 16:09:52] - Error: [2] Array to string conversion - /var/www/mecab/controllers/storeController.php:1058
+[2023-Sep-10 16:11:21] - Error: [2] Array to string conversion - /var/www/mecab/controllers/storeController.php:1058
+[2023-Sep-10 16:09:47] - Error: [2] Trying to access array offset on value of type bool - /var/www/mecab/controllers/storeController.php:47
+[2023-Sep-10 16:09:47] - Error: [2] Trying to access array offset on value of type bool - /var/www/mecab/controllers/storeController.php:604
+[2023-Sep-10 16:09:48] - Error: [2] Trying to access array offset on value of type bool - /var/www/mecab/controllers/storeController.php:47
+[2023-Sep-10 16:09:48] - Error: [2] Trying to access array offset on value of type bool - /var/www/mecab/controllers/storeController.php:604
+[2023-Sep-10 16:09:41] - Error: [2] foreach() argument must be of type array|object, bool given - /var/www/mecab/add-details.php:114
+[2023-Sep-10 16:09:55] - Error: [2] foreach() argument must be of type array|object, bool given - /var/www/mecab/add-details.php:114
+[2023-Sep-11 09:51:32] - Error: [2] Undefined variable $service - /var/www/mecab/mechanics.php:39
+[2023-Sep-11 09:51:32] - Error: [2] Trying to access array offset on value of type null - /var/www/mecab/mechanics.php:39
+[2023-Sep-11 09:51:32] - Error: [2] Undefined variable $service - /var/www/mecab/mechanics.php:40
+[2023-Sep-11 09:51:32] - Error: [2] Trying to access array offset on value of type null - /var/www/mecab/mechanics.php:40
+[2023-Sep-11 09:51:32] - Error: [2] Undefined variable $service - /var/www/mecab/mechanics.php:41
+[2023-Sep-11 09:51:32] - Error: [2] Trying to access array offset on value of type null - /var/www/mecab/mechanics.php:41
+[2023-Sep-11 09:53:12] - Error: [2] Undefined variable $service - /var/www/mecab/mechanics.php:39
+[2023-Sep-11 09:53:12] - Error: [2] Trying to access array offset on value of type null - /var/www/mecab/mechanics.php:39
+[2023-Sep-11 09:53:12] - Error: [2] Undefined variable $service - /var/www/mecab/mechanics.php:40
+[2023-Sep-11 09:53:12] - Error: [2] Trying to access array offset on value of type null - /var/www/mecab/mechanics.php:40
+[2023-Sep-11 09:53:12] - Error: [2] Undefined variable $service - /var/www/mecab/mechanics.php:41
+[2023-Sep-11 09:53:12] - Error: [2] Trying to access array offset on value of type null - /var/www/mecab/mechanics.php:41

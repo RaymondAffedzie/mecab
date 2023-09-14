@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     $response = array(
         'status' => 'error',
-        'message' => 'Invalid action.',
+        'message' => 'Invalid Request.',
         'redirect' => '../Admin/add-car-brand.php'
     );
 }

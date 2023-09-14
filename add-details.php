@@ -24,8 +24,10 @@ if (isset($_SESSION['isVerified'])) {
 }
 
 require_once 'controllers/storeController.php';
-$controller = new storeController();
 include_once('includes/head.php');
+// include_once('includes/navbar.php');
+
+$controller = new storeController();
 // $record = $controller->getUserDetails();
 $stores = $controller->getStores();
 

@@ -29,11 +29,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $errors = array();
     if (empty($category_name)) {
-        $errors[] = "Spare part name is required.";
+        $errors[] = "Category name is required.";
     }
 
     if (empty($imageData)) {
-        $errors[] = "Spare part image is required.";
+        $errors[] = "Category image is required.";
     }
 
     // Check if there are any validation errors
@@ -50,13 +50,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $storeController = new StoreController();
 
-        // Prepare data for database insertion
-        $data = array(
-            'category_name' => $category_name
-        );
-
-        // Database values
         $table = 'categories';
+        $data = array(
+            'category_name' => ucfirst($category_name)
+        );
 
         // Call the method to add the spare part with image
         $result = $storeController->addRecordWithImage($data, $imageData, $table);
@@ -65,13 +62,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $response = array(
                 'status' => 'success',
                 'message' => $result['message'],
-                'redirect' => '../Admin/index.php'
+                'redirect' => '../Admin/categories.php'
             );
         } else {
             $response = array(
                 'status' => 'error',
                 'message' =>  $result['message'],
-                'redirect' => '../Admin/add-categories.php'
             );
         }
     }

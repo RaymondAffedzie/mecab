@@ -21,19 +21,28 @@ include_once('includes/navbar.php');
 			<div class="col-md-12 mx-auto">
 				<div class="card text-center rounded-3 p-5">
 					<div class="row">
-						<div class="col-md-6 mx-auto">
+						<div class="col-md-6">
 							<h4>Add Mechanic Services</h4>
 							<form class="pt-3" id="add-service-form" action="../logic/add-service-logic.php" method="post">
 								<!-- Form fields -->
 								<div class="input-group mb-3">
 									<input type="text" id="serviceName" class="form-control form-control-lg" name="serviceName" placeholder="Enter mechanic service">
 								</div>
+								<div>
+									<label for="image-upload">Select Image:</label>
+									<input type="file" class="form-control" id="image-upload" name="image" accept="image/*">
+								</div>
 								<div class="mt-3">
-									<button id="add-service-btn" class="btn btn-primary font-weight-medium auth-form-btn" name="save">
+									<button id="save-btn" class="btn btn-primary font-weight-medium auth-form-btn" name="save">
 										<i class="mdi mdi-content-save-all"></i> ADD SERVICE
 									</button>
 								</div>
 							</form>
+						</div>
+						<div class="col-md-6 py-3">
+							<div id="image-preview-container">
+								<img id="image-preview" src="" alt="Image Preview"  width="100%" height="auto">
+							</div>
 						</div>
 					</div>
 				</div>
@@ -75,8 +84,8 @@ include_once('includes/navbar.php');
 <script>
 	// Ajax script for submitting form
 	$(document).ready(function() {
-		$("#add-service-btn").click(function(e) {
-			e.preventDefault();
+		$("#save-btn").click(function(e) {
+            e.preventDefault();
 
 			// Get form inputs
 			var serviceName = $("#serviceName").val().trim();
@@ -87,12 +96,36 @@ include_once('includes/navbar.php');
 				return;
 			}
 
+			var imageInput = document.getElementById('image-upload');
+            var selectedFile = imageInput.files[0]; // Get the selected file
+
+            var allowedExtensions = /(\.png|\.jpeg|\.jpg|\.AVIF)$/i;
+
+            // Check if an image is selected
+            if (!selectedFile) {
+                swal("Error", "Please select an image.", "error");
+                return;
+            }
+
+            // Check the file extension
+            if (!allowedExtensions.exec(selectedFile.name)) {
+                swal("Error", "Invalid image file. Allowed extensions are PNG, JPEG, JPG and AVIF.", "error");
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append('service_name', serviceName);
+            formData.append('image', selectedFile);
+
+
 			// All inputs are valid, proceed with AJAX request
 			$.ajax({
 				url: "../logic/add-service-logic.php",
-				type: "POST",
-				data: $("#add-service-form").serialize() + "&action=add_service",
-				dataType: "json",
+				type: 'POST',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
 				success: function(response) {
 					// Handle the response and redirect
 					if (response.status === "success") {
@@ -109,6 +142,31 @@ include_once('includes/navbar.php');
 				}
 			});
 		});
+	});
+
+	// Function to preview the selected image
+	function previewImage(input) {
+		var imagePreview = document.getElementById('image-preview');
+		var imagePreviewContainer = document.getElementById('image-preview-container');
+
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+
+			reader.onload = function(e) {
+				imagePreview.setAttribute('src', e.target.result);
+				imagePreviewContainer.style.display = 'block';
+			};
+
+			reader.readAsDataURL(input.files[0]);
+		} else {
+			imagePreview.setAttribute('src', '');
+			imagePreviewContainer.style.display = 'none';
+		}
+	}
+
+	// Listen for changes in the file input
+	document.getElementById('image-upload').addEventListener('change', function() {
+		previewImage(this);
 	});
 </script>
 <!-- Add this script at the end of your HTML file, just before the closing </body> tag -->
