@@ -47,13 +47,15 @@ $controller = new storeController();
                                                 <input type="file" class="form-control" id="image-upload" name="image" accept="image/*">
                                             </div>
                                         </div>
-                                        <div class="col-md-6 py-3">
-                                            <div id="image-preview-container">
-                                                <img id="image-preview" src="" alt="Image Preview" width="100%" height="auto">
-                                            </div>
-                                        </div>
                                     </div>
                                 </fieldset>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="col-md-6 py-3">
+                                    <div id="image-preview-container">
+                                        <img id="image-preview" src="" alt="Image Preview" width="100%" height="auto">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="mt-3">

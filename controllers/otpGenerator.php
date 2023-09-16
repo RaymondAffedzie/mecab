@@ -7,7 +7,7 @@ class OTPGenerator
 
     public function __construct()
     {
-        $databaseConfig = new DatabaseConnection('localhost', 'mecab', 'lollipop', 'afterworld@Ghana1');
+        $databaseConfig = new DatabaseConnection('localhost', 'mecab', 'irbba', 'hello!iRBbA');
         $this->pdo = $databaseConfig->connect();
     }
 
