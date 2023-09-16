@@ -54,7 +54,7 @@
                                     <li><a href="#">About us</a></li>
                                     <li><a href="#">Careers</a></li>
                                     <li><a href="#">Privacy policy</a></li>
-                                    <li><a href="#">Terms &amp; condition</a></li>
+                                    <li><a href="terms-and-conditions.php">Terms &amp; condition</a></li>
                                     <li><a href="#">My Account</a></li>
                                 </ul>
                             </div>
