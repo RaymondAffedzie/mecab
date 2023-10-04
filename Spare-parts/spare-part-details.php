@@ -5,7 +5,7 @@ session_start();
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-    $eventDate = date("Y-M-d H:m:s");
+    $eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
     error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
@@ -92,7 +92,7 @@ $controller = new storeController()
                         <form class="pt-3" id="update-spare-part-form" action="../logic/update-spare-part-logic.php" method="post" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input type="hidden" id="spare-part-id">
+                                    <input type="hidden" id="spare-part-id" name="spare-part-id">
                                     <div class="form-group">
                                         <label for="spare-part-name">Spare Part Name</label>
                                         <input type="text" class="form-control" id="spare-part-name" name="spare_part_name" placeholder="Enter Spare Part Name" required>

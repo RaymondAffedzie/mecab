@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="../vendors/css/vendor.bundle.base.css" />
 	<!-- endinject -->
 	<!-- Plugin css for this page -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 	<link rel="stylesheet" href="../vendors/mdi/css/materialdesignicons.min.css">
 	<!-- End plugin css for this page -->
 	<!-- inject:css -->

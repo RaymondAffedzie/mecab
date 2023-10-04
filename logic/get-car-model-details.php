@@ -5,7 +5,7 @@ session_start();
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-	$eventDate = date("Y-M-d H:m:s");
+	$eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
 	error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
@@ -21,25 +21,28 @@ if (!isset($_SESSION['loggedIn']) && !$_SESSION['loggedIn']) {
 require_once '../controllers/storeController.php';
 $controller = new storeController();
 
-if (isset($_GET['brand_id'])) {
-    $brand_id = $_GET['brand_id'];
+if (isset($_GET['model'])) {
+    $model = $_GET['model'];
 
      // Fetch spare part details from the controller
-     $query = "SELECT * FROM car_model WHERE car_brand_id = :brand_id";
-     $params = array(":brand_id" => $brand_id);
+     $query = "SELECT m.car_model_id, m.model_name, b.brand_name
+      FROM car_model m 
+      LEFT JOIN car_brand b ON m.car_brand_id = b.car_brand_id 
+      WHERE car_model_id = :model";
+     $params = array(":model" => $model);
      $models = $controller->getRecordsByValue($query, $params);
 
      switch ($models) {
          case 'false':
              $response = array(
                  'status' => 'error',
-                 'message' => 'An error occured while fetching car brands.',
+                 'message' => 'An error occured while fetching car model.',
              );
              break;
          case null:
              $response = array(
                  'status' => 'error',
-                 'message' => 'Car brand not found.' . $brand_id,
+                 'message' => 'Car model not found.',
              );
              break;
          default:

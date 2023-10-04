@@ -5,7 +5,7 @@ session_start();
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-	$eventDate = date("Y-M-d H:m:s");
+	$eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
 	error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
@@ -24,12 +24,12 @@ $controller = new storeController();
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (isset($_POST["category_id"]) && !empty($_POST["category_id"])) {
-        $category_id = $_POST["category_id"];
+        
+        $category_id = filter_input(INPUT_POST, 'category_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $table = 'categories';
         $column = 'category_id';
 
-        // Delete the spare part record along with its image
-        $deletedStatus = $controller->deleteRecordWithImage($table, $column, $category_id);
+        $deletedStatus = $controller->deleteRecord($table, $column, $category_id);
 
         switch ($deletedStatus) {
             case true:

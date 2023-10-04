@@ -5,7 +5,7 @@ ini_set('display_errors', 0);
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-    $eventDate = date("Y-M-d H:m:s");
+    $eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
     error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
@@ -79,7 +79,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         include_once "../controllers/uniqueCode.php";
 
         $user_id = $v4uuid;
-
         $controller = new storeController();
         $password = password_hash($password, PASSWORD_BCRYPT);
         $result = $controller->addUser($user_id, $firstName, $lastName, $otherNames, $userEmail, $role, $password);
@@ -89,10 +88,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'status' => 'error',
                 'message' => 'A User with the same email already exists.'
             );
-        } elseif ($result === 'success') {
+        } elseif ($result == true) {
             $response = array(
                 'status' => 'success',
-                'message' => 'User registered successfully!',
+                'message' => 'Registration successful!',
                 'redirect' => ' ./login.php'
             );
         } else {

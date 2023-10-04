@@ -5,7 +5,7 @@ session_start();
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-	$eventDate = date("Y-M-d H:m:s");
+	$eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
 	error_log($message . PHP_EOL, 3, "error-log.txt");
 }
@@ -19,17 +19,17 @@ if (!isset($_SESSION['loggedIn']) && !$_SESSION['loggedIn']) {
 }
 
 require_once '../controllers/storeController.php';
-// Create an instance of the StoreController class
 $controller = new StoreController();
 
-// Fetch spare parts from the database
-$carousel = $controller->getCarousel();
+
+$query = "SELECT * FROM specialisation;";
+$specialisation = $controller->getRecords($query);
 
 // Prepare the response
 $response = array(
     'status' => 'success',
-    'message' => 'Carousel fetched successfully.',
-    'carousel' => $carousel
+    'message' => 'Specialisation fetched successfully!',
+    'specialisations' => $specialisation
 );
 
 if (!headers_sent()) {

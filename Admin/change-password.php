@@ -5,7 +5,7 @@ session_start();
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-	$eventDate = date("Y-M-d H:m:s");
+	$eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
 	error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
@@ -43,7 +43,7 @@ $controller = new storeController();
                             </div>
 
                             <div class="mt-3">
-                                <button id="save-btn" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" name="save">SAVE</button>
+                                <button id="save-password-btn" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" name="save">SAVE</button>
                             </div>
                         </form>
                     </div>
@@ -51,125 +51,4 @@ $controller = new storeController();
             </div>
         </div>
     </div>
-    <footer class="footer">
-        <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
-                Copyright © 2023 from MeCAB. All rights reserved.
-            </span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
-                <i class="ti-heart text-danger ml-1"></i>
-            </span>
-        </div>
-    </footer>
-</div>
-<!-- main-panel ends -->
-</div>
-<!-- page-body-wrapper ends -->
-</div>
-<!-- container-scroller -->
-
-<script src="../vendors/js/vendor.bundle.base.js"></script>
-<script src="../js/jquery.js"></script>
-<script src="../vendors/sweetalert/sweetalert.min.js"></script>
-<script src="../js/off-canvas.js"></script>
-<script src="../js/hoverable-collapse.js"></script>
-<script src="../js/template.js"></script>
-<script src="../js/settings.js"></script>
-<script src="../js/todolist.js"></script>
-<script src="../js/dashboard.js"></script>
-<script>
-    $(document).ready(function() {
-        // Change password script
-        $("#save-btn").click(function(e) {
-            e.preventDefault();
-
-            // Get form inputs
-            var oldPassword = $("#old-password").val().trim();
-            var newPassword = $("#new-password").val().trim();
-            var conPassword = $("#con-new-password").val().trim();
-
-            // Perform validation
-            if (oldPassword === "") {
-                swal("Error", "Please enter your password.", "error");
-                return;
-            }
-            if (newPassword === "") {
-                swal("Error", "Please enter your new password.", "error");
-                return;
-            }
-            if (conPassword === "") {
-                swal("Error", "Please confirm your new password.", "error");
-                return;
-            }
-            if (oldPassword === newPassword) {
-                swal("Error", "Cannot use old password as new password.", "error");
-                return;
-            }
-            if (newPassword !== conPassword) {
-                swal("Error", "New password and confirm password do not match", "error");
-                return;
-            }
-
-            var formData = new FormData();
-            formData.append('old_password', oldPassword);
-            formData.append('new_password', newPassword);
-            formData.append('con_password', conPassword);
-            // console.log(formData);
-
-            // All inputs are valid, proceed with AJAX request
-            $.ajax({
-                url: "../logic/change-password-logic.php",
-                type: "POST",
-                data: formData,
-                contentType: false,
-                processData: false,
-                dataType: "json",
-                success: function(response) {
-                    // Handle the response and redirect
-                    if (response.status === 'success') {
-                        $("#change-password-form")[0].reset();
-                        swal("Success", response.message, "success").then(function() {
-                            window.location.href = response.redirect;
-                        });
-                    } else {
-                        swal("Error", response.message, "error");
-                    }
-                },
-                error: function(xhr, status, error) {
-                    swal("Error", "An error occurred while processing the request: " + error, "error");
-                }
-            });
-
-        });
-
-        // Logout script
-        $('#logoutForm').submit(function(e) {
-            e.preventDefault(); // Prevent the default form submission
-
-            // Perform the Ajax request
-            $.ajax({
-                url: "./../logic/logout.php",
-                type: "POST",
-                data: $("#logoutForm").serialize() + "&action=logout",
-                dataType: "json",
-                success: function(response) {
-                    // Handle the response from the server
-                    if (response.status === 'success') {
-                        // If logout was successful, redirect to the login page
-                        window.location.href = response.redirect;
-                    } else {
-                        // If there was an error, display the error message
-                        swal("Error", response.message, "error");
-                    }
-                },
-                error: function(xhr, status, error) {
-                    // If there was an error with the Ajax request, display an error message
-                    swal("Error", response.message, "error");
-                }
-            });
-        });
-    });
-</script>
-</body>
-
-</html>
+    <?php include_once('includes/footer.php'); ?>

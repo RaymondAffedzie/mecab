@@ -5,7 +5,7 @@ session_start();
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-	$eventDate = date("Y-M-d H:m:s");
+	$eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
 	error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
@@ -24,11 +24,11 @@ $controller = new storeController();
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (isset($_POST["service_id"]) && !empty($_POST["service_id"])) {
-        $service_id = $_POST["service_id"];
-        $table = 'service';
+        $service_id = filter_input(INPUT_POST, 'service_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $table = 'mechanic_services';
         $column = 'service_id';
 
-        // Delete the spare part record along with its image
+        // Delete the mechanic service record
         $deletedStatus = $controller->deleteRecord($table, $column, $service_id);
 
         switch ($deletedStatus) {
@@ -36,39 +36,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $response = array(
                     'status' => 'success',
                     'message' => 'Service deleted successfully.',
-                    'redirect' => '../Admin/view-services.php'
-                );
-                break;
-            case 'not-existing':
-                $response = array(
-                    'status' => 'error',
-                    'message' => 'Service not found.',
-                    'redirect' => '../../Admin/view-services.php'
+                    'redirect' => '../Mechanic/add-service.php'
                 );
                 break;
             default:
                 $response = array(
                     'status' => 'error',
-                    'message' => 'An error occurred while deleting.',
-                    'redirect' => '../Admin/service-details.php'
+                    'message' => 'Failed to delete service.'
                 );
                 break;
         }
     } else {
         $response = array(
             'status' => 'error',
-            'message' => 'Missing service parameter.',
-            'redirect' => '../Admin/view-services.php'
+            'message' => 'Invalid request.',
+            'redirect' => '../Mechanic/add-service.php'
         );
     }
 } else {
     $response = array(
         'status' => 'error',
         'message' => 'Invalid request method.',
-        'redirect' => '../Admin/view-services.php'
+        'redirect' => '../Mechanic/add-service.php'
     );
 }
 
 if (!headers_sent()) {
     echo json_encode($response);
 }
+?>

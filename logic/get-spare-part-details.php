@@ -5,7 +5,7 @@ session_start();
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-	$eventDate = date("Y-M-d H:m:s");
+	$eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
 	error_log($message . PHP_EOL, 3, "error-log.txt");
 }
@@ -22,9 +22,7 @@ require_once '../controllers/storeController.php';
 $controller = new storeController();
 
 if (isset($_GET['sparepart_id'])) {
-    $sparepart_id = $_GET['sparepart_id'];
-
-    // Fetch spare part details from the controller
+    $sparepart_id = filter_input(INPUT_GET, 'sparepart_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $query = "SELECT sp.*, ct.*, cb.*, cm.* 
                 FROM spare_parts sp
                 LEFT JOIN car_brand cb ON sp.car_brand_id = cb.car_brand_id
@@ -38,15 +36,13 @@ if (isset($_GET['sparepart_id'])) {
         case false:
             $response = array(
                 'status' => 'error',
-                'message' => 'An error occured while fetching spare parts.',
-                'redirect' => '../Spare-parts/view-spare-parts.php'
+                'message' => 'An error occured while fetching spare parts.'
             );
             break;
         case null:
             $response = array(
                 'status' => 'error',
-                'message' => 'Spare part not found.',
-                'redirect' => '../Spare-parts/view-spare-parts.php'
+                'message' => 'Spare part not found.'
             );
             break;
         default:

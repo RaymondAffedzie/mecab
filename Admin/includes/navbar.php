@@ -31,7 +31,7 @@
 					<li class="nav-item dropdown">
 						<a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
 							<i class="icon-bell mx-0"></i>
-							<span class="count"></span>
+							<!-- <span class="count"></span> -->
 						</a>
 						<div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
 							<p class="mb-0 font-weight-normal float-left dropdown-header">
@@ -39,54 +39,24 @@
 							</p>
 							<a class="dropdown-item preview-item">
 								<div class="preview-thumbnail">
-									<div class="preview-icon bg-success">
-										<i class="ti-info-alt mx-0"></i>
-									</div>
-								</div>
-								<div class="preview-item-content">
-									<h6 class="preview-subject font-weight-normal">
-										Application Error
-									</h6>
-									<p class="font-weight-light small-text mb-0 text-muted">
-										Just now
-									</p>
-								</div>
-							</a>
-							<a class="dropdown-item preview-item">
-								<div class="preview-thumbnail">
-									<div class="preview-icon bg-warning">
-										<i class="ti-settings mx-0"></i>
-									</div>
-								</div>
-								<div class="preview-item-content">
-									<h6 class="preview-subject font-weight-normal">
-										Settings
-									</h6>
-									<p class="font-weight-light small-text mb-0 text-muted">
-										Private message
-									</p>
-								</div>
-							</a>
-							<a class="dropdown-item preview-item">
-								<div class="preview-thumbnail">
 									<div class="preview-icon bg-info">
-										<i class="ti-user mx-0"></i>
+										<i class="ti-bell mx-0"></i>
 									</div>
 								</div>
 								<div class="preview-item-content">
 									<h6 class="preview-subject font-weight-normal">
-										New user registration
+										New store registration
 									</h6>
 									<p class="font-weight-light small-text mb-0 text-muted">
 										2 days ago
 									</p>
 								</div>
-							</a>
+							</a>	
 						</div>
 					</li>
 					<li class="nav-item nav-profile dropdown">
 						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-							<img src="../images/faces/face28.jpg" alt="profile" />
+							<i class="ti-user mx-0 text-primary" style="font-size: 24px;"></i>
 						</a>
 						<div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
 							<?php
@@ -108,7 +78,7 @@
 							?>
 						</div>
 					</li>
-					<li class="nav-item nav-settings d-none d-lg-flex">
+					<li class="nav-item nav-settings">
 						<a class="nav-link" href="#">
 							<i class="icon-ellipsis"></i>
 						</a>
@@ -156,7 +126,7 @@
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" id="chats-tab" data-toggle="tab" href="#chats-section" role="tab" aria-controls="chats-section">
-							CHATS
+						<i class="ti-bell mx-0"></i> NOTIFICATIONS
 						</a>
 					</li>
 				</ul>
@@ -360,21 +330,17 @@
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
 							<i class="icon-columns menu-icon"></i>
-							<span class="menu-title">Operations</span>
+							<span class="menu-title">Management</span>
 							<i class="menu-arrow"></i>
 						</a>
 						<div class="collapse" id="form-elements">
 							<ul class="nav flex-column sub-menu">
-								<li class="nav-item"><a class="nav-link" href="add-admins.php">Add Admin</a></li>
-								<li class="nav-item"><a class="nav-link" href="add-car-brand.php">Add Car brand</a></li>
-								<li class="nav-item"><a class="nav-link" href="add-car-model.php">Add Car Model</a></li>
-								<li class="nav-item"><a class="nav-link" href="add-carousel.php">Add Carousel</a></li>
-								<li class="nav-item"><a class="nav-link" href="add-categories.php">Add Category</a></li>
-								<li class="nav-item"><a class="nav-link" href="add-service.php">Add Service</a></li>
-								<li class="nav-item"><a class="nav-link" href="view-admins.php">Show Admins</a></li>
-								<li class="nav-item"><a class="nav-link" href="view-carousel.php">Show Carousel</a></li>
-								<li class="nav-item"><a class="nav-link" href="view-categories.php">Show Category</a></li>
-								<li class="nav-item"><a class="nav-link" href="view-services.php">Show Services</a></li>
+								<li class="nav-item"><a class="nav-link" href="add-admins.php">Admin</a></li>
+								<li class="nav-item"><a class="nav-link" href="add-car-brand.php">Car brands</a></li>
+								<li class="nav-item"><a class="nav-link" href="add-car-model.php">Car Models</a></li>
+								<li class="nav-item"><a class="nav-link" href="add-carousel.php">Carousels</a></li>
+								<li class="nav-item"><a class="nav-link" href="add-categories.php">Categories</a></li>
+								<li class="nav-item"><a class="nav-link" href="add-specialisation.php">Specialisation</a></li>
 							</ul>
 						</div>
 					</li>

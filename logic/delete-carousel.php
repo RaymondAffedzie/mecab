@@ -5,7 +5,7 @@ session_start();
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-	$eventDate = date("Y-M-d H:m:s");
+	$eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
 	error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
@@ -23,8 +23,8 @@ $controller = new storeController();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    if (isset($_POST["carousel_ID"]) && !empty($_POST["carousel_ID"])) {
-        $carousel_ID = $_POST["carousel_ID"];
+    if (isset($_POST["carousel"]) && !empty($_POST["carousel"])) {
+        $carousel_ID =  filter_input(INPUT_POST, 'carousel', FILTER_SANITIZE_NUMBER_INT);
         $table = 'carousel';
         $column = 'carousel_ID';
 
@@ -36,14 +36,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $response = array(
                     'status' => 'success',
                     'message' => 'Carousel deleted successfully.',
-                    'redirect' => '../Admin/view-carousel.php'
+                    'redirect' => '../Admin/view-carousels.php'
                 );
                 break;
             case 'not-existing':
                 $response = array(
                     'status' => 'error',
                     'message' => 'Carousel not found.',
-                    'redirect' => '../../Admin/view-carousel.php'
+                    'redirect' => '../../Admin/view-carousels.php'
                 );
                 break;
             case 'Failed':
@@ -65,14 +65,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $response = array(
             'status' => 'error',
             'message' => 'Invalid request. Missing carousel id parameter.',
-            'redirect' => '../Admin/view-carousel.php'
+            'redirect' => '../Admin/view-carousels.php'
         );
     }
 } else {
     $response = array(
         'status' => 'error',
         'message' => 'Invalid request method.',
-        'redirect' => '../Admin/view-carousel.php'
+        'redirect' => '../Admin/view-carousels.php'
     );
 }
 

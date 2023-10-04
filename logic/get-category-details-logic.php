@@ -6,7 +6,7 @@ session_start();
 // Error handler
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-    $eventDate = date("Y-M-d H:m:s");
+    $eventDate = date("Y-M-d H:i:s");
     $message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
     error_log($message . PHP_EOL, 3, "error-log.txt");
 }
@@ -22,17 +22,14 @@ if (!isset($_SESSION['loggedIn']) || !$_SESSION['loggedIn']) {
 require_once '../controllers/storeController.php';
 $controller = new storeController();
 
-if (isset($_GET['category_id'])) {
-    $category_id = $_GET['category_id'];
+if (isset($_GET['category'])) {
+    $category_id = $_GET['category'];
 
 
     // Fetch category details from the database
     $query = "SELECT * FROM categories WHERE category_id = :category_id LIMIT 1";
-    $stmt = $db->prepare($query);
-    $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
-    $stmt->execute();
-
-    $categoryDetails = $stmt->fetch(PDO::FETCH_ASSOC);
+    $params = array(":category_id" => $category_id);
+    $categoryDetails = $controller->getSingleRecordsByValue($query, $params);
 
     if ($categoryDetails !== false && $categoryDetails !== null) {
         $response = array(

@@ -86,7 +86,7 @@
 					</li>
 					<li class="nav-item nav-profile dropdown">
 						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-							<i class="ti-user mx-0 text-primary" style="font-size: 24px; "></i>
+							<i class="ti-user mx-0 text-primary" style="font-size: 24px;"></i>
 						</a>
 						<div class="dropdown-menu dropdown-menu-right font-weight-medium navbar-dropdown" aria-labelledby="profileDropdown">
 							<?php

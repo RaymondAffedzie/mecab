@@ -5,31 +5,29 @@ session_start();
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-	$eventDate = date("Y-M-d H:m:s");
+	$eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
 	error_log($message . PHP_EOL, 3, "error-log.txt");
 }
 
 set_error_handler("errorHandler");
 
-// Prevent user from accessing this page when not logged in
 if (!isset($_SESSION['loggedIn']) && !$_SESSION['loggedIn']) {
     header("Location: login.php");
     exit;
 }
 
 require_once '../controllers/storeController.php';
-// Create an instance of the StoreController class
+
 $controller = new StoreController();
-
-// Fetch spare parts from the database
-$services = $controller->getServices();
-
-// Prepare the response
+$query = "SELECT u.user_id, u.first_name, u.last_name, u.users_email, c.users_contact
+            FROM users u 
+            LEFT JOIN users_contact c ON u.user_id = c.users_id WHERE u.users_role = 'Admin'";
+$admins = $controller->getRecords($query);
 $response = array(
     'status' => 'success',
-    'message' => 'Services fetched successfully.',
-    'services' => $services
+    'message' => 'Admin fetched successfully.',
+    'data' => $admins
 );
 
 if (!headers_sent()) {

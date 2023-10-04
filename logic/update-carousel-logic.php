@@ -5,7 +5,7 @@ session_start();
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-    $eventDate = date("Y-M-d H:m:s");
+    $eventDate = date("Y-M-d H:i:s");
     $message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
     error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
@@ -42,10 +42,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         );
     } else {
         try {
-            // Create an instance of the StoreController
+          
             $controller = new StoreController();
 
-            // Prepare the update data array for the updateRecordWithImage function
+          
             $data = array(
                 'carousel_caption' => $carousel_caption
             );
@@ -62,15 +62,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 case true:
                     $response = array(
                         'status' => 'success',
-                        'message' => 'Carousel updated successfully!',
-                        'redirect' => '../Admin/carousel-details.php?carousel_ID=' . $carousel_ID
+                        'message' => 'Carousel updated successfully!'
                     );
                     break;
                 case 'failed':
                     $response = array(
                         'status' => 'error',
-                        'message' => 'Failed to update carousel!',
-                        'redirect' => '../Admin/carousel-details.php?carousel_ID=' . $carousel_ID
+                        'message' => 'Failed to update carousel!'
                     );
                     break;
                 default:

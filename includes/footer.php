@@ -243,37 +243,33 @@
         <script src="assets/js/popper.min.js"></script>
         <script src="assets/js/lazysizes.js"></script>
         <script src="assets/js/main.js"></script>
+        <script src="assests/js/payment.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             $(document).ready(function() {
-                // user logout
-                $('#logoutForm').submit(function(e) {
-                    e.preventDefault(); // Prevent the default form submission
+                // logout
+                $('#logoutForm').click(function(e) {
+                    e.preventDefault(); 
 
-                    // Perform the Ajax request
                     $.ajax({
                         url: "./logic/logout.php",
                         type: "POST",
                         data: $("#logoutForm").serialize() + "&action=logout",
                         dataType: "json",
                         success: function(response) {
-                            // Handle the response from the server
                             if (response.status === 'success') {
-                                // If logout was successful, redirect to the login page
                                 window.location.href = response.redirect;
                             } else {
-                                // If there was an error, display the error message
                                 swal("Error", response.message, "error");
                             }
                         },
                         error: function(xhr, status, error) {
-                            // If there was an error with the Ajax request, display an error message
                             swal("Error", response.message, "error");
                         }
                     });
                 });
 
-                // add to shopping cart script
+                // add item to shopping cart script
                 $('#addToCartBtn').click(function() {
                     // Get the values from the input fields
                     var productId = $('#product_id').val();
@@ -295,26 +291,84 @@
                         url: 'logic/add-to-cart.php',
                         data: data,
                         success: function(response) {
-                            alert('Item added to cart successfully');
+                            fetchCart();
+                            updateCartCount();
                             updateSubtotal();
+                            Swal.fire('Success!', 'Item added to cart!', 'success');
                         },
                         error: function(xhr, status, error) {
-                            alert('Error adding item to cart');
+                            Swal.fire('Error!', 'An error occurred while adding item to cart!', 'error');
                         }
                     });
                 });
 
-                // Calculate amount for an item
-                function calculateItemAmount(row) {
-                    var quantity = parseFloat($(row).find('.product-quantity').text());
-                    var price = parseFloat($(row).find('.product-price').text());
+                // Function to fetch and update the cart
+                function fetchCart() {
+                    $.ajax({
+                        url: 'logic/fetch-cart.php',
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            updateCartItems(data);
+                        },
+                        error: function() {
+                            swal("Error", "Error fetching cart data!", "error");
+                        }
+                    });
+                }
 
-                    // Check if quantity and price are valid numbers
-                    if (!isNaN(quantity) && !isNaN(price)) {
-                        return quantity * price;
+                // Function to update the cart items
+                function updateCartItems(cartData) {
+                    var cartItemsHtml = '';
+                    var totalAmount = 0; // Initialize total amount
+
+                    $.each(cartData, function(index, item) {
+                        var cartItemHtml = '<li class="item">';
+                        cartItemHtml += '<a class="product-image" href="#"><img src="uploads/' + item.image + '" alt="" /></a>';
+                        cartItemHtml += '<div class="product-details">';
+                        cartItemHtml += '<a class="cart__remove float-right" data-product-id="' + item.id + '"><i class="anm anm-times-l" aria-hidden="true"></i></a>';
+                        cartItemHtml += '<a class="pName" href="#"><h3>' + item.name + '</h3></a>';
+                        cartItemHtml += '<div class="priceRow"><div class="product-price"><span class="money"><em>price: &#x20B5;' + item.price + '</em></span></div></div>';
+                        cartItemHtml += '<div class="wrapQtyBtn"><div class="qtyField"><span class="label">Qty: ' + item.quantity + '</span></div></div>';
+                        var itemAmount = item.price * item.quantity;
+                        cartItemHtml += '<div class="amountRow"><div class="amount"><span class="money" id="amount"><b>Total: &#x20B5;' + itemAmount.toFixed(2) + '</b></span></div></div>';
+                        cartItemHtml += '</div></li>';
+
+                        // Add item amount to the total amount
+                        totalAmount += itemAmount;
+
+                        cartItemsHtml += cartItemHtml;
+                    });
+
+                    // Update the cart items in the HTML
+                    $('#cart-items').html(cartItemsHtml);
+
+                    // Enable or disable the checkout button based on cart contents
+                    if (cartData.length > 0) {
+                        $('#cartCheckout').prop('disabled', false);
+
+                        // Show the total section
+                        $('.total').show();
                     } else {
-                        return 0;
+                        $('#cartCheckout').prop('disabled', true);
+
+                        // Hide the total section if cart is empty
+                        $('.total').hide();
                     }
+
+                    // Update the total amount in the mini cart
+                    $('#totalAmountMini').text('₵' + totalAmount.toFixed(2));
+                }
+
+                // Function to update the subtotal for cart
+                function updateSubtotal() {
+                    var totalAmount = 0;
+                    $('.product-amount').each(function() {
+                        var amountText = $(this).find('.money b').text();
+                        var amount = parseFloat(amountText.replace(/[^\d.]/g, ''));
+                        totalAmount += amount;
+                    });
+                    $('#totalAmount').text('₵' + totalAmount.toFixed(2));
                 }
 
                 // Function to remove an item from the cart
@@ -328,14 +382,16 @@
                         success: function(response) {
                             if (response === 'success') {
                                 $('tr[data-product-id="' + productId + '"]').remove();
+                                fetchCart();
+                                updateCartCount();
                                 updateSubtotal();
-                                Swal.fire('Removed!', 'Item has been removed from the cart.', 'success');
+                                Swal.fire('Removed!', 'Item has been removed from the cart!', 'success');
                             } else {
-                                Swal.fire('Error!', 'An error occurred while removing the item.', 'error');
+                                Swal.fire('Error!', 'An error occurred while removing the item!', 'error');
                             }
                         },
                         error: function(xhr, status, error) {
-                            Swal.fire('Error!', 'An error occurred while communicating with the server.', 'error');
+                            Swal.fire('Error!', 'An error occurred while communicating with the server!', 'error');
                         }
                     });
                 }
@@ -353,118 +409,30 @@
                         cancelButtonText: 'Cancel',
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            if (result.isConfirmed) {
-                                removeItemFromCart(productId);
-                            }
+                            removeItemFromCart(productId);
                         }
                     });
                 });
 
-                // Clear cart script
-                $('#clearCartBtn').click(function(e) {
-                    e.preventDefault(); // Prevent the default form submission behavior
-                    Swal.fire({
-                        title: 'Clear Cart',
-                        text: 'Are you sure you want to clear the cart?',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, clear it!',
-                        cancelButtonText: 'Cancel',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            clearCart();
-                        }
-                    });
-                });
-
-                // Function to clear the cart
-                function clearCart() {
+                // Function to fetch and update the cart count
+                function updateCartCount() {
                     $.ajax({
-                        type: 'POST',
-                        url: 'logic/clear-cart.php',
-                        success: function(response) {
-
-                            // Clear the table row content
-                            $('#cartTable tbody').empty();
-
-                            updateSubtotal();
-                        },
-                        error: function(xhr, status, error) {
-                            Swal.fire('Error!', 'An error occurred while clearing the cart.', 'error');
-                        }
-                    });
-                }
-
-                // Function to fetch and update the cart
-                function fetchCart() {
-                    $.ajax({
-                        url: 'logic/fetch-cart.php',
+                        url: 'logic/get-cart-count.php',
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
-                            // Update the cart on the page based on the data
-                            updateCartItems(data);
-                            updateSubtotal(); // Update the subtotal after fetching cart data
+                            $('#cartItemCount').text(data.count);
                         },
                         error: function() {
-                            swal("Error", "Error fetching cart data!", "error");
+                            Swal.fire('Error!', 'Error fetching cart count!', 'error');
                         }
                     });
                 }
 
-                // Function to update the cart items
-                function updateCartItems(cartData) {
-                    var cartItemsHtml = '';
-                    $.each(cartData, function(index, item) {
-                        var cartItemHtml = '<li class="item">';
-                        cartItemHtml += '<a class="product-image" href="#"><img src="uploads/' + item.image + '" alt="" /></a>';
-                        cartItemHtml += '<div class="product-details">';
-                        cartItemHtml += '<a href="#" class="cart__remove float-right" data-product-id="' + item.id + '"><i class="anm anm-times-l" aria-hidden="true"></i></a>';
-                        cartItemHtml += '<a class="pName" href="#"><h3>' + item.name + '</h3></a>';
-                        cartItemHtml += '<div class="priceRow"><div class="product-price"><span class="money"><em>Item price: &#x20B5;' + item.price + '</em></span></div></div>';
-                        cartItemHtml += '<div class="wrapQtyBtn"><div class="qtyField"><span class="label">Qty: ' + item.quantity + '</span></div></div>';
-                        cartItemHtml += '<div class="amountRow"><div class="product-amount"><span class="money" id="amount"><b>Amount: &#x20B5;' + (item.amount).toFixed(2) + '</b></span></div></div>';
-                        cartItemHtml += '</div></li>';
-                        cartItemsHtml += cartItemHtml;
-                    });
-
-                    // Update the cart items in the HTML
-                    $('#cart-items').html(cartItemsHtml);
-                }
-
-                // Initial fetch of the cart when the page loads
                 fetchCart();
-
-                // Periodic updates by calling fetchCart() on a timer (adjust the interval as needed)
-                setInterval(fetchCart, 5000);
-
-                function calculateTotalAmount() {
-                    var totalAmount = 0;
-                    $('.cart__row').each(function(index, row) {
-                        var itemAmount = parseFloat($(row).find('.product-amount .money').text().replace('Amount: &#x20B5;', '').trim());
-                        if (!isNaN(itemAmount)) {
-                            totalAmount += itemAmount;
-                        }
-                    });
-                    return totalAmount;
-                }
-
-                // Function to update the subtotal
-                function updateSubtotal() {
-                    var totalAmount = calculateTotalAmount();
-                    var formattedTotal = '₵' + totalAmount.toFixed(2);
-                    
-                    $('.sub-total').text(formattedTotal);
-
-                    if (totalAmount > 0) {
-                        $('#cartCheckout').prop('disabled', false);
-                    } else {
-                        $('#cartCheckout').prop('disabled', true);
-                    }
-                }
-
-                // Initial update of the subtotal when the page loads
+                updateCartCount();
                 updateSubtotal();
+                // setInterval(fetchCart, 3000);
 
             });
 
@@ -477,7 +445,7 @@
                         e.preventDefault();
                         var input = this.previousElementSibling;
                         var value = parseInt(input.value);
-                        input.value = value + 1;
+                        input.value = value++;
                     });
                 });
 
@@ -489,7 +457,7 @@
                         var input = this.nextElementSibling;
                         var value = parseInt(input.value);
                         if (value > 1) {
-                            input.value = value - 1;
+                            input.value = value--;
                         }
                     });
                 });
@@ -498,4 +466,4 @@
         </div>
         </body>
 
-        </html>
+        </html>_

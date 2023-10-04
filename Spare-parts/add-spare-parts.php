@@ -5,7 +5,7 @@ session_start();
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-    $eventDate = date("Y-M-d H:m:s");
+    $eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
     error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
@@ -235,8 +235,7 @@ $carBrands = $controller->getCarBrands();
 		var category      = document.getElementById('category').value.trim();
 		var price         = document.getElementById('price').value.trim();
 		var description   = document.getElementById('description').value.trim();
-		var image         = document.getElementById('image-upload').files[0]; // Get the selected file
-
+		var image         = document.getElementById('image-upload').files[0]; 
 		if (sparePartName.trim() === '') {
 			swal("Error", "Please enter spare part name.", "error");
 			return;

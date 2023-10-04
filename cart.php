@@ -6,7 +6,7 @@ session_start();
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-    $eventDate = date("Y-M-d H:m:s");
+    $eventDate = date("Y-M-d H:i:s");
     $message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
     error_log($message . PHP_EOL, 3, "error-log.txt");
 }
@@ -33,25 +33,27 @@ include_once('includes/navbar.php');
 <div class="container">
     <div class="row">
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
-
-            <form action="#" method="post" class="cart style2">
+            <div class="table-responsive">
                 <table id="cartTable" class="table">
-                    <thead class="cart__header">
+                    <thead class="">
                         <tr>
                             <th class="text-center">Image</th>
                             <th class="text-center">Product Name</th>
                             <th class="text-center">Price</th>
                             <th class="text-center">Quantity</th>
-                            <th class="text-center">Total Amount</th>
+                            <th class="text-center">Total</th>
                             <th class="text-center">Remove</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody> 
                         <?php
+                        $totalAmount = 0;
                         if (isset($_SESSION['cart']) && count($_SESSION['cart']) > 0) {
                             foreach ($_SESSION['cart'] as $item) {
+                                $itemAmount = $item['quantity'] * $item['price'];
+                                $totalAmount += $itemAmount; 
                         ?>
-                                <tr class="cart__row border-bottom line1 cart-flex border-top cart-item" data-product-id="<?= $item['id']; ?>">
+                                <tr class="cart__row  cart-item" data-product-id="<?= $item['id']; ?>">
                                     <td class="cart__image-wrapper cart-flex-item">
                                         <a href="#"><img class="cart__image" src="uploads/<?= $item['image']; ?>" alt="uploads/<?= $item['image']; ?>"></a>
                                     </td>
@@ -60,21 +62,20 @@ include_once('includes/navbar.php');
                                             <a href="#"><?= $item['name']; ?></a>
                                         </div>
                                     </td>
-                                    <td class="cart__price-wrapper cart-flex-item text-center product-price">
-                                        <span class="money">&#x20B5;<?= $item['price'] ?></span>
+                                    <td class="text-center product-price">
+                                        <span class="money">&#x20B5;<?=  $item['price'] ?></span>
                                     </td>
-                                    <td class="cart__update-wrapper cart-flex-item text-center product-quantity">
+                                    <td class=" text-center product-quantity">
                                         <span class="money"><?= $item['quantity']; ?></span>
                                     </td>
-                                    <td class="text-center small--hide cart-price product-amount">
-                                        <span class="money" id="amount"><?= $item['quantity'] * $item['price']; ?></span>
+                                    <td class="text-center product-amount">
+                                        <span class="money" id="amount"><b>&#x20B5;<?= $itemAmount; ?></b></span>
                                     </td>
-                                    <td class="text-left small--hide text-center">
+                                    <td class="text-left text-center">
                                         <a href="#" class="btn btn--secondary cart__remove" title="Remove item" data-product-id="<?= $item['id']; ?>">
                                             <i class="icon icon anm anm-times-l"></i>
                                         </a>
                                     </td>
-
                                 </tr>
                             <?php
                             }
@@ -91,60 +92,20 @@ include_once('includes/navbar.php');
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="6" class="text-left">
-                                <button type="submit" id="clearCartBtn" class="btn btn-secondary btn--small small--hide float-right">Clear Cart</button>
+                            <td colspan="4">
+                                <h2 class="text-right">Total</h2>
+                            </td>
+                            <td class="text-center">
+                                <h2 id="totalAmount"></h2>
+                            </td>
+                            <td class="text-left">
+                                <a href="checkout.php" class="btn btn-secondary btn--small" id="cartCheckout">Checkout</a>
                             </td>
                         </tr>
                     </tfoot>
                 </table>
-            </form>
-        </div>
-
-        <div class="container mt-4">
-            <div class="row">
-                <div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-4" hidden>
-                    <h5>Discount Codes</h5>
-                    <form action="#" method="post">
-                        <div class="form-group">
-                            <label for="address_zip">Enter your coupon code if you have one.</label>
-                            <input type="text" name="coupon">
-                        </div>
-                        <div class="actionRow">
-                            <div><input type="button" class="btn btn-secondary btn--small" value="Apply Coupon"></div>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="col-12 col-sm-12 col-md-4 col-lg-4 cart__footer">
-                    <div class="solid-border">
-                        <div class="row border-bottom pb-2">
-                            <span class="col-12 col-sm-6 cart__subtotal-title">Subtotal</span>
-                            <span class="col-12 col-sm-6 text-right product-price">
-                                <span class="money sub-total" id="sub-total-2"></span>
-                            </span>
-                        </div>
-
-                        <div class="row border-bottom pb-2 pt-2" hidden>
-                            <span class="col-12 col-sm-6 cart__subtotal-title">
-                                <strong>Grand Total</strong>
-                            </span>
-                            <span class="col-12 col-sm-6 cart__subtotal-title cart__subtotal text-right">
-                                <span class="money grand-total">&#x20B5;</span>
-                            </span>
-                        </div>
-                        <p class="cart_tearm pt-3" hidden>
-                            <label for="tnc">
-                                <input type="checkbox" id="tnc" name="tnc" class="checkbox" value="tearm" required="">
-                                I agree with the <a href="#">terms</a> and <a href="#">conditions</a>
-                            </label>
-                        </p>
-                        <input type="submit" name="checkout" id="cartCheckout" class="btn btn--small-wide checkout" value="Proceed To Checkout">
-                    </div>
-
-                </div>
             </div>
         </div>
-
     </div>
 </div>
 

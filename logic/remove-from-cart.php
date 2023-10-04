@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         foreach ($_SESSION['cart'] as $key => $item) {
             if ($item['id'] == $product_id) {
                 unset($_SESSION['cart'][$key]);
-                echo 'success'; // Return a success response
+                echo 'success';
                 exit;
             }
         }

@@ -22,16 +22,20 @@ if (!isset($_SESSION['loggedIn']) && !$_SESSION['loggedIn']) {
 require_once '../controllers/storeController.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $serviceName = filter_input(INPUT_POST, 'service_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $spcialisation = filter_input(INPUT_POST, 'spcialisation', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $imageData      = $_FILES['image'] ?? null;
 
+    $spcialisation = ucwords($spcialisation);
+    $description = ucfirst($description);
+
     $errors = array();
-    if (empty($serviceName)) {
-        $errors[] = "Service name is required.";
+    if (empty($spcialisation)) {
+        $errors[] = "specialisation name is required.";
     }
 
     if (empty($imageData)) {
-        $errors[] = "Service image is required.";
+        $errors[] = "specialisation image is required.";
     }
 
     if (!empty($errors)) {
@@ -42,14 +46,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         include_once "../controllers/uniqueCode.php";
 
-        $service_id = $v4uuid;
+        $specialisation_id = $v4uuid;
 
         $controller = new StoreController();
 
-        $table = "service";
+        $table = "specialisation";
         $data = array(
-            'service_id' => $service_id,
-            'service_name' => $serviceName
+            'specialisation_id' => $specialisation_id,
+            'specialisation' => $spcialisation,
+            'description' => $description
         );
 
         $result = $controller->addRecordWithImage($data, $imageData, $table);
@@ -58,13 +63,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $response = array(
                 'status' => 'success',
                 'message' => $result['message'],
-                'redirect' => '../Admin/view-services.php'
+                'redirect' => '../Admin/view-specialisations.php'
             );
         } else {
             $response = array(
                 'status' => 'error',
-                'message' =>  $result['message'],
-                'redirect' => '../Admin/add-service.php'
+                'message' =>  $result['message']
             );
         }
     }

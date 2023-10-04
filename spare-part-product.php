@@ -5,7 +5,7 @@ ini_set('display_errors', 0);
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-	$eventDate = date("Y-M-d H:m:s");
+	$eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
 	error_log($message . PHP_EOL, 3, "error-log.txt");
 }
@@ -81,16 +81,8 @@ if (isset($_GET['product'])) {
                                 <p class="product-single__price product-single__price-product-template">
                                     <span class="visually-hidden">Regular price</span>
                                     <span class="product-price__price product-price__price-product-template product-price__sale product-price__sale--single">
-                                        <span id="ProductPrice-product-template"><span class="money"><?= "GHC ". $record['price']; ?></span></span>
+                                        <span id="ProductPrice-product-template"><span class="money"><?= "GH&#x20B5; ". $record['price']; ?></span></span>
                                     </span>
-                                    <!-- Discount badge || for future use -->
-                                    <!-- <span class="discount-badge"> <span class="devider">|</span>&nbsp;
-                                        <span>You Save</span>
-                                        <span id="SaveAmount-product-template" class="product-single__save-amount">
-                                        <span class="money">$100.00</span>
-                                        </span>
-                                        <span class="off">(<span>16</span>%)</span>
-                                    </span>  -->
                                 </p>
 
                                 <!-- Description -->

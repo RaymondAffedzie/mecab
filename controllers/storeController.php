@@ -23,9 +23,13 @@ class storeController
                 return 'not_found';
             }
 
-            // Verify the password
+            if ($user['status'] != 'Active') {
+                return 'blocked';
+            }
+
             if (password_verify($password, $user['users_password'])) {
-                // Password is correct, log the user in Fetch user's email and user id
+                session_start();
+
                 $userEmail = $user['users_email'];
                 $userId = $user['user_id'];
                 $userRole = $user['users_role'];
@@ -33,9 +37,6 @@ class storeController
 
                 // Check if user has a contact
                 $hasDetails = $this->getUserContact($userId, $contact);
-
-                // Start the session
-                session_start();
 
                 if ($hasDetails) {
                     if (($userRole != 'Customer') && ($userRole != 'Admin')) {
@@ -46,8 +47,8 @@ class storeController
                         $userStore = $stmt->fetch(PDO::FETCH_ASSOC);
                         $store = $userStore['store_id'];
 
-                        $isVerified = $this->isUserStoreVerified($userId, $store);
-                        if ($isVerified) {
+                        $verified = $this->isUserStoreVerified($userId, $store);
+                        if ($verified) {
                             // Store the variables in session variables
                             $_SESSION['userEmail'] = $userEmail;
                             $_SESSION['userId'] = $userId;
@@ -64,7 +65,7 @@ class storeController
 
                             return 'not_verified';
                         }
-                    } else { // for customers and admins
+                    } else {
                         $_SESSION['userEmail'] = $userEmail;
                         $_SESSION['userId'] = $userId;
                         $_SESSION['role'] = $userRole;
@@ -81,7 +82,7 @@ class storeController
                     return 'no_details';
                 }
             } else {
-                return 'incorrect_password';
+                return 'incorrect';
             }
         } catch (PDOException $e) {
             echo "Login failed: " . $e->getMessage();
@@ -103,33 +104,38 @@ class storeController
             return 'exists';
         }
 
-        // Add store if store does not exist
+        $date = date("Y-M-d H:i:s");
+
         try {
-            $query = "INSERT INTO stores (store_id, store_name, store_type, store_email, store_contact, gps_address, street_name, store_town, store_location) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $query = "INSERT INTO stores (store_id, store_name, store_type, store_email, store_contact, gps_address, street_name, store_town, store_location, reg_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
             $stmt = $this->pdo->prepare($query);
-            $stmt->execute([$store_id, $storeName, $storeType, $storeEmail, $storeContact, $gpsAddress, $streetName, $storeTown, $storeLocation]);
-            return 'success';
+            $stmt->execute([$store_id, $storeName, $storeType, $storeEmail, $storeContact, $gpsAddress, $streetName, $storeTown, $storeLocation, $date]);
+            return true;
         } catch (PDOException $e) {
             echo "Store registration failed: " . $e->getMessage();
-            return 'error';
+            return false;
         }
     }
 
     // Add new user
-    public function addUser($user_id, $firstName, $lastName, $otherNames, $userEmail, $specialisation, $password)
+    public function addUser($user_id, $firstName, $lastName, $otherNames, $userEmail, $userRole, $password)
     {
         // Check if a user with the email already exists
         if ($this->isUserExists($userEmail)) {
             return 'exists';
         }
 
+        if ($userRole != 'Admin') {
+            $status = 'Active';
+        }
+
         // Add user if a user does not exist
         try {
-            $query = "INSERT INTO users (user_id, first_name, last_name, other_names, users_email, users_role, `users_password`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $query = "INSERT INTO users (user_id, first_name, last_name, other_names, users_email, users_role, `users_password`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->pdo->prepare($query);
-            $stmt->execute([$user_id, $firstName, $lastName, $otherNames, $userEmail, $specialisation, $password]);
+            $stmt->execute([$user_id, $firstName, $lastName, $otherNames, $userEmail, $userRole, $password, $status]);
 
-            return 'success';
+            return true;
         } catch (PDOException $e) {
             echo "User registration failed: " . $e->getMessage();
             return 'error';
@@ -167,51 +173,50 @@ class storeController
                 return 'exists';
             }
 
-            // Add contact if it does not exist
-            if (isset($contact)) {
-                $query = "INSERT INTO users_contact (users_id, users_contact) VALUES (?, ?)";
-                $stmt = $this->pdo->prepare($query);
-                $stmt->execute([$userId, $contact]);
-            }
+            if ($_SESSION['role'] != 'Admin' || $_SESSION['role'] != 'Customer') {
+                // Check if user is associating with a store
+                if (isset($storeId)) {
+                    require_once '../controllers/otpGenerator.php';
+                    $otpGenerator = new OTPGenerator();
+                    $otp = $otpGenerator->generateOTP();
+                    $saveOTP = $otpGenerator->storeOTP($storeId, $userId, $otp);
 
-            // Check if user is associating with a store
-            if (isset($storeId)) {
-                require_once '../controllers/otpGenerator.php';
-                $otpGenerator = new OTPGenerator();
+                    if ($saveOTP == 'success') {
+                        // Get store details (contact)
+                        $query = "SELECT store_contact FROM stores WHERE store_id = :store_id";
+                        $params = array(":store_id" => $storeId);
+                        $storeContact = $this->getSingleRecordsByValue($query, $params);
+                        $storeContact = $storeContact['store_contact'];
+                        $msg = 'Use this code to verify your store. Your verification code is: ';
+                        $otpGenerator->sendOTP($storeContact, $otp, $msg);
+                    }
 
-                // Get otp
-                $otp = $otpGenerator->generateOTP();
+                    // Save user's store record
+                    $query = "INSERT INTO users_store (users_id, store_id) VALUES (?, ?)";
+                    $stmt = $this->pdo->prepare($query);
+                    $stmt->execute([$userId, $storeId]);
 
-                // Save otp
-                $saveOTP = $otpGenerator->storeOTP($storeId, $userId, $otp);
+                    // Save user's specialisation if user is a mechanic
+                    if (isset($specialisation)) {
+                        $query = "INSERT INTO mechanic_specialisation (users_id, specialisation_id) VALUES (?, ?)";
+                        $stmt = $this->pdo->prepare($query);
+                        $stmt->execute([$userId, $specialisation]);
+                    }
 
-                // Send otp to user's store to verify if the user works in the store
-                if ($saveOTP == 'success') {
-                    // Get store details (contact)
-                    // $storeContact = $this->getStoreById($storeId);
-
-                    $query = "SELECT * FROM stores WHERE store_id = :store_id";
-                    $params = array(":store_id" => $storeId);
-                    $storeContact = $this->getSingleRecordsByValue($query, $params);
-
-                    $storeContact = $storeContact['store_contact'];
-
-                    $msg = 'Use this code to verify your store. Your verification code is: ';
-
-                    // Send otp
-                    $otpGenerator->sendOTP($storeContact, $otp, $msg);
+                    // Add contact 
+                    if (isset($contact)) {
+                        $query = "INSERT INTO users_contact (users_id, users_contact) VALUES (?, ?)";
+                        $stmt = $this->pdo->prepare($query);
+                        $stmt->execute([$userId, $contact]);
+                    }
                 }
 
-                // Save user's store record
-                $query = "INSERT INTO users_store (users_id, store_id) VALUES (?, ?)";
-                $stmt = $this->pdo->prepare($query);
-                $stmt->execute([$userId, $storeId]);
-
-                // Save user's specialisation if user is a mechanic
-                if (isset($specialisation)) {
-                    $query = "INSERT INTO mech_specialisation (users_id, specialisation) VALUES (?, ?)";
+            } else {
+                // Add contact 
+                if (isset($contact)) {
+                    $query = "INSERT INTO users_contact (users_id, users_contact) VALUES (?, ?)";
                     $stmt = $this->pdo->prepare($query);
-                    $stmt->execute([$userId, $specialisation]);
+                    $stmt->execute([$userId, $contact]);
                 }
             }
 
@@ -233,15 +238,13 @@ class storeController
                     return array(
                         'status' => 'error',
                         'message' => $uploadResult
-                    ); // Return the upload error message
+                    ); 
                 }
 
                 $imageName = $uploadResult['filename']; // Get the image filename only
 
-                // Ensure $store is an integer
                 $store = is_array($store) ? (int)$store['store_id'] : (int)$store;
 
-                // Set car_brand_id and car_model_id to NULL if they are empty
                 $carBrand = empty($carBrand) ? null : $carBrand;
                 $carModel = empty($carModel) ? null : $carModel;
 
@@ -367,7 +370,7 @@ class storeController
                         'status' => 'error',
                         'message' => 'Failed to add record: Database insertion failed!'
                     );
-                }   
+                }
             } else {
                 // echo "File upload failed or no file selected.";
                 return array(
@@ -463,7 +466,7 @@ class storeController
         // Create the target directory if it doesn't exist
         if (!is_dir($targetDir)) {
             mkdir($targetDir, 0755, true);
-        } 
+        }
 
         // Generate a unique filename for the uploaded image
         $filename = uniqid() . '_' . $image['name'];
@@ -636,6 +639,22 @@ class storeController
             return $stores;
         } catch (PDOException $e) {
             echo "Failed to fetch stores: " . $e->getMessage();
+            return null;
+        }
+    }
+
+    // Get all stores
+    public function getSpecialisation()
+    {
+        try {
+            $query = "  SELECT DISTINCT specialisation_id, specialisation FROM specialisation";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute();
+            $specialisation = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $specialisation;
+        } catch (PDOException $e) {
+            echo "Failed to fetch specialisation: " . $e->getMessage();
             return null;
         }
     }
@@ -851,38 +870,6 @@ class storeController
         }
     }
 
-    // Get all carousel
-    public function getCarousel()
-    {
-        try {
-            $query = "SELECT * FROM carousel";
-            $stmt = $this->pdo->prepare($query);
-            $stmt->execute();
-
-            $carousel = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            return $carousel;
-        } catch (PDOException $e) {
-            throw new Exception("Failed to fetch carousel: " . $e->getMessage());
-        }
-    }
-
-    // Get all carousel
-    public function getCarousels()
-    {
-        try {
-            $query = "SELECT * FROM `carousel` ORDER BY carousel_ID DESC LIMIT 3";
-            $stmt = $this->pdo->prepare($query);
-            $stmt->execute();
-
-            $carousel = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            return $carousel;
-        } catch (PDOException $e) {
-            throw new Exception("Failed to fetch carousel: " . $e->getMessage());
-        }
-    }
-
     // Get all services
     public function getServices()
     {
@@ -914,16 +901,6 @@ class storeController
             return $category;
         } catch (PDOException $e) {
             echo "Error fetching spare part category: " . $e->getMessage();
-            return null;
-        }
-    }
-
-    // Get total spare parts count 
-    public function getSparePartCount()
-    {
-        try {
-        } catch (PDOException $e) {
-            echo "Failed to fetch spare parts count: " . $e->getMessage();
             return null;
         }
     }
@@ -1064,7 +1041,6 @@ class storeController
     }
 
 
-
     /**
      * --------------------------------------------------------------------------------------------------
      * --------------------------------- UPDATE ----------------RECORDS--------------------------------------
@@ -1183,7 +1159,6 @@ class storeController
 
                 return 'success';
             } else {
-                // Old password doesn't match
                 return 'wrong';
             }
         } catch (PDOException $e) {
@@ -1234,33 +1209,29 @@ class storeController
         try {
             $table = $tableName;
 
-            // Generate SET clause for UPDATE query
             $updateColumns = array_keys($updateData);
             $updateValues = array_values($updateData);
+
             $updateSets = array_map(function ($col) {
                 return $col . ' = ?';
             }, $updateColumns);
+
             $updateSetsString = implode(', ', $updateSets);
 
-            // Append the primary key value to the update values array
             $updateValues[] = $primaryKeyValue;
 
-            // Construct the SQL UPDATE query
             $query = "UPDATE $table SET $updateSetsString WHERE $primaryKeyColumn = ?";
-
-            // Execute the SQL UPDATE statement
             $stmt = $this->pdo->prepare($query);
             $stmt->execute($updateValues);
 
-            // Check if any rows were affected by the update
             if ($stmt->rowCount() > 0) {
-                return true; // Record updated successfully
+                return true;
             } else {
-                return false; // Record not found or no changes made
+                return 'false';
             }
         } catch (PDOException $e) {
             echo "Error updating record: " . $e->getMessage();
-            return false; // Error occurred during the update process
+            return false;
         }
     }
 
@@ -1350,28 +1321,23 @@ class storeController
             $column = $primaryKeyColumn;
             $value = $primaryKeyValue;
 
-            // Get the existing image filename for the record
             $existingImageFileName = $this->getExistingImageFileName($table, $column, $value);
-
-            // Delete the record from the database
             $deleteRecord = $this->deleteRecord($table, $column, $value);
 
             if ($deleteRecord) {
-                // Delete the existing image file if it exists
                 $deleteImageResult = $this->deleteExistingImage($existingImageFileName);
 
-                // Check the result of deleting the image file
                 if ($deleteImageResult === true) {
-                    return true; // Successfully deleted the record and the image file
+                    return true;
                 } elseif ($deleteImageResult === 'not-found') {
-                    return 'not-found'; // Record deleted, but image file not found
+                    return 'not-found';
                 } elseif ($deleteImageResult === 'not-existing') {
-                    return 'not-existing'; // Record deleted, but no image file existed
+                    return 'not-existing';
                 } else {
-                    return 'Failed'; // Failed to delete the image file
+                    return 'Failed';
                 }
             } else {
-                return false; // Failed to delete the record
+                return false;
             }
         } catch (PDOException $e) {
             echo "Failed to delete record with image: " . $e->getMessage();
@@ -1404,24 +1370,6 @@ class storeController
      * --------------------------------------------------------------------------------------------------
      */
 
-    // insert function
-    // public function insert($data, $tableName)
-    // {
-    //     try {
-    //         $columns = implode(", ", array_keys($data));
-    //         $values = ":" . implode(", :", array_keys($data));
-
-    //         $query = "INSERT INTO $tableName ($columns) VALUES ($values)";
-
-    //         $stmt = $this->pdo->prepare($query);
-    //         $stmt->execute($data);
-    //         return true;
-    //     } catch (PDOException $e) {
-    //         echo "Failed to insert data : " . $e->getMessage();
-    //         return false;
-    //     }
-    // }
-
     // select all function
     public function select($tableName)
     {
@@ -1445,7 +1393,7 @@ class storeController
             $stmt = $this->pdo->prepare($query);
             $stmt->execute(['value' => $value]);
 
-            return $stmt->fetch(PDO::FETCH_ASSOC); // Returns the data exists, false otherwise
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             echo "Error checking if data exists: " . $e->getMessage();
             return false;
@@ -1462,7 +1410,7 @@ class storeController
 
             $rowCount = $stmt->fetchColumn();
 
-            return $rowCount > 0; // Returns true if the data exists, false otherwise
+            return $rowCount > 0;
         } catch (PDOException $e) {
             echo "Error checking if data exists: " . $e->getMessage();
             return false;

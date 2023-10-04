@@ -55,7 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'category_name' => ucfirst($category_name)
         );
 
-        // Call the method to add the spare part with image
         $result = $storeController->addRecordWithImage($data, $imageData, $table);
 
         if ($result['status'] === 'success') {

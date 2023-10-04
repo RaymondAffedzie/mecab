@@ -5,7 +5,7 @@ session_start();
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-	$eventDate = date("Y-M-d H:m:s");
+	$eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
 	error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
@@ -24,7 +24,7 @@ $controller = new storeController();
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (isset($_POST["sparepart_id"]) && !empty($_POST["sparepart_id"])) {
-        $sparepart_id = $_POST["sparepart_id"];
+        $sparepart_id =  filter_input(INPUT_POST, 'sparepart_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $table = 'spare_parts';
         $column = 'sparepart_id';
 

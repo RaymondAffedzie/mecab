@@ -6,18 +6,24 @@ session_start();
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-    $eventDate = date("Y-M-d H:m:s");
+    $eventDate = date("Y-M-d H:i:s");
     $message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
     error_log($message . PHP_EOL, 3, "error-log.txt");
 }
 
 set_error_handler("errorHandler");
 
+// Prevent user from accessing this page when not logged in
+if (!isset($_SESSION['loggedIn']) || !$_SESSION['loggedIn'] || $_SESSION['role'] != 'Customer') {
+    header("Location: login.php");
+    exit;
+}
+
 require_once 'controllers/storeController.php';
+$controller = new storeController();
 include_once('includes/head.php');
 include_once('includes/navbar.php');
 
-$controller = new storeController();
 ?> <!--Page Title-->
 <div class="page section-header text-center">
     <div class="page-title">
@@ -82,42 +88,23 @@ $controller = new storeController();
         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 sm-margin-30px-bottom">
             <div class="create-ac-content bg-light-gray padding-20px-all">
                 <form>
-                    <fieldset>
-                        <h2 class="login-title mb-3">Billing details</h2>
-                        <div class="row">
-                            <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                                <label for="input-firstname">First Name <span class="required-f">*</span></label>
-                                <input name="firstname" id="input-firstname" type="text">
-                            </div>
-                            <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                                <label for="input-lastname">Last Name <span class="required-f">*</span></label>
-                                <input name="lastname" id="input-lastname" type="text">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                                <label for="input-email">E-Mail <span class="required-f">*</span></label>
-                                <input name="email" id="input-email" type="email">
-                            </div>
-                            <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                                <label for="input-telephone">Contact <span class="required-f">*</span></label>
-                                <input name="Contact" id="input-telephone" type="tel">
-                            </div>
-                        </div>
-                    </fieldset>
 
                     <fieldset>
                         <div class="row">
                             <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                                <label for="input-telephone">Contact <span class="required-f">*</span></label>
+                                <input name="Contact" id="input-telephone" type="tel">
+                            </div>
+                            <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
                                 <label for="input-address-1">GPS Address <span class="required-f">*</span></label>
                                 <input name="address_1" id="input-address-1" type="text">
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
                                 <label for="input-city">City/Town <span class="required-f">*</span></label>
                                 <input name="city" id="input-city" type="text">
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
                                 <label for="region">Region<span class="required-f">*</span></label>
                                 <select name="region" id="input-zone">
@@ -139,6 +126,34 @@ $controller = new storeController();
                                     <option value="Western">Western</option>
                                     <option value="Western North">Western North</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12 col-lg-12 col-xl-12 required">
+                                <label for="">Payment method<span class="required-f">*</span></label>
+                            </div>
+                            <div class="form-group col-md-12 col-lg-12 col-xl-12 required">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="payment-method" id="momo" value="momo" checked>
+                                    <label class="form-check-label" for="momo">MTN Mobile Money (MoMo)</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="payment-method" id="voda-cash" value="voda-cash">
+                                    <label class="form-check-label" for="voda-cash">Vodafone Cash (Voda Cash)</label>
+                                </div>
+                                <div class="mobile-money-qr-payment" 
+                                    data-api-user-id="" 
+                                    data-amount="" 
+                                    data-currency="GHS" 
+                                    data-external-id="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12 col-lg-12 col-xl-12">
+                                <div class="order-button-payment">
+                                    <button class="btn" type="submit">order</button>
+                                </div>
                             </div>
                         </div>
                     </fieldset>
@@ -165,25 +180,27 @@ $controller = new storeController();
                                 <?php
                                 if (isset($_SESSION['cart']) && count($_SESSION['cart']) > 0) {
                                     foreach ($_SESSION['cart'] as $item) {
+                                        $itemAmount = $item['quantity'] * $item['price'];
                                 ?>
-                                        <tr class="cart__row border-bottom line1 cart-flex border-top cart-item" data-product-id="<?= $item['id']; ?>">
+                                        <tr class="cart__row  cart-item" data-product-id="<?= $item['id']; ?>">
                                             <td class="cart__image-wrapper cart-flex-item">
                                                 <a href="#"><img class="cart__image" src="uploads/<?= $item['image']; ?>" alt="uploads/<?= $item['image']; ?>"></a>
                                             </td>
-                                            <td class="cart__meta small--text-left cart-flex-item">
+                                            <td class="text-center cart-flex-item">
                                                 <div class="list-view-item__title">
                                                     <a href="#"><?= $item['name']; ?></a>
                                                 </div>
                                             </td>
-                                            <td class="cart__price-wrapper cart-flex-item text-center product-price">
-                                                <span class="money"><?= $item['price'] ?></span>
+                                            <td class="text-center product-price">
+                                                <span class="money">&#x20B5;<?= $item['price'] ?></span>
                                             </td>
-                                            <td class="cart__update-wrapper cart-flex-item text-center product-quantity">
+                                            <td class=" text-center product-quantity">
                                                 <span class="money"><?= $item['quantity']; ?></span>
                                             </td>
-                                            <td class="text-right small--hide cart-price text-center">
-                                                <span class="money" id="amount"></span>
+                                            <td class="text-center product-amount">
+                                                <span class="money" id="amount"><b>&#x20B5;<?= $itemAmount; ?></b></span>
                                             </td>
+
                                         </tr>
                                     <?php
                                     }
@@ -191,7 +208,7 @@ $controller = new storeController();
                                     ?>
                                     <tr class="empty-cart">
                                         <td colspan="5" class="text-center">
-                                            <h1 class="text-danger" style="text-transform: uppercase;">Empty Cart</h1>
+                                            <h1 class="text-danger" style="text-transform: uppercase;">Your cart is empty</h1>
                                         </td>
                                     </tr>
                                 <?php
@@ -204,111 +221,6 @@ $controller = new storeController();
                         </table>
                     </div>
                 </div>
-
-                <hr />
-
-                <div class="your-payment">
-                    <h2 class="payment-title mb-3">payment method</h2>
-                    <div class="payment-method">
-                        <div class="payment-accordion">
-                            <div id="accordion" class="payment-section">
-                                <div class="card mb-2">
-                                    <div class="card-header">
-                                        <a class="card-link" data-toggle="collapse" href="#collapseOne">MTN Mobile Money</a>
-                                    </div>
-                                    <div id="collapseOne" class="collapse" data-parent="#accordion">
-                                        <div class="card-body">
-                                            <p class="no-margin font-15">Please enter your MTN Mobile Money Number</p>
-                                            <fieldset>
-                                                <div class="row">
-                                                    <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                                                        <label for="input-cardname">MoMo Number <span class="required-f">*</span></label>
-                                                        <input name="momo-number" placeholder="Momo Number" id="input-momo-number" class="form-control rounded-0" type="number">
-                                                    </div>
-                                                    <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                                                        <div class="order-button-payment">
-                                                            <button class="btn" type="submit">Place order</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </fieldset>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card mb-2">
-                                    <div class="card-header">
-                                        <a class="card-link" data-toggle="collapse" href="#collapseTwo">Vodafone Cash</a>
-                                    </div>
-                                    <div id="collapseTwo" class="collapse" data-parent="#accordion">
-                                        <div class="card-body">
-                                            <p class="no-margin font-15">Please enter your Vodafone Cash Number</p>
-                                            <fieldset>
-                                                <div class="row">
-                                                    <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                                                        <label for="input-cardname">Voda Cash Number <span class="required-f">*</span></label>
-                                                        <input name="vcash-number" placeholder="Voda Cash Number" id="input-vcash-number" class="form-control rounded-0" type="number">
-                                                    </div>
-                                                    <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                                                        <div class="order-button-payment">
-                                                            <button class="btn" type="submit">Place order</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </fieldset>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card mb-2" hidden>
-                                    <div class="card-header">
-                                        <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree"> Card Information </a>
-                                    </div>
-                                    <div id="collapseThree" class="collapse" data-parent="#accordion">
-                                        <div class="card-body">
-                                            <fieldset>
-                                                <div class="row">
-                                                    <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                                                        <label for="input-cardname">Name on Card <span class="required-f">*</span></label>
-                                                        <input name="cardname" placeholder="Card Name" id="input-cardname" class="form-control" type="text">
-                                                    </div>
-                                                    <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                                                        <label for="input-country">Credit Card Type <span class="required-f">*</span></label>
-                                                        <select name="country_id" class="form-control">
-                                                            <option> --- Please Select --- </option>
-                                                            <option value="1">American Express</option>
-                                                            <option value="2">Visa Card</option>
-                                                            <option value="3">Master Card</option>
-                                                            <option value="4">Discover Card</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                                                        <label for="input-cardno">Credit Card Number <span class="required-f">*</span></label>
-                                                        <input name="cardno" placeholder="Credit Card Number" id="input-cardno" class="form-control" type="text">
-                                                    </div>
-                                                    <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                                                        <label for="input-cvv">CVV Code <span class="required-f">*</span></label>
-                                                        <input name="cvv" placeholder="Card Verification Number" id="input-cvv" class="form-control" type="text">
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                                                        <label>Expiration Date <span class="required-f">*</span></label>
-                                                        <input type="date" name="exdate" class="form-control">
-                                                    </div>
-                                                    <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                                                        <img class="padding-25px-top xs-padding-5px-top" src="assets/images/payment-img.jpg" alt="card" title="card" />
-                                                    </div>
-                                                </div>
-                                            </fieldset>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -316,6 +228,3 @@ $controller = new storeController();
 <?php
 include_once('includes/footer.php');
 ?>
-
-
-

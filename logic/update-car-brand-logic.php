@@ -5,7 +5,7 @@ session_start();
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-    $eventDate = date("Y-M-d H:m:s");
+    $eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
     error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
@@ -22,13 +22,13 @@ require_once '../controllers/storeController.php';
 $response = array();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $car_brand_name = filter_input(INPUT_POST, 'brand_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $car_brand_id = filter_input(INPUT_POST, 'car_brand_id', FILTER_SANITIZE_NUMBER_INT);
+    $brand_name = filter_input(INPUT_POST, 'brand_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $brand_id = filter_input(INPUT_POST, 'brand_id', FILTER_SANITIZE_NUMBER_INT);
 
-    $car_brand_name = strtoupper($car_brand_name);
+    $brand_name = ucwords($brand_name);
 
     $errors = array();
-    if (empty($car_brand_name)) {
+    if (empty($brand_name)) {
         $errors[] = "Car brand name is required.";
     }
 
@@ -41,45 +41,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         );
     } else {
         try {
-            // Create an instance of the StoreController
             $controller = new StoreController();
 
-            // Prepare the update data array for the updateRecordWithImage function
             $data = array(
-                'car_brand_id' => $car_brand,
-                'car_model_id' => $car_model,
-                'name' => $spare_part_name,
-                'category_id' => $category,
-                'price' => $price,
-                'description' => $description
+                'brand_name' => $brand_name
             );
 
             // Database values
             $table = 'car_brand';
             $dataKey = 'car_brand_id';
 
-            // Update car brand in the database
-            $success = $controller->updateRecord($table, $data, $dataKey, $car_brand_id);
+            $success = $controller->updateRecord($table, $data, $dataKey, $brand_id);
 
             switch ($success) {
                 case true:
                     $response = array(
                         'status' => 'success',
-                        'message' => 'Car brand updated successfully!',
-                        'redirect' => '../Admin/car-brand-details.php?car_brand_id='. $car_brand_id
+                        'message' => 'Car brand updated successfully!'
                     );
                     break;
                 case false:
                     $response = array(
                         'status' => 'error',
-                        'message' => 'Failed to update car brand!',
-                        'redirect' => '../Admin/car-brand-details.php?car_brand_id='. $car_brand_id
+                        'message' => 'Failed to update car brand!'
                     );
                 default:
                     $response = array(
                         'status' => 'error',
-                        'message' => 'An error occurred while updating the car brand!',
-                        'redirect' => '../Admin/car-brand-details.php?car_brand_id='. $car_brand_id
+                        'message' => 'An error occurred while updating the car brand!'
                     );
                     break;
             }
@@ -87,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $response = array(
                 'status' => 'error',
                 'message' => 'Error updating car brand: ' . $e->getMessage(),
-                'redirect' => '../Admin/car-brand-details.php?car_brand_id=' . $car_brand_id    
+                'redirect' => '../Admin/car-brand-details.php?car_brand_id=' . $brand_id    
             );
         }
     }

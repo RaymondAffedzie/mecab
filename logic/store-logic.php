@@ -111,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'message' => 'A store with the same name or email or contact number already exists.'
                 );
                 break;
-            case 'success':
+            case true:
                 $response = array(
                     'status' => 'success',
                     'message' => 'Store Registered successfully!',

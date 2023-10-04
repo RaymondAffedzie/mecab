@@ -31,11 +31,7 @@
                         ?>
                             <ul class="customer-links list-inline">
                                 <li>
-                                    <form id="logoutForm" action="./logic/logout.php" method="post">
-                                        <button type="submit" name="logout" class="border-0 text-light" style="cursor: pointer;">
-                                            <i class="ti-power-off text-primary"></i> Logout
-                                        </button>
-                                    </form>
+                                    <a href="" id="logoutForm"><i class="ti-power-off text-primary"></i> Logout</a>
                                 </li>
                             </ul>
                         <?php
@@ -118,7 +114,8 @@
                         <div class="site-cart">
                             <a href="#" class="site-header__cart" title="Cart">
                                 <i class="icon anm anm-bag-l"></i>
-                                <span id="CartCount" class="site-header__cart-count" data-cart-render="item_count">2</span>
+                               
+                                <span id="cartItemCount" class="site-header__cart-count" data-cart-render="item_count">0<span>
                             </a>
                             <!--Minicart Popup-->
                             <div id="header-cart" class="block block-cart">
@@ -128,9 +125,9 @@
 
                                 <div class="total">
                                     <div class="total-in">
-                                        <span class="label">Cart Subtotal:</span>
-                                        <span class="product-price">
-                                            <span class="money sub-total" id="sub-total-1">Amount: &#x20B5;0.00</span>
+                                        <span class="label">Total:</span>
+                                        <span class="product-amount-mini">
+                                            <span class="money" id="totalAmountMini" style="font-weight: 700; float: right"></span>
                                         </span>
                                     </div>
 

@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'quantity' => $quantity
     ];
 
-    // Initialize the cart if it doesn't exist
+    // Initialize the cart if it doesn't exist 
     if (!isset($_SESSION['cart'])) {
         $_SESSION['cart'] = [];
     }
@@ -34,7 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($product_index !== -1) {
         $_SESSION['cart'][$product_index]['quantity'] += $quantity;
     } else {
-        // Add the item to the cart
         $_SESSION['cart'][] = $cart_item;
     }
 

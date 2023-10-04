@@ -56,21 +56,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         include_once "../controllers/uniqueCode.php";
 
-        $spare_part_id = $v4uuid;
+        $spare_part_id = generate_uuid_v4();
 
         $storeController = new StoreController();
-
-        // Call the method to get the user's store
         $store = $storeController->getUserStore($_SESSION['userId']);
-
-        // Ensure $store is an string
         $store = is_array($store) ? $store['store_id'] : $store;
-
-        // Set car_brand_id and car_model_id to NULL if they are empty
         $car_brand = empty($car_brand) ? null : $car_brand;
         $car_model = empty($car_model) ? null : $car_model;
 
-        // Prepare data for database insertion
         $data = array(
             'sparepart_id' => $spare_part_id,
             'name' => $spare_part_name,

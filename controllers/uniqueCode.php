@@ -31,3 +31,17 @@ function generate_uuid_v4()
 
 $v4uuid = generate_uuid_v4();
 // echo "Version 4 uuid : " . $v4uuid;
+
+
+function externalID($length = 9)
+{
+    $characters = '0123456789';
+    $external_id = null;
+
+    for ($i = 1; $i < $length; $i++) {
+        $index = rand(0, strlen($characters) - 1);
+        $external_id .= $characters[$index];
+    }
+
+    return $external_id;
+}

@@ -5,14 +5,12 @@ session_start();
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-	$eventDate = date("Y-M-d H:m:s");
+	$eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
 	error_log($message . PHP_EOL, 3, "error-log.txt");
 }
 
 set_error_handler("errorHandler");
-
-// Prevent user from accessing this page when not logged in
 if (!isset($_SESSION['loggedIn']) && !$_SESSION['loggedIn']) {
     header("Location: login.php");
     exit;
@@ -21,7 +19,6 @@ if (!isset($_SESSION['loggedIn']) && !$_SESSION['loggedIn']) {
 require_once '../controllers/storeController.php';
 $storeController = new storeController();
 
-// Fetch the car models based on the selected car brand
 if (isset($_GET['car_brand_id'])) {
     $carBrandId = $_GET['car_brand_id'];
     $carModels = $storeController->getCarModelsByBrand($carBrandId);

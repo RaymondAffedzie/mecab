@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lastName   = filter_input(INPUT_POST, 'last_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $otherNames = filter_input(INPUT_POST, 'other_names', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $userEmail  = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-    $storeContact = filter_input(INPUT_POST, 'contact', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $userContact = filter_input(INPUT_POST, 'contact', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     if ($otherNames !== null) {
         $otherNames = ucwords($otherNames);
@@ -83,14 +83,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($result === 'success') {
             require_once '../controllers/otpGenerator.php';
             $otpGenerator = new OTPGenerator();
-            $msg = "Your default password is " . $dp;
+            $msg = "Hello $firstname $othernames $lastname. You have been registered as an administrator on www.mecab.org. Use $userEmail as your username and $dp as your default password. Sign in to Change your password";
 
             $otpGenerator->sendDefaultPassword($storeContact, $msg);
 
             $response = array(
                 'status' => 'success',
-                'message' => 'Admin registered successfully!',
-                'redirect' => ' ./add-admins.php'
+                'message' => 'Admin registered successfully!'
             );
         } else {
             $response = array(
@@ -105,7 +104,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'message' => 'Invalid action.'
     );
 }
-
 
 if (!headers_sent()) {
     echo json_encode($response);

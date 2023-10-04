@@ -5,7 +5,7 @@ ini_set('display_errors', 0);
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-    $eventDate = date("Y-M-d H:m:s");
+    $eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
     error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
@@ -23,37 +23,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($email)) {
         $errors[] = "Email is required.";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    } 
+    
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors[] = "Invalid email format.";
     }
+
     if (empty($password)) {
         $errors[] = "Password is required.";
     }
 
-    // Check if there are any validation errors
     if (!empty($errors)) {
         $response = array(
             'status' => 'error',
             'message' => 'Validation error',
             'errors' => $errors
         );
+
     } else {
-        // Data is valid and sanitized, attempt to login
         $controller = new storeController();
         $result = $controller->login($email, $password);
+
+        if ($result == 'blocked') {
+            $response = array(
+                'status' => 'error',
+                'message' => "You don't have access. Contact our support team for assistance!"
+            );
+        }
 
         if ($result === 'not_found') {
             $response = array(
                 'status' => 'error',
                 'message' => 'A user not found with the provided email.'
             );
-        } elseif ($result === 'incorrect_password') {
+        } 
+        
+        if ($result === 'incorrect') {
             $response = array(
                 'status' => 'error',
                 'message' => 'Incorrect password.'
             );
-        } elseif ($result === 'verified') {
-            // Redirect based on user role
+        } 
+        
+        if ($result === 'verified') {
             $userRole = $_SESSION['role'];
             switch ($userRole) {
                 case 'Transport':
@@ -104,34 +116,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'message' => 'Unknown user role.'
                     );
             }
-        } elseif ($result === 'not_verified') {
+        } 
+        
+        if ($result === 'not_verified') {
             $response = array(
                 'status' => 'success',
                 'message' => 'User is not verified!',
                 'redirect' => './verification.php'
             );
-        } elseif ($result === 'Admin') {
+        } 
+        
+        if ($result === 'Admin') {
             $response = array(
                 'status' => 'success',
                 'message' => 'Login successfull as admin!',
                 'redirect' => './Admin/index.php'
             );
-        } elseif ($result === 'Customer') {
+        } 
+        
+        if ($result === 'Customer') {
             $response = array(
                 'status' => 'success',
                 'message' => 'Login successfull as customer!',
-                'redirect' => './Customer/index.php'
+                'redirect' => './index.php'
             );
-        } elseif ($result === 'no_details') {
+        } 
+        
+        if ($result === 'no_details') {
             $response = array(
                 'status' => 'success',
                 'message' => 'User has no details!',
                 'redirect' => './add-details.php'
-            );
-        } else {
-            $response = array(
-                'status' => 'error',
-                'message' => 'Failed to login. ' . $result
             );
         }
     }
