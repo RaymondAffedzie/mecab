@@ -1,3 +1,39 @@
+<?php
+session_start();
+if (!isset($_SESSION['loggedIn']) || !$_SESSION['loggedIn']) {
+    header("Location: ../login.php");
+	exit;
+}
+
+if ($_SESSION['role'] != 'Mechanic') {
+	if ($_SESSION['role'] == 'Spare parts') {
+		header("Location: ../Spare-parts/index.php");
+		exit;
+	}
+	if ($_SESSION['role'] == 'Admin') {
+		header("Location: ../Admin/index.php");
+		exit;
+	}
+	if ($_SESSION['role'] == 'Transport') {
+		header("Location: ../Transport/index.php");
+		exit;
+	}
+	if ($_SESSION['role'] == 'Car rentals') {
+		header("Location: ../Car-rentals/index.php");
+		exit;
+	}
+	if ($_SESSION['role'] == 'Customer') {
+		header("Location: ../index.php");
+		exit;
+	}
+}
+
+if (!$_SESSION['isVerified']) {
+    // User's store is not verified
+    header("location: verification.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 

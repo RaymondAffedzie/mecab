@@ -1,3 +1,33 @@
+<?php
+session_start();
+if (!isset($_SESSION['loggedIn']) || !$_SESSION['loggedIn']) {
+    header("Location: ../login.php");
+    exit;
+}
+
+if ($_SESSION['role'] != 'Car rentals') {
+	if ($_SESSION['role'] == 'Spare parts') {
+		header("Location: ../Spare-parts/index.php");
+	}
+	if ($_SESSION['role'] == 'Mechanic') {
+		header("Location: ../Mechanic/index.php");
+	}
+	if ($_SESSION['role'] == 'Transport') {
+		header("Location: ../Transport/index.php");
+	}
+	if ($_SESSION['role'] == 'Admin') {
+		header("Location: ../Admin/index.php");
+	}
+	if ($_SESSION['role'] == 'Customer') {
+		header("Location: ../index.php");
+	}
+}
+
+if (!$_SESSION['isVerified']) {
+    header("location: ../verification.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 

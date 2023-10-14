@@ -19,9 +19,9 @@ include_once('includes/navbar.php');
 
 if (isset($_GET['specialisation'])) {
     $specialisation =  filter_input(INPUT_GET, 'specialisation', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $query = "SELECT m.specialisation_id, s.specialisation, s.description, s.image, u.first_name, u.other_names, u.last_name, u.users_email, c.users_contact, st.store_location, st.store_town, st.gps_address, st.street_name
-                FROM specialisation s
-                INNER JOIN mechanic_specialisation m ON s.specialisation_id = m.specialisation_id
+    $query = "SELECT s.specialisation, s.description, s.image, u.user_id, u.first_name, u.other_names, u.last_name, u.users_email, c.users_contact, st.store_location, st.store_town
+                FROM mechanic_specialisation m
+                INNER JOIN specialisation s ON s.specialisation_id = m.specialisation_id
                 INNER JOIN users u ON m.users_id = u.user_id
                 INNER JOIN users_contact c ON u.user_id = c.users_id
                 INNER JOIN users_store us ON us.users_id = u.user_id
@@ -30,6 +30,7 @@ if (isset($_GET['specialisation'])) {
 
     $params = array(':specialisation' => $specialisation);
     $specialisations = $controller->getRecordsByValue($query, $params);
+   
 }
 ?>
 
@@ -53,41 +54,25 @@ if (isset($_GET['specialisation'])) {
 <div class="container">
     <div class="row">
         <!--Main Content-->
-        <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col shop-grid-6">
-            <div class="productList">
-                <div class="list-view-items grid--view-items">
-                    <?php
-                    foreach ($specialisations as $data) {
-                    ?>
-                        <!--ListView Item-->
-                        <div class="list-product list-view-item">
-                            <div class="list-view-item__image-column">
-                                <div class="list-view-item__image-wrapper">
-                                    <!-- Image -->
-                                    <a href=""><img class="list-view-item__image blur-up lazyload" data-src="uploads/<?= $data['image']; ?>" src="uploads/<?= $data['image']; ?>" alt="<?= $data['specialisation']; ?>" title="<?= $data['specialisation']; ?>" height="auto" width="100%"></a>
-                                    <!-- End Image -->
-                                </div>
-                            </div>
-                            <div class="list-view-item__title-column">
-                                <div class="h4 grid-view-item__title"><a href=""><?= $data['specialisation']; ?> | <?= $data['store_town']; ?> | <?= $data['store_location']; ?> | <?= $data['gps_address'] ?> </a></div>
-                                <!-- Product Review -->
-                                <p class="product-review"><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star-o"></i><i class="font-13 fa fa-star-o"></i></p>
-                                <!-- End Product Review -->
-                                <!-- Sort Description -->
-                                <p><?= $data['description']; ?> <br> <?= $data['users_contact']; ?> | <?= $data['users_email']; ?> </p>
-                                <!-- End Sort Description -->
-                                
-                                    <a href="" class="btn btn--small">View Services</a>
-                                
-                            </div>
-                        </div>
-                        <!--End ListView Item-->
-                    <?php
-                    }
-                    ?>
+        <?php
+        foreach ($specialisations as $data) {
+        ?>
+            <div class="col-md-5">
+                <div class="card bg-dark text-white">
+                    <img src="uploads/<?= $data['image']; ?>" class="card-img" alt="...">
+                    <div class="card-img-overlay">
+                        <h1 class="card-title h1 text-white"><?=$data['store_town'] .' | '.  $data['store_location']; ?></h1>
+                        <h3 class="card-text h3 text-white"><?= $data['users_contact'] .' | '. $data['first_name'] .' '. $data['other_names'] .' '. $data['last_name'].' | '. $data['specialisation']; ?></h3>
+                        <em class="card-text text-warning"><?= $data['users_email']; ?></em>
+                        <i class="card-text text-white"><?= $data['description'] ;?></i>
+                        <a href="mechanic-services.php?service=<?= $data['user_id'];?>" class="card-link text-warning float-right pb-3">View Servies</a>
+                    </div>
                 </div>
             </div>
-        </div>
+        <?php
+        }
+        ?>
+
         <!--End Main Content-->
     </div>
 </div>

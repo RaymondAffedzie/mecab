@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
         } 
         
-        if ($result === 'verified') {
+        if ($result == 'verified') {
             $userRole = $_SESSION['role'];
             switch ($userRole) {
                 case 'Transport':
@@ -96,20 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'redirect' => './Car-rentals/index.php'
                     );
                     break;
-                case 'Admin':
-                    $response = array(
-                        'status' => 'success',
-                        'message' => 'Login successful as an admin!',
-                        'redirect' => './Admin/index.php'
-                    );
-                    break;
-                case 'Customer':
-                    $response = array(
-                        'status' => 'success',
-                        'message' => 'Login successful as a customer!',
-                        'redirect' => './index.php'
-                    );
-                    break;
                 default:
                     $response = array(
                         'status' => 'error',
@@ -118,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         } 
         
-        if ($result === 'not_verified') {
+        if ($result == 'not_verified') {
             $response = array(
                 'status' => 'success',
                 'message' => 'User is not verified!',
@@ -126,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
         } 
         
-        if ($result === 'Admin') {
+        if ($result == 'Admin') {
             $response = array(
                 'status' => 'success',
                 'message' => 'Login successfull as admin!',
@@ -134,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
         } 
         
-        if ($result === 'Customer') {
+        if ($result == 'Customer') {
             $response = array(
                 'status' => 'success',
                 'message' => 'Login successfull as customer!',
@@ -142,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
         } 
         
-        if ($result === 'no_details') {
+        if ($result == 'no_details') {
             $response = array(
                 'status' => 'success',
                 'message' => 'User has no details!',

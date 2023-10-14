@@ -1,7 +1,6 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
-session_start();
 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
@@ -11,11 +10,6 @@ function errorHandler($errno, $errstr, $errfile, $errline)
 }
 
 set_error_handler("errorHandler");
-
-if (!isset($_SESSION['loggedIn']) || !$_SESSION['loggedIn']) {
-    header("Location: ../login.php");
-    exit;
-}
 
 require_once '../controllers/storeController.php';
 include_once('includes/head.php');

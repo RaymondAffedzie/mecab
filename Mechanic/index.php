@@ -1,34 +1,32 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
-session_start();
-// Error handler 
+
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-    $eventDate = date("Y-M-d H:i:s");
-	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
+    $eventDate = date("Y-M-d H:i:s"); // Fixed the time format
+    $message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
     error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
+
 set_error_handler("errorHandler");
-
-// Prevent user from accessing this page when not logged in
-if (!isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']) {
-    header("Location: login.php");
-    exit;
-}	
-
-// Prevent user from accessing this page when not verified
-if (!$_SESSION['isVerified']) {
-    // User's store is not verified
-    header("location: verification.php");
-    exit;
-}
 
 require_once '../controllers/storeController.php';
 include_once('includes/head.php');
-include_once('includes/navbar.php');
+include_once('includes/navbar.php');;
 
 $controller = new storeController();
+// total bookings
+$user = $_SESSION['userId'];
+$query = "SELECT COUNT(appointment_id) AS bookings FROM mechanic_appointment WHERE mechanic_id = :user";
+$params = array(':user' => $user);
+$totalBookings = $controller->getSingleRecordsByValue($query, $params);
+
+// todays bookings
+$query = "SELECT COUNT(appointment_id) AS today FROM mechanic_appointment WHERE users_id = :user AND DATE(appointment_date) = CURDATE();";
+$params = array(':user' => $user);
+$todayBookings = $controller->getSingleRecordsByValue($query, $params);
+
 ?>
 <!-- partial -->
 <div class="main-panel">
@@ -94,9 +92,9 @@ $controller = new storeController();
 						<div class="card card-tale">
 							<div class="card-body">
 								<p class="mb-4">
-									Today’s Bookings
+									Today's Bookings
 								</p>
-								<p class="fs-30 mb-2">4006</p>
+								<p class="fs-30 mb-2"><?= $todayBookings['today']; ?></p>
 								<p>10.00% (30 days)</p>
 							</div>
 						</div>
@@ -107,7 +105,7 @@ $controller = new storeController();
 								<p class="mb-4">
 									Total Bookings
 								</p>
-								<p class="fs-30 mb-2">61344</p>
+								<p class="fs-30 mb-2"><?= $totalBookings['bookings']; ?></p>
 								<p>22.00% (30 days)</p>
 							</div>
 						</div>

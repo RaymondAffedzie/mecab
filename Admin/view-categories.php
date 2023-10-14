@@ -1,21 +1,15 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
-session_start();
-// Error handler 
+
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-    $eventDate = date("Y-M-d H:i:s");
+	$eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
-    error_log($message . PHP_EOL, 3, "../error-log.txt");
+	error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
-set_error_handler("errorHandler");
 
-// Prevent user from accessing this page when not logged in
-if (!isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']) {
-    header("Location: ../login.php");
-    exit;
-}
+set_error_handler("errorHandler");
 
 require_once '../controllers/storeController.php';
 include_once('includes/head.php');

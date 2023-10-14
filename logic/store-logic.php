@@ -5,7 +5,7 @@ ini_set('display_errors', 0);
 // Error handler 
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-    $eventDate = date("Y-M-d H:m:s");
+    $eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
     error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
@@ -89,17 +89,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = "Store town is required.";
     }
 
-    // Check if there are any validation errors
     if (!empty($errors)) {
         $response = array(
             'status' => 'error',
             'message' => 'Validation error',
-            'errors' => $errors
+            'errors' => $errors[0]
         );
     } else {
-        include_once "../controllers/uniqueCode.php";
 
-        $store_id = $v4uuid;
+        include_once "../controllers/uniqueCode.php";
+       
+        $store_id = generate_uuid_v4();
 
         $controller = new storeController();
         $result = $controller->addStore($store_id, $storeName, $storeType, $storeEmail, $storeContact, $gpsAddress, $streetName, $storeTown, $storeLocation);
@@ -108,10 +108,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             case 'exists':
                 $response = array(
                     'status' => 'error',
-                    'message' => 'A store with the same name or email or contact number already exists.'
+                    'message' => 'A store with the same name or email already exists.'
                 );
                 break;
             case true:
+                include_once "../controllers/payment.php";
+                $payment = new Payment();
+                $subscribe_store = $payment->initialiseTransaction($storeEmail, $store_id, $plan_code);
                 $response = array(
                     'status' => 'success',
                     'message' => 'Store Registered successfully!',
@@ -132,7 +135,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'message' => 'Invalid action.'
     );
 }
-
 
 if (!headers_sent()) {
     echo json_encode($response);

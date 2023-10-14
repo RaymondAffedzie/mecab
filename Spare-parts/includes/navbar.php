@@ -265,7 +265,7 @@
 						<ul class="chat-list">
 							<li class="list active">
 								<div class="profile">
-									<img src="../images/faces/face1.jpg" alt="image" />
+									<!-- <img src="../images/faces/face1.jpg" alt="image" /> -->
 									<span class="online"></span>
 								</div>
 								<div class="info">
@@ -278,7 +278,7 @@
 							</li>
 							<li class="list">
 								<div class="profile">
-									<img src="../images/faces/face2.jpg" alt="image" />
+									<!-- <img src="../images/faces/face2.jpg" alt="image" /> -->
 									<span class="offline"></span>
 								</div>
 								<div class="info">
@@ -296,7 +296,7 @@
 							</li>
 							<li class="list">
 								<div class="profile">
-									<img src="../images/faces/face3.jpg" alt="image" />
+									<!-- <img src="../images/faces/face3.jpg" alt="image" /> -->
 									<span class="online"></span>
 								</div>
 								<div class="info">
@@ -309,7 +309,7 @@
 							</li>
 							<li class="list">
 								<div class="profile">
-									<img src="../images/faces/face4.jpg" alt="image" />
+									<!-- <img src="../images/faces/face4.jpg" alt="image" /> -->
 									<span class="offline"></span>
 								</div>
 								<div class="info">
@@ -322,7 +322,7 @@
 							</li>
 							<li class="list">
 								<div class="profile">
-									<img src="../images/faces/face5.jpg" alt="image" />
+									<!-- <img src="../images/faces/face5.jpg" alt="image" /> -->
 									<span class="online"></span>
 								</div>
 								<div class="info">
@@ -335,7 +335,7 @@
 							</li>
 							<li class="list">
 								<div class="profile">
-									<img src="../images/faces/face6.jpg" alt="image" />
+									<!-- <img src="../images/faces/face6.jpg" alt="image" /> -->
 									<span class="online"></span>
 								</div>
 								<div class="info">
@@ -358,28 +358,45 @@
 					<li class="nav-item">
 						<a class="nav-link" href="./index.php">
 							<i class="icon-grid menu-icon"></i>
-							<span class="menu-title">Home</span>
+							<span class="menu-title">Dashboard</span>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
 							<i class="icon-layout menu-icon"></i>
-							<span class="menu-title">Spre Parts</span>
+							<span class="menu-title">Products</span>
 							<i class="menu-arrow"></i>
 						</a>
 						<div class="collapse" id="form-elements">
 							<ul class="nav flex-column sub-menu">
-								<li class="nav-item"><a class="nav-link" href="add-spare-parts.php">Add Spare part</a></li>
-								<li class="nav-item"><a class="nav-link" href="view-spare-parts.php">View Spare parts</a></li>
+								<li class="nav-item"><a class="nav-link" href="add-spare-parts.php">Add Products</a></li>
+								<li class="nav-item"><a class="nav-link" href="view-spare-parts.php">View Products</a></li>
 							</ul>
 						</div>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link" href="./orders.php">
+							<i class="ti-shopping-cart menu-icon"></i>
+							<span class="menu-title">Orders</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="./payments.php">
+							<i class="ti-money menu-icon"></i>
+							<span class="menu-title">Payments</span>
+						</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link" href="./shop_details.php">
-							<i class="icon-contract menu-icon"></i>
+							<i class="mdi mdi-store menu-icon"></i>
 							<span class="menu-title">Shop Details</span>
 						</a>
 					</li>
-
+					<li class="nav-item">
+						<a class="nav-link" href="../index.php" target="_blank">
+							<i class="mdi mdi-home menu-icon"></i>
+							<span class="menu-title">Visit Homepage</span>
+						</a>
+					</li>
 				</ul>
 			</nav>

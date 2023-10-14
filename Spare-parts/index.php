@@ -1,28 +1,15 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
-session_start();
-// Error handler 
+
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
-    $eventDate = date("Y-M-d H:i:s");
+	$eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
-    error_log($message . PHP_EOL, 3, "../error-log.txt");
+	error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
+
 set_error_handler("errorHandler");
-
-// Prevent user from accessing this page when not logged in
-if (!isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']) {
-    header("Location: ../login.php");
-    exit;
-}	
-
-// Prevent user from accessing this page when not verified
-if (!$_SESSION['isVerified']) {
-    // User's store is not verified
-    header("location: ../verification.php");
-    exit;
-}
 
 require_once '../controllers/storeController.php';
 include_once('includes/head.php');
@@ -45,16 +32,15 @@ $controller = new storeController();
 								Welcome
 								<?php
 								if ($record !== false) {
-									echo $record['first_name']." ".$record['other_names']." ".$record['last_name']. " Role is " . $_SESSION['role'] ;
+									echo $record['first_name'] . " " . $record['other_names'] . " " . $record['last_name'] . " to your " . strtolower($_SESSION['role']) . " shop dashboard";
 								}
 								?>
 							</h3>
 							<h6 class="font-weight-normal mb-0">
-								All systems are running smoothly!
-								You have
 								<span class="text-primary">
-									3 unread alerts! <?= $_SESSION['userEmail']; ?>
+									Add and manage products, manage orders and payments
 								</span>
+								from this dashboard!
 							</h6>
 						</div>
 						<div class="col-12 col-xl-4">

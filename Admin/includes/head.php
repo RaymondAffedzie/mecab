@@ -1,3 +1,33 @@
+<?php
+session_start();
+if (!isset($_SESSION['loggedIn']) || !$_SESSION['loggedIn']) {
+    header("Location: ../login.php");
+	exit;
+}
+
+if ($_SESSION['role'] != 'Admin') {
+	if ($_SESSION['role'] == 'Spare parts') {
+		header("Location: ../Spare-parts/index.php");
+		exit;
+	}
+	if ($_SESSION['role'] == 'Mechanic') {
+		header("Location: ../Mechanic/index.php");
+		exit;
+	}
+	if ($_SESSION['role'] == 'Transport') {
+		header("Location: ../Transport/index.php");
+		exit;
+	}
+	if ($_SESSION['role'] == 'Car rentals') {
+		header("Location: ../Car-rentals/index.php");
+		exit;
+	}
+	if ($_SESSION['role'] == 'Customer') {
+		header("Location: ../index.php");
+		exit;
+	}
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,6 +51,4 @@
 	<link rel="stylesheet" href="../vendors/css/custom.css" />
 	<!-- endinject -->
 	<link rel="shortcut icon" href="../images/favicon.png" />
-
-	
 </head>

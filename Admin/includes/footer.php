@@ -47,8 +47,163 @@
                 }
             }
         });
+
         /**
-         * @description for administrators management
+         * @descriptioin for subscription management
+         */
+
+        // save subscription plan
+        $("#save-plan-btn").click(function(e) {
+            e.preventDefault();
+            var name = $("#plan_name").val().trim();
+            var amount = $("#plan_amount").val().trim();
+            var interval = $("#plan_interval").val().trim();
+            var description = $("#plan_description").val().trim();
+            var textRegex = /^[a-zA-Z ]+$/;
+            var intervalRegex = /^(weekly|monthly|quarterly|biannually|annually)$/;
+            var amountRegex = /^[1-9]\d*$/;
+
+            if (!textRegex.test(name)) {
+                swal('Error', 'Please enter a valid name. Only alphabets and spaces are allowed.', 'error');
+            }
+            if (!intervalRegex.test(interval)) {
+                swal('Error', 'Please select a valid interval (weekly, monthly, quarterly, biannually, or annually).', 'error');
+            }
+            if (description && !textRegex.test(description)) {
+                swal('Error', 'Please enter a valid description. Only alphabets and spaces are allowed.', 'error');
+            }
+            if (!amountRegex.test(amount)) {
+                swal('Error', 'Please enter a valid integer value.', 'error');
+            }
+
+            var formData = new FormData();
+            formData.append('plan_name', name);
+            formData.append('plan_amount', amount);
+            formData.append('plan_interval', interval);
+            formData.append('plan_description', description);
+            var url = '../logic/add-plan-logic.php';
+            postReq(url, formData);
+        });
+
+        // list subscription plans
+        $.ajax({
+            type: "GET",
+            url: "../logic/list-plans-logic.php",
+            dataType: "json",
+            success: function(response) {
+                if (response.status === 'success') {
+
+                    var dataTable = $('#plans-table').DataTable({
+                        data: response.data,
+                        columns: [{
+                                data: 'name'
+                            },
+                            {
+                                data: 'interval'
+                            },
+                            {
+                                data: 'amount',
+                                render: function(data, type, row) {
+                                    return 'GH₵ ' + data / 100; 
+                                }
+                            },
+                            {
+                                data: 'id',
+                                render: function(data, type, row) {
+                                    return '<a href="plan-details.php?plan=' + data + '">View</a>';
+                                }
+                            },
+                        ],
+                        paging: true,
+                        searching: true,
+                        ordering: true,
+                        pageLength: 5,
+                        lengthMenu: [
+                            [5, 10, 25, 50, -1],
+                            [5, 10, 25, 50, 'All']
+                        ],
+                    });
+                }
+            }
+        });
+
+        // Fetch subscription plan details
+        <?php
+        if (isset($_GET['plan'])) {
+            $plan = filter_input(INPUT_GET, 'plan', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        ?>
+            $.ajax({
+                type: "GET",
+                url: "../logic/get-plan-details-logic.php",
+                data: {
+                    plan: "<?= $plan; ?>"
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.status === "success") {
+                        $("#plan_name").text(response.data.name);
+                        $("#plan_amount").text(response.data.amount / 100);
+                        $("#plan_interval").text(response.data.interval);
+                        $("#plan_description").text(response.data.description);
+                        $("#date_created").text(response.data.createdAt);
+                        $("#plan_id").text(response.data.id);
+                        $("#plan_code").text(response.data.plan_code);
+                        $("#plan_total_subscriptions").text(response.data.subscriptions_count);
+                        $("#plan_subscriptions_revenue").text(response.data.total_revenue / 100);
+                        $("#plan_active_subscriptions").text(response.data.active_subscriptions_count);
+                        $("#plan_lastUpdate").text(response.data.updatedAt);
+                        $("#edit_plan_name").val(response.data.name);
+                        $("#edit_plan_amount").val(response.data.amount / 100);
+                        $("#edit_plan_interval").val(response.data.interval);
+                        $("#edit_plan_description").val(response.data.description);
+                        $("#edit_plan_id").val(response.data.id);
+
+                    } else {
+                        swal("Error", response.message, "error");
+                    }
+                }
+            });
+        <?php
+        }
+        ?>
+
+        // save subscription plan
+        $("#save-plan-update-btn").click(function(e) {
+            e.preventDefault();
+            var name = $("#edit_plan_name").val().trim();
+            var amount = $("#edit_plan_amount").val().trim();
+            var interval = $("#edit_plan_interval").val().trim();
+            var description = $("#edit_plan_description").val().trim();
+            var id = $("#edit_plan_id").val().trim();
+            var textRegex = /^[a-zA-Z ]+$/;
+            var intervalRegex = /^(weekly|monthly|quarterly|biannually|annually)$/;
+            var amountRegex = /^[1-9]\d*$/;
+
+            if (!textRegex.test(name)) {
+                swal('Error', 'Please enter a valid name. Only alphabets and spaces are allowed.', 'error');
+            }
+            if (!intervalRegex.test(interval)) {
+                swal('Error', 'Please select a valid interval (weekly, monthly, quarterly, biannually, or annually).', 'error');
+            }
+            if (description && !textRegex.test(description)) {
+                swal('Error', 'Please enter a valid description. Only alphabets and spaces are allowed.', 'error');
+            }
+            if (!amountRegex.test(amount)) {
+                swal('Error', 'Please enter a valid integer value for amount.', 'error');
+            }
+
+            var formData = new FormData();
+            formData.append('plan_name', name);
+            formData.append('plan_amount', amount);
+            formData.append('plan_interval', interval);
+            formData.append('plan_description', description);
+            formData.append('plan_id', id);
+            var url = '../logic/update-plan-logic.php';
+            postReq(url, formData);
+        });
+
+        /**
+         * @description for  management
          * 
          */
 
@@ -72,7 +227,7 @@
             }
 
             // Validate the email format with a regular expression
-            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Matches a basic email format
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
                 swal("Error", "Please enter a valid email address.", "error");
                 return;
@@ -310,7 +465,6 @@
             success: function(response) {
                 if (response.status === 'success') {
                     // Initialize DataTables
-                    var rowNo = 0;
                     var dataTable = $('#car-brands-table').DataTable({
                         data: response.parts,
                         columns: [{
@@ -319,25 +473,20 @@
                             {
                                 data: 'car_brand_id',
                                 render: function(data, type, row) {
-                                    // Modify the "View" link to pass the car_brand_id as a query parameter
                                     return '<a href="car-brand-details.php?car_brand_id=' + data + '">View</a>';
                                 }
                             },
                         ],
-                        // Add options for pagination, searching, and sorting
                         paging: true,
                         searching: true,
                         ordering: true,
-                        // Customize the number of records displayed per page (e.g., 10 records per page)
                         pageLength: 5,
-                        // You can customize the page length options if needed
                         lengthMenu: [
                             [5, 10, 25, 50, -1],
                             [5, 10, 25, 50, 'All']
                         ],
                     });
                 } else {
-                    // Handle error case
                     swal("Error", response.message, "error");
                 }
             },
@@ -1424,11 +1573,6 @@
             }
         });
 
-        $("edit-car-brand-btn").click(function(e) {
-            console.log("button clicked");
-            alert("button clicked");
-        });
-
         // Change password script
         $("#save-password-btn").click(function(e) {
             e.preventDefault();
@@ -1516,6 +1660,31 @@
                 }
             });
         });
+
+        function postReq(url, data) {
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: data,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success: function(response) {
+                    if (response.status === 'success') {
+                        swal("Success", response.message, "success").then(function() {
+                            if (response.redirect) {
+                                window.location.href = response.redirect;
+                            }
+                        });
+                    } else {
+                        swal("Error", response.message, "error");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    swal("Error", "An error occurred while processing the request: " + error, "error");
+                }
+            });
+        }
     });
 
 

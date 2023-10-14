@@ -32,7 +32,7 @@ if (isset($_GET['category'])) {
         <div class="row">
             <!--Sidebar-->
             <div class="col-12 col-sm-12 col-md-3 col-lg-3 sidebar filterbar">
-                <div class="closeFilter d-block d-md-none"><i class="icon icon anm anm-times-l"></i></div>
+                <div class="closeFilter d-block d-md-none"><i class="mdi mdi-times"></i></div>
                 <div class="sidebar_tags">
                     <div class="sidebar_widget categories filter-widget">
                         <div class="widget-title">
@@ -42,7 +42,7 @@ if (isset($_GET['category'])) {
                             <ul class="sidebar_categories">
                                 <!-- PHP CODE FOR FETCHING SPARE PARTS CATEGORIES -->
                                 <?php
-                                $query = "SELECT category_id, image, category_name FROM categories ORDER BY category_name ASC;";
+                                $query = "SELECT category_id, category_name FROM categories ORDER BY category_name ASC;";
 
                                 $data = $controller->getRecords($query);
 

@@ -6,14 +6,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $product_name = $_POST['product_name'];
     $product_price = $_POST['product_price'];
     $product_image = $_POST['product_image'];
-    $quantity = $_POST['quantity'];
+    $product_quantity = $_POST['quantity'];
 
     $cart_item = [
         'id' => $product_id,
         'name' => $product_name,
         'price' => $product_price,
         'image' => $product_image,
-        'quantity' => $quantity
+        'quantity' => $product_quantity,
+        'subtotal' => $product_price * $product_quantity
     ];
 
     // Initialize the cart if it doesn't exist 
@@ -32,10 +33,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // If the product exists, update the quantity
     if ($product_index !== -1) {
-        $_SESSION['cart'][$product_index]['quantity'] += $quantity;
+        $_SESSION['cart'][$product_index]['quantity'] += $product_quantity;
+        $_SESSION['cart'][$product_index]['subtotal'] += $cart_item['subtotal'];
     } else {
         $_SESSION['cart'][] = $cart_item;
     }
+
+    // Calculate the total of all products in the cart
+    $total = 0;
+    foreach ($_SESSION['cart'] as $item) {
+        $total += $item['subtotal'];
+    }
+
+    // Store the total in a session variable for future use
+    $_SESSION['cart_total'] = $total;
 
     echo 'success';
 } else {

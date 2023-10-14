@@ -55,11 +55,11 @@ include_once('includes/navbar.php');
                         ?>
                                 <tr class="cart__row  cart-item" data-product-id="<?= $item['id']; ?>">
                                     <td class="cart__image-wrapper cart-flex-item">
-                                        <a href="#"><img class="cart__image" src="uploads/<?= $item['image']; ?>" alt="uploads/<?= $item['image']; ?>"></a>
+                                        <img class="cart__image" src="uploads/<?= $item['image']; ?>" alt="<?= $item['name']; ?>">
                                     </td>
                                     <td class="text-center cart-flex-item">
                                         <div class="list-view-item__title">
-                                            <a href="#"><?= $item['name']; ?></a>
+                                            <span><?= $item['name']; ?></span>
                                         </div>
                                     </td>
                                     <td class="text-center product-price">
@@ -73,7 +73,7 @@ include_once('includes/navbar.php');
                                     </td>
                                     <td class="text-left text-center">
                                         <a href="#" class="btn btn--secondary cart__remove" title="Remove item" data-product-id="<?= $item['id']; ?>">
-                                            <i class="icon icon anm anm-times-l"></i>
+                                            <i class="ti-close"></i>
                                         </a>
                                     </td>
                                 </tr>

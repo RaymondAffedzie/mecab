@@ -1,28 +1,15 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
-session_start();
-// Error handler 
+
 function errorHandler($errno, $errstr, $errfile, $errline)
 {
     $eventDate = date("Y-M-d H:i:s");
 	$message = "[$eventDate] - Error: [$errno] $errstr - $errfile:$errline";
     error_log($message . PHP_EOL, 3, "../error-log.txt");
 }
+
 set_error_handler("errorHandler");
-
-// Prevent user from accessing this page when not verified
-if (!$_SESSION['isVerified']) {
-	// User's store is not verified
-	header("location: ../../verification.php");
-	exit;
-}
-
-// Prevent user from accessing this page when not logged in
-if (!isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']) {
-	header("Location: ../login.php");
-	exit;
-}
 
 require_once '../controllers/storeController.php';
 include_once('includes/head.php');
@@ -37,7 +24,6 @@ $carBrands = $controller->getCarBrands();
 		<div class="row">
 			<div class="col-md-12 grid-margin">
 				<div class="card rounded-3 p-5">
-					<h4 class="text-center"><?= $_SESSION['userId']; ?></h4></h4>
 					<form class="pt-3" id="add-spare-part-form" action="../logic/add-spare-part-logic.php" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
 						<div class="row">
 							<div class="col-md-6">

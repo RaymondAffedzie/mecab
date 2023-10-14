@@ -13,7 +13,7 @@ set_error_handler("errorHandler");
 
 // Prevent user from accessing this page when not logged in
 if (!isset($_SESSION['loggedIn']) && !$_SESSION['loggedIn']) {
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit;
 }
 
@@ -63,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'status' => 'error',
                         'message' => 'Failed to update specialisation!'
                     );
+                    break;
                 default:
                     $response = array(
                         'status' => 'error',

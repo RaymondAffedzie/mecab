@@ -1,0 +1,145 @@
+* {
+	scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	* {
+		scroll-behavior: smooth;
+	}
+}
+
+a {
+	text-decoration: none !important;
+}
+
+/* beginning of about */
+#about {
+	
+	padding-bottom: 50px;
+	background-color: #009da6;
+}
+
+#about h1 {
+	color: #0be0ed;
+	/* font-family: Sacramento, Sofia, sans-serif; */
+	text-align: left;
+	font-weight: 500;
+}
+
+#about p {
+	color: #33f5ff;
+	font-size: 1.2rem;
+}
+
+#about small {
+	font-size: 0.85rem !important;
+	color: #002729;
+}
+
+/* end of about */
+
+/* beginning of socials */
+#socials {
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+.meet {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	flex-direction: row;
+	flex-wrap: wrap;
+	padding: 5px;
+}
+
+.socials {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100px;
+	height: 100px;
+	margin: 15px 15px 15px 20px;
+	transition: 0.5s ease-in-out;
+}
+
+.socials a {
+	text-decoration: none;
+}
+
+.socials i {
+	font-size: 2rem;
+	color: #002729;
+}
+
+.socials i:hover,
+.socials:hover {
+	transform: translateY(10px);
+	color: #0be0ed;
+	cursor: pointer;
+}
+
+/* end of socials */
+
+/* beginning of contact */
+#contact {
+	padding-top: 50px;
+	padding-bottom: 50px;
+	background-color: #009da6;
+	color: #0be0ed;
+	border-radius: 10px;
+}
+
+#contact .comment {
+	color: #0be0ed;
+	font-family: Raleway, Roboto, sans-serif;
+	font-weight: 500;
+	text-align: center;
+	text-transform: capitalize;
+}
+
+/* Style the input fields */
+#contact input[type="text"],
+#contact input[type="email"],
+#contact textarea {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 20px;
+	font-size: 16px;
+	border: none;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	background: transparent;
+	outline: none;
+	border-bottom: 3px solid #0be0ed;
+	color: #002729;
+	font-size: 1rem;
+}
+
+/* Style the button */
+#contact button.btn {
+	background-color: #0be0ed;
+	color: #002729;
+	border: none;
+	outline: none;
+	border-radius: 5px;
+	padding: 10px 20px;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+button.btn:hover {
+	color: #0be0eb;
+	background-color: #002729;
+	transition: 0.3s ease-in-out;
+}
+
+/* Optional: Style the placeholder text */
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+textarea::placeholder {
+	color: #002729;
+}
+
+/*  End of contact */

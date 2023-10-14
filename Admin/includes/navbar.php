@@ -231,7 +231,7 @@
 						<ul class="chat-list">
 							<li class="list active">
 								<div class="profile">
-									<img src="../images/faces/face1.jpg" alt="image" />
+									<!-- <img src="../images/faces/face1.jpg" alt="image" /> -->
 									<span class="online"></span>
 								</div>
 								<div class="info">
@@ -244,7 +244,7 @@
 							</li>
 							<li class="list">
 								<div class="profile">
-									<img src="../images/faces/face2.jpg" alt="image" />
+									<!-- <img src="../images/faces/face2.jpg" alt="image" /> -->
 									<span class="offline"></span>
 								</div>
 								<div class="info">
@@ -262,7 +262,7 @@
 							</li>
 							<li class="list">
 								<div class="profile">
-									<img src="../images/faces/face3.jpg" alt="image" />
+									<!-- <img src="../images/faces/face3.jpg" alt="image" /> -->
 									<span class="online"></span>
 								</div>
 								<div class="info">
@@ -275,7 +275,7 @@
 							</li>
 							<li class="list">
 								<div class="profile">
-									<img src="../images/faces/face4.jpg" alt="image" />
+									<!-- <img src="../images/faces/face4.jpg" alt="image" /> -->
 									<span class="offline"></span>
 								</div>
 								<div class="info">
@@ -288,7 +288,7 @@
 							</li>
 							<li class="list">
 								<div class="profile">
-									<img src="../images/faces/face5.jpg" alt="image" />
+									<!-- <img src="../images/faces/face5.jpg" alt="image" /> -->
 									<span class="online"></span>
 								</div>
 								<div class="info">
@@ -301,7 +301,7 @@
 							</li>
 							<li class="list">
 								<div class="profile">
-									<img src="../images/faces/face6.jpg" alt="image" />
+									<!-- <img src="../images/faces/face6.jpg" alt="image" /> -->
 									<span class="online"></span>
 								</div>
 								<div class="info">
@@ -328,12 +328,12 @@
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+						<a class="nav-link" data-toggle="collapse" href="#management-elements" aria-expanded="false" aria-controls="management-elements">
 							<i class="icon-columns menu-icon"></i>
 							<span class="menu-title">Management</span>
 							<i class="menu-arrow"></i>
 						</a>
-						<div class="collapse" id="form-elements">
+						<div class="collapse" id="management-elements">
 							<ul class="nav flex-column sub-menu">
 								<li class="nav-item"><a class="nav-link" href="add-admins.php">Admin</a></li>
 								<li class="nav-item"><a class="nav-link" href="add-car-brand.php">Car brands</a></li>
@@ -341,6 +341,18 @@
 								<li class="nav-item"><a class="nav-link" href="add-carousel.php">Carousels</a></li>
 								<li class="nav-item"><a class="nav-link" href="add-categories.php">Categories</a></li>
 								<li class="nav-item"><a class="nav-link" href="add-specialisation.php">Specialisation</a></li>
+							</ul>
+						</div>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="collapse" href="#subscription-elements" aria-expanded="false" aria-controls="subscription-elements">
+							<i class="mdi mdi-sync menu-icon"></i>
+							<span class="menu-title">Subscriptions</span>
+							<i class="menu-arrow"></i>
+						</a>
+						<div class="collapse" id="subscription-elements">
+							<ul class="nav flex-column sub-menu">
+								<li class="nav-item"><a class="nav-link" href="create-plan.php">Plans</a></li>
 							</ul>
 						</div>
 					</li>

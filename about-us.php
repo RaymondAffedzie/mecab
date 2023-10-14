@@ -18,92 +18,73 @@ include_once('includes/head.php');
 include_once('includes/navbar.php');
 ?>
 
-<!--Page Title-->
-<div class="page section-header text-center">
-    <div class="page-title">
-        <div class="wrapper">
-            <h1 class="page-width">About Us</h1>
+
+<div class="container my-5">
+    <div class="pt-4 py-5 px-3 text-center bg-body-tertiary rounded-3">
+        <h1 class="text-body-emphasis">MECHANICAL ASSURANCE BEAREAU - MeCAB</h1>
+        <p>
+            <strong>Your life is our preeminent solicitude</strong>
+        </p>
+        <p class="lead">
+            Our company is dedicated to serving the needs of mechanics, spare parts sellers, and buyers by
+            providing a comprehensive platform that enables easy and safe services. We understand the
+            importance of a reliable and efficient marketplace that connects professionals, suppliers, and
+            customers. In addition to facilitating transactions, our website also aims to enhance the
+            knowledge and skills of mechanics by offering educational resources and opportunities for
+            professional development. With our commitment to excellence and continuous improvement, we
+            strive to become the go-to destination for all automotive professionals and enthusiasts.
+        </p>
+        <p>
+            <i class="ti-location-arrow"></i> Winneba, Central Region, Ghana
+        </p>
+        <p>
+            <i class="mdi mdi-phone"></i> +233 (0)24 479 1855
+        </p>
+        <p>
+            <i class="mdi mdi-email"></i> info@mecab.org
+        </p>
+    </div>
+</div>
+
+<div class="container" id="socials">
+    <div class="row slide-in from-bottom">
+        <div class="cover meet">
+            <div class="socials">
+                <a href="" target="_blank">
+                    <i class="mdi mdi-linkedin-box"></i>
+                </a>
+            </div>
+
+            <div class="socials">
+                <a href="" target="_blank">
+                    <i class="mdi mdi-twitter"></i>
+                </a>
+            </div>
+            <div class="socials">
+                <a href=" target=" _blank">
+                    <i class="mdi mdi-instagram"></i>
+                </a>
+            </div>
+            <div class="socials">
+                <a href="" target="_blank">
+                    <i class="mdi mdi-facebook"></i>
+                </a>
+            </div>
         </div>
     </div>
 </div>
-<!--End Page Title-->
 
-<div class="container">
-    <div class="row">
-        <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
-            <div class="card mt-2 mb-5 p-2">
-                <div class="card-body">
-                    <div class="text-center">
-                        <h2 class="h2">MECHANICAL ASSURANCE BEAREAU - MeCAB</h2>
-                        <div class="rte-setting">
-                            <p>
-                                <strong>Your life is our preeminent solicitude</strong>
-                            </p>
-                            <p>
-                                Our company is dedicated to serving the needs of mechanics, spare parts sellers, and buyers by
-                                providing a comprehensive platform that enables easy and safe services. We understand the
-                                importance of a reliable and efficient marketplace that connects professionals, suppliers, and
-                                customers. In addition to facilitating transactions, our website also aims to enhance the
-                                knowledge and skills of mechanics by offering educational resources and opportunities for
-                                professional development. With our commitment to excellence and continuous improvement, we
-                                strive to become the go-to destination for all automotive professionals and enthusiasts.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="container my-5">
+    <div class="p-5 text-center bg-body-tertiary rounded-3" id="contact">
+        <h2 class="text-body-emphasis">Say hello to us</h2>
+        <!-- <p>Contact us</p> -->
+        <div class="col-lg-8">
+            <input type="text" name="name" id="name" placeholder="Fullname" />
+            <input type="email" name="email" id="email" placeholder="Email" />
+            <textarea name="message" id="message" placeholder="Message" rows="1"></textarea>
+            <button class="btn" type="button">Submit</button>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h2 class="h2">Contact Us</h2>
-                    <ul class="addressFooter" style="list-style-type: none;">
-                        <li>
-                            <p>
-                                <i class="anm anm-map-marker-al"></i> Winneba, Central Region, Ghana
-                            </p>
-                        </li>
-                        <li class="phone">
-                            <p>
-                                <i class="anm anm-phone-s"></i> +233 (0)24 479 1855
-                            </p>
-                        </li>
-                        <li class="email">
-                            <p>
-                                <i class="anm anm-envelope-l"></i> info@mecab.org
-                            </p>
-                        </li>
-                    </ul>
-
-                    <h2 class="h2">Social Media</h2>
-                    <ul class="list--inline site-footer__social-icons social-icons">
-                        <li>
-                            <a class="social-icons__link" href="#" target="_blank">
-                                <i class="icon icon-facebook"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="social-icons__link" href="#" target="_blank">
-                                <i class="icon icon-twitter"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="social-icons__link" href="#" target="_blank">
-                                <i class="icon icon-instagram"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="social-icons__link" href="#" target="_blank">
-                                <i class="icon icon-youtube"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 

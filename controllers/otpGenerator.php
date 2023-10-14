@@ -14,9 +14,9 @@ class OTPGenerator
     // Generate a random OTP
     public function generateOTP()
     {
-        $otpLength = 6; // Change the length as per your requirement
+        $otpLength = 6;
         $otp = '';
-        $characters = '0123456789'; // Possible characters for the OTP
+        $characters = '0123456789';
 
         for ($i = 0; $i < $otpLength; $i++) {
             $otp .= $characters[rand(0, strlen($characters) - 1)];
@@ -32,7 +32,6 @@ class OTPGenerator
             // Set the OTP expiration time (e.g., 30 minutes from now)
             $otpExpiration = date('Y-m-d H:i:s', strtotime('+30 minutes'));
 
-            // Prepare and execute the SQL query to insert OTP into the table
             $query = "INSERT INTO user_store_otp (store_id, users_id, otp_code, otp_expiration) VALUES (?, ?, ?, ?)";
             $stmt = $this->pdo->prepare($query);
             $stmt->execute([$storeId, $userId, $otp, $otpExpiration]);
@@ -40,7 +39,7 @@ class OTPGenerator
             return 'success';
         } catch (PDOException $e) {
             echo "Error storing OTP: " . $e->getMessage();
-            return 'error'; // Return 'error' in case of an exception
+            return 'error';
         }
     }
 

@@ -34,14 +34,15 @@ class storeController
                 $userId = $user['user_id'];
                 $userRole = $user['users_role'];
                 $contact = "";
+                $_SESSION['fullName'] = $user['first_name'] . ' ' . $user['last_name'];
 
-                // Check if user has a contact
-                $hasDetails = $this->getUserContact($userId, $contact);
 
-                if ($hasDetails) {
-                    if (($userRole != 'Customer') && ($userRole != 'Admin')) {
+                if (($userRole != 'Customer') && ($userRole != 'Admin')) {
+                    // Check if user has a contact
+                    $hasDetails = $this->getUserContact($userId, $contact);
+                    if ($hasDetails) {
                         // Get user's store details
-                        $query = "SELECT * FROM users_store WHERE users_id = ?";
+                        $query = "SELECT store_id FROM users_store WHERE users_id = ?";
                         $stmt = $this->pdo->prepare($query);
                         $stmt->execute([$user['user_id']]);
                         $userStore = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -71,7 +72,7 @@ class storeController
                         $_SESSION['role'] = $userRole;
                         $_SESSION['loggedIn'] = true;
 
-                        return $_SESSION['role'];
+                        return 'no_details';
                     }
                 } else {
                     $_SESSION['userEmail'] = $userEmail;
@@ -79,7 +80,7 @@ class storeController
                     $_SESSION['role'] = $userRole;
                     $_SESSION['loggedIn'] = true;
 
-                    return 'no_details';
+                    return $_SESSION['role'];
                 }
             } else {
                 return 'incorrect';
@@ -104,7 +105,7 @@ class storeController
             return 'exists';
         }
 
-        $date = date("Y-M-d H:i:s");
+        $date = date("Y-m-d H:i:s");
 
         try {
             $query = "INSERT INTO stores (store_id, store_name, store_type, store_email, store_contact, gps_address, street_name, store_town, store_location, reg_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
@@ -210,7 +211,6 @@ class storeController
                         $stmt->execute([$userId, $contact]);
                     }
                 }
-
             } else {
                 // Add contact 
                 if (isset($contact)) {
@@ -238,7 +238,7 @@ class storeController
                     return array(
                         'status' => 'error',
                         'message' => $uploadResult
-                    ); 
+                    );
                 }
 
                 $imageName = $uploadResult['filename']; // Get the image filename only
@@ -284,25 +284,20 @@ class storeController
     {
         try {
             $table = $tableName;
-
-            // Prepare the column names and values
             $columns = implode(", ", array_keys($data));
             $values = ":" . implode(", :", array_keys($data));
 
-            // Query statement
             $query = "INSERT INTO $table ($columns) VALUES ($values)";
-
-            // Prepare and execute the statement
             $stmt = $this->pdo->prepare($query);
             $stmt->execute($data);
             if ($stmt->rowCount() > 0) {
-                return true; // Record added successfully
+                return true;
             } else {
-                return 'failed'; // Failed to add record 
+                return 'failed';
             }
         } catch (PDOException $e) {
             echo "Failed to insert data : " . $e->getMessage();
-            return false; // Error occured while adding record
+            return false;
         }
     }
 
@@ -556,18 +551,14 @@ class storeController
     }
 
     // Check if store exists
-    private function isStoreExists($storeName, $storeEmail, $storeContact)
+    private function isStoreExists($storeName, $storeEmail)
     {
         try {
-            // Query the database to check if a store with the same name, email, or contact already exists
-            $query = "SELECT COUNT(*) FROM stores WHERE store_name = ? OR store_email = ? OR store_contact = ?";
+            $query = "SELECT COUNT(*) FROM stores WHERE store_name = ? OR store_email = ?";
             $stmt = $this->pdo->prepare($query);
-            $stmt->execute([$storeName, $storeEmail, $storeContact]);
-
-            // Fetch the count of matching stores
+            $stmt->execute([$storeName, $storeEmail]);
             $count = $stmt->fetchColumn();
 
-            // Return true if a store with the same name, email, or contact already exists
             return $count > 0;
         } catch (PDOException $e) {
             echo "Failed to retrieve stores: " . $e->getMessage();
@@ -621,6 +612,15 @@ class storeController
      * --------------------------------------------------------------------------------------------------
      */
 
+    public function getCount()
+    {
+        try {
+            $query = "SELECT COUNT() FROM ";
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
+
     // Get all stores
     public function getStores()
     {
@@ -643,11 +643,11 @@ class storeController
         }
     }
 
-    // Get all stores
+    // Get all specialisation
     public function getSpecialisation()
     {
         try {
-            $query = "  SELECT DISTINCT specialisation_id, specialisation FROM specialisation";
+            $query = "SELECT DISTINCT specialisation_id, specialisation FROM specialisation";
             $stmt = $this->pdo->prepare($query);
             $stmt->execute();
             $specialisation = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -1518,5 +1518,18 @@ class storeController
             echo "Error selecting data: " . $e->getMessage();
             return false;
         }
+    }
+
+
+
+    public function formatDate($inputDate)
+    {
+        // Convert the date string to a DateTime object
+        $date = new DateTime($inputDate);
+
+        // Format the DateTime object as desired
+        $formattedDate = $date->format('jS F, Y. h:i A');
+
+        return $formattedDate;
     }
 }

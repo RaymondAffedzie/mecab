@@ -17,15 +17,19 @@ $controller = new storeController();
 include_once('includes/head.php');
 include_once('includes/navbar.php');
 
-$query = "SELECT * FROM carousel ORDER BY carousel_ID DESC LIMIT 3";
+$query = "SELECT * FROM carousel ORDER BY carousel_ID DESC LIMIT 4";
 $carousels = $controller->getRecords($query);
 ?>
 <div class="carousel-container">
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
-            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            <?php
+            foreach ($carousels as $key => $value) {
+            ?>
+                <li data-target="#carouselExampleIndicators" data-slide-to="<?= $key ?>" class="<?= ($key === 0) ? 'active' : ''; ?>"></li>
+            <?php
+            }
+            ?>
         </ol>
         <div class="carousel-inner">
             <?php foreach ($carousels as $key => $carouselData) { ?>
@@ -49,7 +53,7 @@ $carousels = $controller->getRecords($query);
 </div>
 
 <!--Collection Box slider-->
-<div class="collection-box fadeIn section">
+<div v class="collection-box fadeIn section mt-5">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
@@ -62,32 +66,19 @@ $carousels = $controller->getRecords($query);
         <div class="collection-grid-4item">
             <!-- PHP CODE FOR FETCHING SPARE PARTS CATEGORIES -->
             <?php
-            $query = "SELECT c.category_id, c.category_name, c.image, COUNT(s.category_id) AS top_category_count
-                        FROM categories c
-                        JOIN spare_parts s ON c.category_id = s.category_id
-                        GROUP BY c.category_id, c.category_name
-                        ORDER BY top_category_count DESC LIMIT 10;";
-
+            $query = "SELECT category_id, category_name, `image` FROM categories";
             $data = $controller->getRecords($query);
-
-            if (!empty($data)) {
-                foreach ($data as $item) {
-                    $categoryId = $item['category_id'];
-                    $categoryImage = $item['image'];
-                    $categoryName = $item['category_name'];
+            foreach ($data as $item) {
             ?>
-                    <a href="category-spare-parts.php?category=<?= $categoryId; ?>">
-                        <figure class="figure">
-                            <img src="uploads/<?= $categoryImage; ?>" class="figure-img img-fluid rounded-0" alt="Image" style="height: 220px; width: auto;">
-                            <figcaption class="figure-caption text-center"><?= $categoryName; ?></figcaption>
-                        </figure>
+                <div class="collection-grid-item">
+                    <a href="category-spare-parts.php?category=<?= $item['category_id']; ?>" class="collection-grid-item__link">
+                        <img data-src="uploads/<?= $item['image']; ?>" src="uploads/<?= $item['image']; ?>" alt="<?= $item['category_name']; ?>" class="blur-up lazyload" height="220px"/>
+                        <div class="collection-grid-item__title-wrapper">
+                            <h3 class="collection-grid-item__title btn btn--secondary no-border"><?= $item['category_name']; ?></h3>
+                        </div>
                     </a>
-            <?php
-                }
-            } else {
-                echo "No top categories found.";
-            }
-            ?>
+                </div>
+            <?php } ?>
             <!-- END CODE FOR FETCHING SPARE PARTS CATEGORIES -->
         </div>
     </div>
